@@ -175,7 +175,28 @@ const getClickPosition = (e) => {
   yPosition = e.clientY;
   console.log(xPosition, yPosition, e.target);
   if (e.target.tagName === 'IMG') {
-    console.log(e.target);
+    let target = e.target;
+    let number = '';
+
+    number = target.parentElement.id.slice(1);
+    let one = String(number).charAt(0);
+    let two = String(number).charAt(1);
+    let firstNumber = Number(one);
+    let SecondNumber = Number(two);
+
+    if (firstNumber % 2 == true) {
+      if (SecondNumber % 2 == true) {
+        target.classList.toggle('clicked-1');
+      } else {
+        target.classList.toggle('clicked-2');
+      }
+    } else {
+      if (SecondNumber % 2 == true) {
+        target.classList.toggle('clicked-2');
+      } else {
+        target.classList.toggle('clicked-1');
+      }
+    }
   } else {
     console.log(e.target.tagName);
   }

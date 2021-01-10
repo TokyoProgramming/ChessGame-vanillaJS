@@ -133,4 +133,13 @@ body {
 img {
   height: 100px;
   width: 100px;
+  cursor: pointer;
+}
+
+.clicked-1 {
+  background-color: #baca3d;
+}
+
+.clicked-2 {
+  background-color: #f6f680;
 }
