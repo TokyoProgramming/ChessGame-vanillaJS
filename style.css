@@ -1,0 +1,136 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: black;
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 800px;
+  background-color: #312e2b;
+}
+
+.chess-board {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 800px;
+  background-color: #fff;
+}
+
+.row-1,
+.row-2,
+.row-3,
+.row-4,
+.row-5,
+.row-6,
+.row-7,
+.row-8 {
+  display: flex;
+  height: 100px;
+}
+
+/* odd rows */
+.row-1 .col-1,
+.row-1 .col-3,
+.row-1 .col-5,
+.row-1 .col-7,
+.row-3 .col-1,
+.row-3 .col-3,
+.row-3 .col-5,
+.row-3 .col-7,
+.row-5 .col-1,
+.row-5 .col-3,
+.row-5 .col-5,
+.row-5 .col-7,
+.row-7 .col-1,
+.row-7 .col-3,
+.row-7 .col-5,
+.row-7 .col-7 {
+  height: 100px;
+  width: 100px;
+  background-color: #779556;
+}
+.row-1 .col-2,
+.row-1 .col-4,
+.row-1 .col-6,
+.row-1 .col-8,
+.row-3 .col-2,
+.row-3 .col-4,
+.row-3 .col-6,
+.row-3 .col-8,
+.row-5 .col-2,
+.row-5 .col-4,
+.row-5 .col-6,
+.row-5 .col-8,
+.row-7 .col-2,
+.row-7 .col-4,
+.row-7 .col-6,
+.row-7 .col-8 {
+  height: 100px;
+  width: 100px;
+  background-color: #ebecd0;
+}
+/* even rows */
+.row-2 .col-1,
+.row-2 .col-3,
+.row-2 .col-5,
+.row-2 .col-7,
+.row-4 .col-1,
+.row-4 .col-3,
+.row-4 .col-5,
+.row-4 .col-7,
+.row-6 .col-1,
+.row-6 .col-3,
+.row-6 .col-5,
+.row-6 .col-7,
+.row-8 .col-1,
+.row-8 .col-3,
+.row-8 .col-5,
+.row-8 .col-7 {
+  height: 100px;
+  width: 100px;
+  background-color: #ebecd0;
+}
+.row-2 .col-2,
+.row-2 .col-4,
+.row-2 .col-6,
+.row-2 .col-8,
+.row-4 .col-2,
+.row-4 .col-4,
+.row-4 .col-6,
+.row-4 .col-8,
+.row-6 .col-2,
+.row-6 .col-4,
+.row-6 .col-6,
+.row-6 .col-8,
+.row-8 .col-2,
+.row-8 .col-4,
+.row-8 .col-6,
+.row-8 .col-8 {
+  height: 100px;
+  width: 100px;
+  background-color: #779556;
+}
+
+img {
+  height: 100px;
+  width: 100px;
+}
