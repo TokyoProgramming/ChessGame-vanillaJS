@@ -181,59 +181,64 @@ const getClickPosition = (e) => {
   xPosition = e.clientX;
   yPosition = e.clientY;
 
+  // target == Image
   if (e.target.tagName === 'IMG') {
     target = e.target;
+
+    // targetArr !== empty
     if (targetArr.length > 0) {
       number = target.parentElement.id.slice(1);
-
       console.log(targetArr[0].arrNumber === number);
-      target.classList.remove('clicked-1') ||
-        target.classList.remove('clicked-2');
-      chessBoard.classList.remove('board-opacity');
-      targetArr = [];
-    } else {
-      number = target.parentElement.id.slice(1);
-      newArr = {
-        target,
-        arrNumber: number,
-      };
-
-      targetArr.push(newArr);
-      targetArr.forEach((element) => {
-        let one = String(element.arrNumber).charAt(0);
-        let two = String(element.arrNumber).charAt(1);
-        let firstNumber = Number(one);
-        let SecondNumber = Number(two);
-        chessBoardDiv =
-          element.target.parentElement.parentElement.parentElement;
-
-        chessBoardDiv.classList.toggle('board-opacity');
-
-        if (firstNumber % 2 == true) {
-          if (SecondNumber % 2 == true) {
-            element.target.classList.toggle('clicked-1');
-          } else {
-            element.target.classList.toggle('clicked-2');
-          }
-        } else {
-          if (SecondNumber % 2 == true) {
-            element.target.classList.toggle('clicked-2');
-          } else {
-            element.target.classList.toggle('clicked-1');
-          }
-        }
-      });
-
-      // check Arr length
-      arrLength = targetArr.length;
-      if (arrLength > 1) {
-        targetArr.shift();
-      } else if (arrLength > 0) {
-        chessBoard.classList.add('board-opacity');
-      } else {
+      if (targetArr[0].arrNumber === number) {
+        target.classList.remove('clicked-1') ||
+          target.classList.remove('clicked-2');
         chessBoard.classList.remove('board-opacity');
+        targetArr = [];
       }
     }
+
+    number = target.parentElement.id.slice(1);
+    newArr = {
+      target,
+      arrNumber: number,
+    };
+
+    targetArr.push(newArr);
+    targetArr.forEach((element) => {
+      let one = String(element.arrNumber).charAt(0);
+      let two = String(element.arrNumber).charAt(1);
+      let firstNumber = Number(one);
+      let SecondNumber = Number(two);
+      chessBoardDiv = element.target.parentElement.parentElement.parentElement;
+
+      chessBoardDiv.classList.toggle('board-opacity');
+
+      if (firstNumber % 2 == true) {
+        if (SecondNumber % 2 == true) {
+          element.target.classList.toggle('clicked-1');
+        } else {
+          element.target.classList.toggle('clicked-2');
+        }
+      } else {
+        if (SecondNumber % 2 == true) {
+          element.target.classList.toggle('clicked-2');
+        } else {
+          element.target.classList.toggle('clicked-1');
+        }
+      }
+    });
+
+    // check Arr length
+    arrLength = targetArr.length;
+    if (arrLength > 1) {
+      targetArr.shift();
+    } else if (arrLength > 0) {
+      chessBoard.classList.add('board-opacity');
+    } else {
+      chessBoard.classList.remove('board-opacity');
+    }
+
+    // Target !== Image
   } else {
     if (targetArr.length > 0) {
       console.log(targetArr[0].target);
