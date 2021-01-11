@@ -189,13 +189,15 @@ const getClickPosition = (e) => {
     // targetArr !== empty
     if (targetArr.length !== 0) {
       if (targetArr[0].arrNumber === number) {
-        target.classList.remove('clicked-1') ||
-          target.classList.remove('clicked-2');
-        chessBoard.classList.remove('board-opacity');
+        target.className = '';
+        // target.classList.remove('clicked-1') ||
+        //   target.classList.remove('clicked-2');
+        chessBoard.className = '';
         targetArr = [];
         return;
       }
     }
+
     newArr = {
       target,
       arrNumber: number,
@@ -207,9 +209,7 @@ const getClickPosition = (e) => {
       let two = String(element.arrNumber).charAt(1);
       let firstNumber = Number(one);
       let SecondNumber = Number(two);
-      chessBoardDiv = element.target.parentElement.parentElement.parentElement;
-
-      chessBoardDiv.classList.toggle('board-opacity');
+      chessBoard.classList.toggle('board-opacity');
 
       if (firstNumber % 2 == true) {
         if (SecondNumber % 2 == true) {
@@ -238,11 +238,10 @@ const getClickPosition = (e) => {
     // Target !== Image
   } else {
     if (targetArr.length > 0) {
-      console.log(targetArr[0].target);
       target = targetArr[0].target;
-      target.classList.remove('clicked-1') ||
-        target.classList.remove('clicked-2');
-      chessBoard.classList.remove('board-opacity');
+
+      target.className = '';
+      chessBoard.className = '';
       targetArr = [];
     }
   }
