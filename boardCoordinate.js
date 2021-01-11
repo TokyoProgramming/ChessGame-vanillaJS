@@ -71,6 +71,7 @@ const row5 = [X51, X52, X53, X54, X55, X56, X57, X58];
 const row6 = [X61, X62, X63, X64, X65, X66, X67, X68];
 const row7 = [X71, X72, X73, X74, X75, X76, X77, X78];
 const row8 = [X81, X82, X83, X84, X85, X86, X87, X88];
+const rows = [row1, row2, row3, row4, row5, row6, row7, row8];
 
 export {
   X11,
@@ -145,4 +146,5 @@ export {
   row6,
   row7,
   row8,
+  rows,
 };

@@ -63,8 +63,15 @@ import {
   X86,
   X87,
   X88,
+  row1,
   row2,
+  row3,
+  row4,
+  row5,
+  row6,
   row7,
+  row8,
+  rows,
 } from './boardCoordinate.js';
 
 import {
@@ -80,6 +87,7 @@ import {
   bQ,
   bR,
   bK,
+  pieces,
 } from './piecesInfo.js';
 
 const chessBoard = document.querySelector('.chess-board');
@@ -89,6 +97,7 @@ const setChessPieces = () => {
   row7.map((el) => {
     let whitePawn = document.createElement('img');
     whitePawn.src = `${wP.imgSrc}`;
+    whitePawn.id = 'white-pawn';
     el.appendChild(whitePawn);
   });
 
@@ -177,9 +186,10 @@ let arrLength = 0;
 let target = '';
 let number = '';
 
-const getClickPosition = (e) => {
+const getClickPosition = async (e) => {
   xPosition = e.clientX;
   yPosition = e.clientY;
+  await piecesMovements(e);
 
   // target == Image
   if (e.target.tagName === 'IMG') {
@@ -247,5 +257,18 @@ const getClickPosition = (e) => {
   }
 };
 
+let piecesType = '';
+// Pieces movements
+const piecesMovements = async (e) => {
+  // console.log(e.target.parentElement.id);
+  piecesType = e.target.id;
+  switch (piecesType) {
+    case 'white-pawn':
+      console.log(e.target.parentElement.id);
+      break;
+  }
+};
+
 document.addEventListener('DOMContentLoaded', setChessPieces);
 chessBoard.addEventListener('click', getClickPosition);
+// chessBoard.addEventListener('click', piecesMovements);
