@@ -184,20 +184,18 @@ const getClickPosition = (e) => {
   // target == Image
   if (e.target.tagName === 'IMG') {
     target = e.target;
+    number = target.parentElement.id.slice(1);
 
     // targetArr !== empty
-    if (targetArr.length > 0) {
-      number = target.parentElement.id.slice(1);
-      console.log(targetArr[0].arrNumber === number);
+    if (targetArr.length !== 0) {
       if (targetArr[0].arrNumber === number) {
         target.classList.remove('clicked-1') ||
           target.classList.remove('clicked-2');
         chessBoard.classList.remove('board-opacity');
         targetArr = [];
+        return;
       }
     }
-
-    number = target.parentElement.id.slice(1);
     newArr = {
       target,
       arrNumber: number,
@@ -227,7 +225,6 @@ const getClickPosition = (e) => {
         }
       }
     });
-
     // check Arr length
     arrLength = targetArr.length;
     if (arrLength > 1) {
@@ -249,8 +246,6 @@ const getClickPosition = (e) => {
       targetArr = [];
     }
   }
-
-  console.log(targetArr);
 };
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
