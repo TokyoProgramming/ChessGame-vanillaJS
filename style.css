@@ -33,6 +33,12 @@ body {
   width: 800px;
   height: 800px;
   background-color: #fff;
+  /* opacity: 0.9; */
+}
+
+.board-opacity {
+  transition: opacity 0.5s;
+  opacity: 0.9;
 }
 
 .row-1,
@@ -105,6 +111,7 @@ body {
 .row-8 .col-3,
 .row-8 .col-5,
 .row-8 .col-7 {
+  position: relative;
   height: 100px;
   width: 100px;
   background-color: #ebecd0;
@@ -125,6 +132,7 @@ body {
 .row-8 .col-4,
 .row-8 .col-6,
 .row-8 .col-8 {
+  position: relative;
   height: 100px;
   width: 100px;
   background-color: #779556;
@@ -133,7 +141,7 @@ body {
 img {
   height: 100px;
   width: 100px;
-  cursor: pointer;
+  cursor: grab;
 }
 
 .clicked-1 {

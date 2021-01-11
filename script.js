@@ -170,36 +170,82 @@ const setChessPieces = () => {
 
 let xPosition = 0;
 let yPosition = 0;
+let chessBoardDiv = '';
+let targetArr = [];
+let newArr = {};
+let arrLength = 0;
+let target = '';
+let number = '';
+
 const getClickPosition = (e) => {
   xPosition = e.clientX;
   yPosition = e.clientY;
-  console.log(xPosition, yPosition, e.target);
+
   if (e.target.tagName === 'IMG') {
-    let target = e.target;
-    let number = '';
+    target = e.target;
+    if (targetArr.length > 0) {
+      number = target.parentElement.id.slice(1);
 
-    number = target.parentElement.id.slice(1);
-    let one = String(number).charAt(0);
-    let two = String(number).charAt(1);
-    let firstNumber = Number(one);
-    let SecondNumber = Number(two);
-
-    if (firstNumber % 2 == true) {
-      if (SecondNumber % 2 == true) {
-        target.classList.toggle('clicked-1');
-      } else {
-        target.classList.toggle('clicked-2');
-      }
+      console.log(targetArr[0].arrNumber === number);
+      target.classList.remove('clicked-1') ||
+        target.classList.remove('clicked-2');
+      chessBoard.classList.remove('board-opacity');
+      targetArr = [];
     } else {
-      if (SecondNumber % 2 == true) {
-        target.classList.toggle('clicked-2');
+      number = target.parentElement.id.slice(1);
+      newArr = {
+        target,
+        arrNumber: number,
+      };
+
+      targetArr.push(newArr);
+      targetArr.forEach((element) => {
+        let one = String(element.arrNumber).charAt(0);
+        let two = String(element.arrNumber).charAt(1);
+        let firstNumber = Number(one);
+        let SecondNumber = Number(two);
+        chessBoardDiv =
+          element.target.parentElement.parentElement.parentElement;
+
+        chessBoardDiv.classList.toggle('board-opacity');
+
+        if (firstNumber % 2 == true) {
+          if (SecondNumber % 2 == true) {
+            element.target.classList.toggle('clicked-1');
+          } else {
+            element.target.classList.toggle('clicked-2');
+          }
+        } else {
+          if (SecondNumber % 2 == true) {
+            element.target.classList.toggle('clicked-2');
+          } else {
+            element.target.classList.toggle('clicked-1');
+          }
+        }
+      });
+
+      // check Arr length
+      arrLength = targetArr.length;
+      if (arrLength > 1) {
+        targetArr.shift();
+      } else if (arrLength > 0) {
+        chessBoard.classList.add('board-opacity');
       } else {
-        target.classList.toggle('clicked-1');
+        chessBoard.classList.remove('board-opacity');
       }
     }
   } else {
-    console.log(e.target.tagName);
+    if (targetArr.length > 0) {
+      console.log(targetArr[0].target);
+      target = targetArr[0].target;
+      target.classList.remove('clicked-1') ||
+        target.classList.remove('clicked-2');
+      chessBoard.classList.remove('board-opacity');
+      targetArr = [];
+    }
   }
+
+  console.log(targetArr);
 };
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
