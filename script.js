@@ -91,6 +91,8 @@ import {
 } from './piecesInfo.js';
 
 const chessBoard = document.querySelector('.chess-board');
+let row,
+  col = 0;
 
 const setChessPieces = () => {
   // white Pawn
@@ -105,91 +107,126 @@ const setChessPieces = () => {
   let whiteRook_1 = document.createElement('img');
   whiteRook_1.src = `${wR.imgSrc}`;
   X81.appendChild(whiteRook_1);
+  whiteRook_1.id = 'white-rook';
   let whiteRook_2 = document.createElement('img');
   whiteRook_2.src = `${wR.imgSrc}`;
+  whiteRook_2.id = 'white-rook';
   X88.appendChild(whiteRook_2);
 
   //   white Knight
   let whiteKnight_1 = document.createElement('img');
   whiteKnight_1.src = `${wK.imgSrc}`;
+  whiteKnight_1.id = 'white-Knight';
   X82.appendChild(whiteKnight_1);
   let whiteKnight_2 = document.createElement('img');
   whiteKnight_2.src = `${wK.imgSrc}`;
+  whiteKnight_2.id = 'white-knight';
   X87.appendChild(whiteKnight_2);
 
   //   white bishop
   let whiteBishop_1 = document.createElement('img');
   whiteBishop_1.src = `${wB.imgSrc}`;
+  whiteBishop_1.id = 'white-bishop';
   X83.appendChild(whiteBishop_1);
   let whiteBishop_2 = document.createElement('img');
   whiteBishop_2.src = `${wB.imgSrc}`;
+  whiteBishop_2.id = 'white-bishop';
   X86.appendChild(whiteBishop_2);
 
   //   white King
   let whiteKing = document.createElement('img');
   whiteKing.src = `${wKing.imgSrc}`;
+  whiteKing.id = 'white-king';
   X84.appendChild(whiteKing);
 
   //   white Queen
   let whiteQueen = document.createElement('img');
   whiteQueen.src = `${wQ.imgSrc}`;
+  whiteQueen.id = 'white-queen';
   X85.appendChild(whiteQueen);
 
   //   black Pawn
   row2.map((el) => {
     let blackPawn = document.createElement('img');
     blackPawn.src = `${bP.imgSrc}`;
+    blackPawn.id = 'black-pawn';
     el.appendChild(blackPawn);
   });
 
   //   black Rook
   let blackRook_1 = document.createElement('img');
   blackRook_1.src = `${bR.imgSrc}`;
+  blackRook_1.id = 'black-rook';
   X11.appendChild(blackRook_1);
   let blackRook_2 = document.createElement('img');
   blackRook_2.src = `${bR.imgSrc}`;
+  blackRook_2.id = 'black-rook';
   X18.appendChild(blackRook_2);
 
   //   black Knight
   let blackKnight_1 = document.createElement('img');
   blackKnight_1.src = `${bK.imgSrc}`;
+  blackKnight_1.id = 'black-knight';
   X12.appendChild(blackKnight_1);
   let blackKnight_2 = document.createElement('img');
   blackKnight_2.src = `${bK.imgSrc}`;
+  blackKnight_2.id = 'black-knight';
   X17.appendChild(blackKnight_2);
 
   //   black bishop
   let blackBishop_1 = document.createElement('img');
   blackBishop_1.src = `${bB.imgSrc}`;
+  blackBishop_1.id = 'black-bishop';
   X13.appendChild(blackBishop_1);
   let blackBishop_2 = document.createElement('img');
   blackBishop_2.src = `${bB.imgSrc}`;
+  blackBishop_2.id = 'black-bishop';
   X16.appendChild(blackBishop_2);
 
   //   black King
   let blackKing = document.createElement('img');
   blackKing.src = `${bKing.imgSrc}`;
+  blackKing.id = 'black-king';
   X14.appendChild(blackKing);
 
   //   black Queen
   let blackQueen = document.createElement('img');
   blackQueen.src = `${bQ.imgSrc}`;
+  blackQueen.id = 'black-king';
   X15.appendChild(blackQueen);
 };
 
 let xPosition = 0;
 let yPosition = 0;
-let chessBoardDiv = '';
+
 let targetArr = [];
+let positionArr = [];
 let newArr = {};
 let arrLength = 0;
 let target = '';
 let number = '';
-
+let targetPosition,
+  targetRow,
+  targetCol = '';
 const getClickPosition = async (e) => {
   xPosition = e.clientX;
   yPosition = e.clientY;
-  await piecesMovements(e);
+  const data = await piecesMovements(e);
+  if (data !== undefined) {
+    row = data[0];
+    col = data[1];
+    for (let j = 0; j < row.length; j++) {
+      for (let i = 0; i < col.length; i++) {
+        targetRow = row[j] - 1;
+        targetCol = col[i] - 1;
+        targetPosition = rows[targetRow][targetCol];
+        positionArr.push(targetPosition);
+      }
+    }
+    positionArr.forEach((el) => {
+      el.classList.add('active');
+    });
+  }
 
   // target == Image
   if (e.target.tagName === 'IMG') {
@@ -200,10 +237,16 @@ const getClickPosition = async (e) => {
     if (targetArr.length !== 0) {
       if (targetArr[0].arrNumber === number) {
         target.className = '';
-        // target.classList.remove('clicked-1') ||
-        //   target.classList.remove('clicked-2');
+
+        // // target.classList.remove('clicked-1') ||
+        // //   target.classList.remove('clicked-2');
         chessBoard.className = '';
+        positionArr.forEach((el) => {
+          el.classList.remove('active');
+        });
+        positionArr = [];
         targetArr = [];
+
         return;
       }
     }
@@ -219,6 +262,7 @@ const getClickPosition = async (e) => {
       let two = String(element.arrNumber).charAt(1);
       let firstNumber = Number(one);
       let SecondNumber = Number(two);
+
       chessBoard.classList.toggle('board-opacity');
 
       if (firstNumber % 2 == true) {
@@ -250,25 +294,99 @@ const getClickPosition = async (e) => {
     if (targetArr.length > 0) {
       target = targetArr[0].target;
 
+      if (positionArr.length !== 0) {
+        positionArr.forEach((el) => {
+          el.classList.remove('active');
+        });
+
+        positionArr = [];
+      }
+
+      targetArr = [];
+      console.log(target);
+
       target.className = '';
       chessBoard.className = '';
       targetArr = [];
     }
   }
 };
+// // get current location row && col
+// // if white pieces minus row number => if it is 7 check row 6 && row 5
+// //check row6 array col-1 && row 5 col-1
+
+// get first number and second number
+const getFirstSecondNumber = (element) => {
+  element = element.slice(1);
+  let one = String(element).charAt(0);
+  let two = String(element).charAt(1);
+  let firstNumber = Number(one);
+  let SecondNumber = Number(two);
+  let numberArr = [];
+  numberArr = [firstNumber, SecondNumber];
+  return numberArr;
+};
+
+// // console.log(getFirstSecondNumber(x46));
 
 let piecesType = '';
 // Pieces movements
 const piecesMovements = async (e) => {
   // console.log(e.target.parentElement.id);
+  let location = e.target.parentElement.id;
+  let goRow,
+    goCol = [];
   piecesType = e.target.id;
-  switch (piecesType) {
-    case 'white-pawn':
-      console.log(e.target.parentElement.id);
-      break;
+  location = getFirstSecondNumber(location);
+  row = location[0];
+  col = location[1];
+  if (piecesType.length < 4) {
+    console.log('there is not chess pieces');
+  } else {
+    switch (piecesType) {
+      case 'white-pawn':
+        goRow = [row - 1, row - 2];
+        goCol = [col];
+        return [goRow, goCol];
+        break;
+      case 'white-rook':
+        console.log(row, col);
+        break;
+      case 'white-knight':
+        console.log(row, col);
+        break;
+      case 'white-bishop':
+        console.log(row, col);
+        break;
+      case 'white-queen':
+        console.log(row, col);
+        break;
+      case 'white-king':
+        console.log(row, col);
+        break;
+      case 'black-pawn':
+        console.log(row, col);
+        break;
+      case 'black-rook':
+        console.log(row, col);
+        break;
+      case 'black-knight':
+        console.log(row, col);
+        break;
+      case 'black-bishop':
+        console.log(row, col);
+        break;
+      case 'black-queen':
+        console.log(row, col);
+        break;
+      case 'black-king':
+        console.log(row, col);
+        break;
+      default:
+        return;
+    }
   }
 };
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
 chessBoard.addEventListener('click', getClickPosition);
-// chessBoard.addEventListener('click', piecesMovements);

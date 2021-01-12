@@ -151,3 +151,7 @@ img {
 .clicked-2 {
   background-color: #f6f680;
 }
+
+.active {
+  background-color: red !important;
+}
