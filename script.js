@@ -236,10 +236,11 @@ const getClickPosition = async (e) => {
 
     positionArr.forEach((el) => {
       el.classList.add('active');
-      console.log(el);
-      const circleDiv = document.createElement('div');
-      circleDiv.classList.add('circle');
-      el.appendChild(circleDiv);
+      if (el.children.length === 0) {
+        const circleDiv = document.createElement('div');
+        circleDiv.classList.add('circle');
+        el.appendChild(circleDiv);
+      }
     });
   }
 
@@ -322,6 +323,7 @@ const getClickPosition = async (e) => {
         deleteArr = positionObjArr[0].positionArr;
         deleteArr.forEach((el) => {
           el.classList.remove('active');
+          el.children[0].remove();
         });
         positionObjArr = [];
       }
