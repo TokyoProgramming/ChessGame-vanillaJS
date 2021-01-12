@@ -153,5 +153,15 @@ img {
 }
 
 .active {
-  background-color: red !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.circle {
+  height: 50px;
+  width: 50px;
+  background-color: #555;
+  border-radius: 50%;
 }
