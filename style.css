@@ -160,8 +160,16 @@ img {
 }
 
 .circle {
-  height: 50px;
-  width: 50px;
-  background-color: #555;
+  height: 30px;
+  width: 30px;
+
+  background-color: rgba(0, 0, 0, 0.4);
+
   border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.circle:hover {
+  transform: scale(1.5);
+  cursor: pointer;
 }
