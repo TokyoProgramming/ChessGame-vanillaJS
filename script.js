@@ -200,7 +200,9 @@ let xPosition = 0;
 let yPosition = 0;
 
 let targetArr = [];
-let positionArr = [];
+let deleteArr = [];
+let positionObj = {};
+let positionObjArr = [];
 let newArr = {};
 let arrLength = 0;
 let target = '';
@@ -209,6 +211,7 @@ let targetPosition,
   targetRow,
   targetCol = '';
 const getClickPosition = async (e) => {
+  let positionArr = [];
   xPosition = e.clientX;
   yPosition = e.clientY;
   const data = await piecesMovements(e);
@@ -223,6 +226,14 @@ const getClickPosition = async (e) => {
         positionArr.push(targetPosition);
       }
     }
+    positionObj = {
+      id: Math.random(),
+      positionArr,
+    };
+
+    positionObjArr.push(positionObj);
+    // positionObjArr[0].positionArr[0].classList.remove('active');
+
     positionArr.forEach((el) => {
       el.classList.add('active');
     });
@@ -279,9 +290,16 @@ const getClickPosition = async (e) => {
         }
       }
     });
+
     // check Arr length
     arrLength = targetArr.length;
     if (arrLength > 1) {
+      deleteArr = positionObjArr[0].positionArr;
+      deleteArr.forEach((el) => {
+        el.classList.remove('active');
+      });
+      positionObjArr.shift();
+
       targetArr.shift();
     } else if (arrLength > 0) {
       chessBoard.classList.add('board-opacity');
@@ -294,16 +312,15 @@ const getClickPosition = async (e) => {
     if (targetArr.length > 0) {
       target = targetArr[0].target;
 
-      if (positionArr.length !== 0) {
-        positionArr.forEach((el) => {
+      if (positionObjArr.length !== 0) {
+        deleteArr = positionObjArr[0].positionArr;
+        deleteArr.forEach((el) => {
           el.classList.remove('active');
         });
-
-        positionArr = [];
+        positionObjArr = [];
       }
 
       targetArr = [];
-      console.log(target);
 
       target.className = '';
       chessBoard.className = '';
@@ -332,7 +349,6 @@ const getFirstSecondNumber = (element) => {
 let piecesType = '';
 // Pieces movements
 const piecesMovements = async (e) => {
-  // console.log(e.target.parentElement.id);
   let location = e.target.parentElement.id;
   let goRow,
     goCol = [];
@@ -341,7 +357,7 @@ const piecesMovements = async (e) => {
   row = location[0];
   col = location[1];
   if (piecesType.length < 4) {
-    console.log('there is not chess pieces');
+    return;
   } else {
     switch (piecesType) {
       case 'white-pawn':
