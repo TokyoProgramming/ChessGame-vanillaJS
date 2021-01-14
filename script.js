@@ -325,6 +325,10 @@ const getClickPosition = async (e) => {
     moveTo = e.target.parentElement;
 
     movePiece(moveTo);
+    console.log(targetArr);
+    positionObjArr = [];
+    target.className = '';
+    chessBoard.className = '';
 
     // Target !== Image
   } else {
@@ -344,7 +348,6 @@ const getClickPosition = async (e) => {
 
       target.className = '';
       chessBoard.className = '';
-      targetArr = [];
     }
   }
 };
@@ -369,16 +372,20 @@ const getFirstSecondNumber = (element) => {
 const movePiece = (moveTo) => {
   let check = document.querySelectorAll('.active');
 
-  const selected = document.querySelector('.selected');
-  let whitePawn = document.createElement('img');
-  whitePawn.src = `${selected.src}`;
-  whitePawn.id = 'white-pawn';
-  moveTo.appendChild(whitePawn);
+  let selected = document.querySelector('.selected');
+  let clone = selected.cloneNode(true);
+  console.log(clone);
+
+  // let whitePawn = document.createElement('img');
+  // whitePawn.src = `${selected.src}`;
+  // whitePawn.id = 'white-pawn';
+
+  moveTo.appendChild(clone);
   for (let i = 0; i < check.length; i++) {
     check[i].childNodes[0].remove('div');
     check[i].classList.remove('active');
   }
-  console.log(selected);
+
   selected.remove('img');
 
   selected.classList.remove('selected');
