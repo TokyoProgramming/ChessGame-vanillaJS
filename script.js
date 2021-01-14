@@ -196,9 +196,6 @@ const setChessPieces = () => {
   X15.appendChild(blackQueen);
 };
 
-let xPosition = 0;
-let yPosition = 0;
-
 let targetArr = [];
 let deleteArr = [];
 let positionObj = {};
@@ -212,8 +209,7 @@ let targetPosition,
   targetCol = '';
 const getClickPosition = async (e) => {
   let positionArr = [];
-  xPosition = e.clientX;
-  yPosition = e.clientY;
+
   const data = await piecesMovements(e);
   if (data !== undefined) {
     row = data[0];
@@ -227,7 +223,7 @@ const getClickPosition = async (e) => {
       }
     }
     positionObj = {
-      id: Math.random(),
+      id: Math.random() * 100,
       positionArr,
     };
 
@@ -282,19 +278,26 @@ const getClickPosition = async (e) => {
 
       chessBoard.classList.toggle('board-opacity');
 
+      // Add colors && selected
       if (firstNumber % 2 == true) {
         if (SecondNumber % 2 == true) {
           element.target.classList.toggle('clicked-1');
+          element.target.classList.add('selected');
         } else {
           element.target.classList.toggle('clicked-2');
+          element.target.classList.add('selected');
         }
       } else {
         if (SecondNumber % 2 == true) {
           element.target.classList.toggle('clicked-2');
+          element.target.classList.add('selected');
         } else {
           element.target.classList.toggle('clicked-1');
+          element.target.classList.add('selected');
         }
       }
+      // console.log(element);
+      // getSelectedAndActiveCells();
     });
 
     // check Arr length
@@ -306,13 +309,22 @@ const getClickPosition = async (e) => {
         el.children[0].remove();
       });
       positionObjArr.shift();
-
       targetArr.shift();
     } else if (arrLength > 0) {
       chessBoard.classList.add('board-opacity');
     } else {
       chessBoard.classList.remove('board-opacity');
     }
+
+    // console.log(e.target.classList.length);
+  } else if (
+    e.target.tagName !== 'IMG' &&
+    e.target.parentElement.classList[1] === 'active'
+  ) {
+    let moveTo = '';
+    moveTo = e.target.parentElement;
+
+    movePiece(moveTo);
 
     // Target !== Image
   } else {
@@ -352,6 +364,26 @@ const getFirstSecondNumber = (element) => {
   return numberArr;
 };
 
+// get selected && active cells
+// Move pieces
+const movePiece = (moveTo) => {
+  let check = document.querySelectorAll('.active');
+
+  const selected = document.querySelector('.selected');
+  let whitePawn = document.createElement('img');
+  whitePawn.src = `${selected.src}`;
+  whitePawn.id = 'white-pawn';
+  moveTo.appendChild(whitePawn);
+  for (let i = 0; i < check.length; i++) {
+    check[i].childNodes[0].remove('div');
+    check[i].classList.remove('active');
+  }
+  console.log(selected);
+  selected.remove('img');
+
+  selected.classList.remove('selected');
+};
+
 // // console.log(getFirstSecondNumber(x46));
 
 let piecesType = '';
@@ -372,6 +404,7 @@ const piecesMovements = async (e) => {
         goRow = [row - 1, row - 2];
         goCol = [col];
         return [goRow, goCol];
+
         break;
       case 'white-rook':
         console.log(row, col);
