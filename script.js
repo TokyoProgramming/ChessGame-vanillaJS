@@ -211,7 +211,7 @@ const getClickPosition = async (e) => {
   let positionArr = [];
 
   const data = await piecesMovements(e);
-  if (data !== undefined) {
+  if (data !== undefined && data[0].length !== 0 && data[1].length !== 0) {
     row = data[0];
     col = data[1];
     for (let j = 0; j < row.length; j++) {
@@ -296,12 +296,11 @@ const getClickPosition = async (e) => {
           element.target.classList.add('selected');
         }
       }
-      // console.log(element);
-      // getSelectedAndActiveCells();
     });
 
     // check Arr length
     arrLength = targetArr.length;
+
     if (arrLength > 1) {
       deleteArr = positionObjArr[0].positionArr;
       deleteArr.forEach((el) => {
@@ -315,8 +314,6 @@ const getClickPosition = async (e) => {
     } else {
       chessBoard.classList.remove('board-opacity');
     }
-
-    // console.log(e.target.classList.length);
   } else if (
     e.target.tagName !== 'IMG' &&
     e.target.parentElement.classList[1] === 'active'
@@ -325,10 +322,11 @@ const getClickPosition = async (e) => {
     moveTo = e.target.parentElement;
 
     movePiece(moveTo);
-    console.log(targetArr);
+
     positionObjArr = [];
     target.className = '';
     chessBoard.className = '';
+    targetArr = [];
 
     // Target !== Image
   } else {
@@ -371,23 +369,15 @@ const getFirstSecondNumber = (element) => {
 // Move pieces
 const movePiece = (moveTo) => {
   let check = document.querySelectorAll('.active');
-
   let selected = document.querySelector('.selected');
   let clone = selected.cloneNode(true);
-  console.log(clone);
-
-  // let whitePawn = document.createElement('img');
-  // whitePawn.src = `${selected.src}`;
-  // whitePawn.id = 'white-pawn';
-
+  clone.className = '';
   moveTo.appendChild(clone);
   for (let i = 0; i < check.length; i++) {
     check[i].childNodes[0].remove('div');
     check[i].classList.remove('active');
   }
-
   selected.remove('img');
-
   selected.classList.remove('selected');
 };
 
@@ -397,19 +387,69 @@ let piecesType = '';
 // Pieces movements
 const piecesMovements = async (e) => {
   let location = e.target.parentElement.id;
+
   let goRow,
     goCol = [];
   piecesType = e.target.id;
+
   location = getFirstSecondNumber(location);
   row = location[0];
   col = location[1];
+
+  let rectangleRow = rows[row - 2];
+  // console.log(rectangleRow);
+
+  let rectangleCol = col - 2;
+  let example = rectangleRow[rectangleCol].childNodes[0];
+
+  if (example === undefined) {
+    console.log('undefined');
+  } else {
+    console.log(example.id);
+    let str = example.id.split('-');
+    console.log(str[0]);
+  }
+
   if (piecesType.length < 4) {
     return;
   } else {
     switch (piecesType) {
       case 'white-pawn':
-        goRow = [row - 1, row - 2];
-        goCol = [col];
+        if (1 < col < 8) {
+          if (row === 1) {
+            goRow = [];
+            goCol = [];
+          } else if (row === 2) {
+            goRow = [row - 1];
+            goCol = [col];
+          } else {
+            goRow = [row - 1, row - 2];
+            goCol = [col];
+          }
+        } else if (col === 1) {
+          if (row === 1) {
+            goRow = [];
+            goCol = [];
+          } else if (row === 2) {
+            goRow = [row - 1];
+            goCol = [col];
+          } else {
+            goRow = [row - 1, row - 2];
+            goCol = [col];
+          }
+        } else {
+          if (row === 1) {
+            goRow = [];
+            goCol = [];
+          } else if (row === 2) {
+            goRow = [row - 1];
+            goCol = [col];
+          } else {
+            goRow = [row - 1, row - 2];
+            goCol = [col];
+          }
+        }
+
         return [goRow, goCol];
 
         break;
@@ -429,7 +469,16 @@ const piecesMovements = async (e) => {
         console.log(row, col);
         break;
       case 'black-pawn':
-        console.log(row, col);
+        if (row === 8) {
+          console.log('you can not go ahead');
+        } else if (row === 7) {
+          goRow = [row + 1];
+          goCol = [col];
+        } else {
+          goRow = [row + 1, row + 2];
+          goCol = [col];
+        }
+        return [goRow, goCol];
         break;
       case 'black-rook':
         console.log(row, col);
