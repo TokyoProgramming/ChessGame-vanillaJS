@@ -72,6 +72,15 @@ const row6 = [X61, X62, X63, X64, X65, X66, X67, X68];
 const row7 = [X71, X72, X73, X74, X75, X76, X77, X78];
 const row8 = [X81, X82, X83, X84, X85, X86, X87, X88];
 const rows = [row1, row2, row3, row4, row5, row6, row7, row8];
+const col1 = [X11, X21, X31, X41, X51, X61, X71, X81];
+const col2 = [X12, X22, X32, X42, X52, X62, X72, X82];
+const col3 = [X13, X23, X33, X43, X53, X63, X73, X83];
+const col4 = [X14, X24, X34, X44, X54, X64, X74, X84];
+const col5 = [X15, X25, X35, X45, X55, X65, X75, X85];
+const col6 = [X16, X26, X36, X46, X56, X66, X76, X86];
+const col7 = [X17, X27, X37, X47, X57, X67, X77, X87];
+const col8 = [X18, X28, X38, X48, X58, X68, X78, X88];
+const cols = [col1, col2, col3, col4, col5, col6, col7, col8];
 
 export {
   X11,
@@ -147,4 +156,13 @@ export {
   row7,
   row8,
   rows,
+  col1,
+  col2,
+  col3,
+  col4,
+  col5,
+  col6,
+  col7,
+  col8,
+  cols,
 };

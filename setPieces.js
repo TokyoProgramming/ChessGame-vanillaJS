@@ -107,6 +107,7 @@ const setChessPieces = () => {
   whiteRook_2.src = `${wR.imgSrc}`;
   whiteRook_2.id = 'white-rook';
   X88.appendChild(whiteRook_2);
+  // X44.appendChild(whiteRook_2);
 
   //   white Knight
   let whiteKnight_1 = document.createElement('img');
