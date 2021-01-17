@@ -19,7 +19,7 @@ const getFirstSecondNumber = (element) => {
 // create MovementsArr
 const createMovementsArr = (cell) => {
   if (cell !== undefined) {
-    console.log(cell);
+    // console.log(cell);
     movementsObj = {
       id: Math.round(Math.random() * 1000),
       cell,
@@ -41,7 +41,7 @@ const piecesMovements = async (e) => {
   movementsObj = {};
   let cell = [];
   piecesType = e.target.id;
-  console.log(piecesType);
+  let piecesColor = piecesType.split('-')[0];
 
   if (piecesType.length < 4) {
     return;
@@ -161,6 +161,7 @@ const piecesMovements = async (e) => {
           cell = rows[row][col + 1];
           createMovementsArr(cell);
         } catch (error) {}
+        return [movementsArr, piecesColor];
         break;
       case 'black-bishop':
       case 'white-bishop':
@@ -385,6 +386,7 @@ const piecesMovements = async (e) => {
           cell = rows[row - 1][col - 2];
           createMovementsArr(cell);
         } catch (error) {}
+        return [movementsArr, piecesColor];
 
         break;
       case 'black-pawn':
