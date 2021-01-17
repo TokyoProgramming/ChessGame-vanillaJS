@@ -174,27 +174,38 @@ const piecesMovements = async (e) => {
       case 'white-rook':
         console.log('white-rook');
         console.log('left');
-        rowNum = rows[row - 1];
-        colNum = cols[col - 1];
-        for (let i = 0; i < col - 1; i++) {
-          cell = rowNum[i];
+        let leftRookCol = col;
+        let leftRookRow = row;
+        while (leftRookCol > 1) {
+          cell = rows[leftRookRow - 1][leftRookCol - 2];
           console.log(cell);
+          leftRookCol--;
         }
         console.log('right');
-        for (let j = col; j < 8; j++) {
-          cell = rowNum[j];
+        let rightRookCol = col;
+        let rightRookRow = row;
+        while (rightRookCol < 8) {
+          cell = rows[rightRookRow - 1][rightRookCol];
           console.log(cell);
+          rightRookCol++;
         }
         console.log('up');
-        for (let k = 0; k < row - 1; k++) {
-          cell = colNum[k];
+        let upRookCol = col;
+        let upRookRow = row;
+        while (upRookRow > 1) {
+          cell = rows[upRookRow - 2][upRookCol - 1];
           console.log(cell);
+          upRookRow--;
         }
-        console.log('back');
-        for (let l = row; l < 8; l++) {
-          cell = colNum[l];
+        console.log('down');
+        let downRookCol = col;
+        let downRookRow = row;
+        while (downRookRow < 8) {
+          cell = rows[downRookRow][downRookCol - 1];
           console.log(cell);
+          downRookRow++;
         }
+
         break;
       case 'black-knight':
       case 'white-knight':
@@ -342,26 +353,36 @@ const piecesMovements = async (e) => {
         }
 
         console.log('left');
-        rowNum = rows[row - 1];
-        colNum = cols[col - 1];
-        for (let i = 0; i < col - 1; i++) {
-          cell = rowNum[i];
+        let leftQueenCol = col;
+        let leftQueenRow = row;
+        while (leftQueenCol > 1) {
+          cell = rows[leftQueenRow - 1][leftQueenCol - 2];
           console.log(cell);
+          leftQueenCol--;
         }
         console.log('right');
-        for (let j = col; j < 8; j++) {
-          cell = rowNum[j];
+        let rightQueenCol = col;
+        let rightQueenRow = row;
+        while (rightQueenCol < 8) {
+          cell = rows[rightQueenRow - 1][rightQueenCol];
           console.log(cell);
+          rightQueenCol++;
         }
         console.log('up');
-        for (let k = 0; k < row - 1; k++) {
-          cell = colNum[k];
+        let upQueenCol = col;
+        let upQueenRow = row;
+        while (upQueenRow > 1) {
+          cell = rows[upQueenRow - 2][upQueenCol - 1];
           console.log(cell);
+          upQueenRow--;
         }
-        console.log('back');
-        for (let l = row; l < 8; l++) {
-          cell = colNum[l];
+        console.log('down');
+        let downQueenCol = col;
+        let downQueenRow = row;
+        while (downQueenRow < 8) {
+          cell = rows[downQueenRow][downQueenCol - 1];
           console.log(cell);
+          downQueenRow++;
         }
         break;
       case 'black-king':
