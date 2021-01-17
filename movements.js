@@ -65,11 +65,15 @@ const pawnDiagonalMove = (row, col) => {
 
 // create MovementsArr
 const createMovementsArr = (cell) => {
-  movementsObj = {
-    id: Math.round(Math.random() * 1000),
-    cell,
-  };
-  movementsArr.push(movementsObj);
+  if (cell !== undefined) {
+    console.log(cell);
+    movementsObj = {
+      id: Math.round(Math.random() * 1000),
+      cell,
+    };
+    movementsArr.push(movementsObj);
+  }
+
   return movementsArr;
 };
 
@@ -89,6 +93,7 @@ const piecesMovements = async (e) => {
     goCol = [];
   let cell = [];
   piecesType = e.target.id;
+  console.log(piecesType);
 
   if (piecesType.length < 4) {
     return;
@@ -165,7 +170,9 @@ const piecesMovements = async (e) => {
         return movementsArr;
 
         break;
+      case 'black-rook':
       case 'white-rook':
+        console.log('white-rook');
         console.log('left');
         rowNum = rows[row - 1];
         colNum = cols[col - 1];
@@ -189,152 +196,279 @@ const piecesMovements = async (e) => {
           console.log(cell);
         }
         break;
+      case 'black-knight':
       case 'white-knight':
-        let wKnightLRRow = [row + 1, row - 1];
-        let wKnightLeftCol = [col - 2];
-        let wKnightRightCol = [col + 2];
-        let wKnightForwardRow = [row - 2];
-        let wKnightBackRow = [row + 2];
-        let wKnightFBCol = [col + 1, col - 1];
-
-        if (2 < col && col < 7 && 2 < row && row < 7) {
-          // go ahead
-          cellsObj = {
-            goRow: wKnightForwardRow,
-            goCol: wKnightFBCol,
-          };
-          cellsArr.push(cellsObj);
-          // go to right
-          cellsObj = {
-            goRow: wKnightLRRow,
-            goCol: wKnightRightCol,
-          };
-          cellsArr.push(cellsObj);
-          // go to left
-          cellsObj = {
-            goRow: wKnightLRRow,
-            goCol: wKnightLeftCol,
-          };
-          cellsArr.push(cellsObj);
-          // go back
-          cellsObj = {
-            goRow: wKnightBackRow,
-            goCol: wKnightFBCol,
-          };
-          cellsArr.push(cellsObj);
-          break;
-        } else if (row === 8) {
-          goRow = [row - 2];
-          goCol = [col - 1, col + 1];
-        } else if (col === 1 && row > 2 && row < 7) {
-          // go ahead
-          goCol = [col + 1];
-          cellsObj = {
-            goRow: wKnightForwardRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
-          // go back
-          goRow = [row + 2];
-          goCol = [col + 1];
-          cellsObj = {
-            goRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
-          // go to right
-          goRow = [row + 1, row - 1];
-          goCol = [col + 2];
-          cellsObj = {
-            goRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
-          break;
-        } else if (col === 8 && row > 2 && row < 7) {
-          // go ahead
-          goRow = [row - 2];
-          goCol = [col - 1];
-          cellsObj = {
-            goRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
-          // go back
-          goRow = [row + 2];
-          goCol = [col - 1];
-          cellsObj = {
-            goRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
-          // go to right
-          goRow = [row + 1, row - 1];
-          goCol = [col - 2];
-          cellsObj = {
-            goRow,
-            goCol,
-          };
-          cellsArr.push(cellsObj);
+        //   up && left
+        try {
+          cell = rows[row - 3][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
         }
-        return [goRow, goCol];
+        // up && right
+        try {
+          cell = rows[row - 3][col];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        //   left && up
+        try {
+          cell = rows[row - 2][col - 3];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        // left && down
+        try {
+          cell = rows[row][col - 3];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        //   down && left
+        try {
+          cell = rows[row + 1][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        // down && right
+        try {
+          cell = rows[row + 1][col];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        //   right && up
+        try {
+          cell = rows[row - 2][col + 1];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
+        // right && down
+        try {
+          cell = rows[row][col + 1];
+          createMovementsArr(cell);
+        } catch (error) {
+          console.log('error');
+        }
         break;
+      case 'black-bishop':
       case 'white-bishop':
-        let num = '';
-
-        if (row < col) {
-          num = row;
-        } else {
-          num = col;
-        }
         // up && left
-        let upLeftRow = row;
-        let upLeftCol = col;
+        let bUpLeftRow = row;
+        let bUpLeftCol = col;
 
-        while (upLeftRow > 1 && upLeftCol > 1) {
-          upLeftRow = upLeftRow - 1;
-          upLeftCol = upLeftCol - 1;
-          cell = rows[upLeftRow - 1][upLeftCol - 1];
+        while (bUpLeftRow > 1 && bUpLeftCol > 1) {
+          bUpLeftRow = bUpLeftRow - 1;
+          bUpLeftCol = bUpLeftCol - 1;
+          cell = rows[bUpLeftRow - 1][bUpLeftCol - 1];
           console.log(cell);
         }
         // up && right
-        let upRightRow = row;
-        let upRightCol = col;
+        let bUpRightRow = row;
+        let bUpRightCol = col;
 
-        while (upRightRow > 1 && upRightCol < 8) {
-          upRightRow = upRightRow - 1;
-          upRightCol = upRightCol + 1;
-          cell = rows[upRightRow - 1][upRightCol - 1];
+        while (bUpRightRow > 1 && bUpRightCol < 8) {
+          bUpRightRow = bUpRightRow - 1;
+          bUpRightCol = bUpRightCol + 1;
+          cell = rows[bUpRightRow - 1][bUpRightCol - 1];
           console.log(cell);
         }
 
         // down && left
-        let downLeftRow = row;
-        let downLeftCol = col;
-        while (downLeftRow < 8 && downLeftCol > 1) {
-          downLeftRow = downLeftRow + 1;
-          downLeftCol = downLeftCol - 1;
-          cell = rows[downLeftRow - 1][downLeftCol - 1];
+        let bDownLeftRow = row;
+        let bDownLeftCol = col;
+        while (bDownLeftRow < 8 && bDownLeftCol > 1) {
+          bDownLeftRow = bDownLeftRow + 1;
+          bDownLeftCol = bDownLeftCol - 1;
+          cell = rows[bDownLeftRow - 1][bDownLeftCol - 1];
           console.log(cell);
         }
 
         // down && right
-        let downRightRow = row;
-        let downRightCol = col;
-        while (downRightRow < 8 && downRightCol < 8) {
-          downRightRow = downRightRow + 1;
-          downRightCol = downRightCol + 1;
-          cell = rows[downRightRow - 1][downRightCol - 1];
+        let bDownRightRow = row;
+        let bDownRightCol = col;
+        while (bDownRightRow < 8 && bDownRightCol < 8) {
+          bDownRightRow = bDownRightRow + 1;
+          bDownRightCol = bDownRightCol + 1;
+          cell = rows[bDownRightRow - 1][bDownRightCol - 1];
+          console.log(cell);
+        }
+        break;
+      case 'black-queen':
+      case 'white-queen':
+        // up && left
+        let qUpLeftRow = row;
+        let qUpLeftCol = col;
+
+        while (qUpLeftRow > 1 && qUpLeftCol > 1) {
+          qUpLeftRow = qUpLeftRow - 1;
+          qUpLeftCol = qUpLeftCol - 1;
+          cell = rows[qUpLeftRow - 1][qUpLeftCol - 1];
+          console.log(cell);
+        }
+        // up && right
+        let qUpRightRow = row;
+        let qUpRightCol = col;
+
+        while (qUpRightRow > 1 && qUpRightCol < 8) {
+          qUpRightRow = qUpRightRow - 1;
+          qUpRightCol = qUpRightCol + 1;
+          cell = rows[qUpRightRow - 1][qUpRightCol - 1];
           console.log(cell);
         }
 
-        return [goRow, goCol];
+        // down && left
+        let qDownLeftRow = row;
+        let qDownLeftCol = col;
+        while (qDownLeftRow < 8 && qDownLeftCol > 1) {
+          qDownLeftRow = qDownLeftRow + 1;
+          qDownLeftCol = qDownLeftCol - 1;
+          cell = rows[qDownLeftRow - 1][qDownLeftCol - 1];
+          console.log(cell);
+        }
+
+        // down && right
+        let qDownRightRow = row;
+        let qDownRightCol = col;
+        while (qDownRightRow < 8 && qDownRightCol < 8) {
+          qDownRightRow = qDownRightRow + 1;
+          qDownRightCol = qDownRightCol + 1;
+          cell = rows[qDownRightRow - 1][qDownRightCol - 1];
+          console.log(cell);
+        }
+
+        console.log('left');
+        rowNum = rows[row - 1];
+        colNum = cols[col - 1];
+        for (let i = 0; i < col - 1; i++) {
+          cell = rowNum[i];
+          console.log(cell);
+        }
+        console.log('right');
+        for (let j = col; j < 8; j++) {
+          cell = rowNum[j];
+          console.log(cell);
+        }
+        console.log('up');
+        for (let k = 0; k < row - 1; k++) {
+          cell = colNum[k];
+          console.log(cell);
+        }
+        console.log('back');
+        for (let l = row; l < 8; l++) {
+          cell = colNum[l];
+          console.log(cell);
+        }
         break;
-      case 'white-queen':
-        return [goRow, goCol];
-        break;
+      case 'black-king':
       case 'white-king':
-        return [goRow, goCol];
+        // if (row > 1 && row < 8 && col > 1 && col < 8) {
+        //   // up and left
+        //   console.log(rows[row - 2][col - 2]);
+        //   //   up
+        //   console.log(rows[row - 2][col - 1]);
+        //   //   up && right
+        //   console.log(rows[row - 2][col]);
+        //   //   right row
+        //   console.log(rows[row - 1][col]);
+        //   //   down && right
+        //   console.log(rows[row][col]);
+        //   //   down
+        //   console.log(rows[row][col - 1]);
+        //   //   down && left
+        //   console.log(rows[row][col - 2]);
+        //   //   left
+        //   console.log(rows[row - 1][col - 2]);
+        //   //   X11
+        // } else if (row === 1 && col === 1) {
+        //   console.log(rows[row - 1][col]);
+        //   console.log(rows[row][col]);
+        //   console.log(rows[row][col - 1]);
+        //   //   X18
+        // } else if (row === 1 && col === 8) {
+        //   console.log(rows[row][col - 1]);
+        //   console.log(rows[row][col - 2]);
+        //   console.log(rows[row - 1][col - 2]);
+        //   //   X88
+        // } else if (row === 8 && col === 8) {
+        //   console.log(rows[row - 1][col - 2]);
+        //   console.log(rows[row - 2][col - 2]);
+        //   console.log(rows[row - 2][col - 1]);
+        //   //   X81
+        // } else if (row === 8 && col === 1) {
+        //   console.log(rows[row - 2][col - 1]);
+        //   console.log(rows[row - 2][col]);
+        //   console.log(rows[row - 1][col]);
+        // } else if (col === 1 && row !== 1 && row !== 8) {
+        //   console.log(rows[row - 2][col - 1]);
+        //   console.log(rows[row - 2][col]);
+        //   console.log(rows[row - 1][col]);
+        //   console.log(rows[row][col]);
+        //   console.log(rows[row][col - 1]);
+        // } else if (col === 8 && row !== 1 && row !== 8) {
+        //   console.log(rows[row][col - 1]);
+        //   console.log(rows[row][col - 2]);
+        //   console.log(rows[row - 1][col - 2]);
+        //   console.log(rows[row - 2][col - 2]);
+        //   console.log(rows[row - 2][col - 1]);
+        // } else if (row === 8 && col !== 1 && col !== 8) {
+        //   console.log(rows[row - 1][col - 2]);
+        //   console.log(rows[row - 2][col - 2]);
+        //   console.log(rows[row - 2][col - 1]);
+        //   console.log(rows[row - 2][col]);
+        //   console.log(rows[row - 1][col]);
+        // } else if (row === 1 && col !== 1 && col !== 8) {
+        //   console.log(rows[row - 1][col]);
+        //   console.log(rows[row][col]);
+        //   console.log(rows[row][col - 1]);
+        //   console.log(rows[row][col - 2]);
+        //   console.log(rows[row - 1][col - 2]);
+        // }
+        try {
+          // up and left
+          cell = rows[row - 2][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   up
+          cell = rows[row - 2][col - 1];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   up && right
+          cell = rows[row - 2][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   right row
+          cell = rows[row - 1][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down && right
+          cell = rows[row][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down
+          cell = rows[row][col - 1];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down && left
+          cell = rows[row][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   left
+          cell = rows[row - 1][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+
         break;
       case 'black-pawn':
         if (row === 8) {
@@ -348,21 +482,10 @@ const piecesMovements = async (e) => {
         }
         return [goRow, goCol];
         break;
-      case 'black-rook':
+
         return [goRow, goCol];
         break;
-      case 'black-knight':
-        return [goRow, goCol];
-        break;
-      case 'black-bishop':
-        return [goRow, goCol];
-        break;
-      case 'black-queen':
-        return [goRow, goCol];
-        break;
-      case 'black-king':
-        return [goRow, goCol];
-        break;
+
       default:
         return;
     }
