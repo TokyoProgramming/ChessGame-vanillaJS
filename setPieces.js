@@ -7,54 +7,6 @@ import {
   X16,
   X17,
   X18,
-  X21,
-  X22,
-  X23,
-  X24,
-  X25,
-  X26,
-  X27,
-  X28,
-  X31,
-  X32,
-  X33,
-  X34,
-  X35,
-  X36,
-  X37,
-  X38,
-  X41,
-  X42,
-  X43,
-  X44,
-  X45,
-  X46,
-  X47,
-  X48,
-  X51,
-  X52,
-  X53,
-  X54,
-  X55,
-  X56,
-  X57,
-  X58,
-  X61,
-  X62,
-  X63,
-  X64,
-  X65,
-  X66,
-  X67,
-  X68,
-  X71,
-  X72,
-  X73,
-  X74,
-  X75,
-  X76,
-  X77,
-  X78,
   X81,
   X82,
   X83,
@@ -63,15 +15,8 @@ import {
   X86,
   X87,
   X88,
-  row1,
   row2,
-  row3,
-  row4,
-  row5,
-  row6,
   row7,
-  row8,
-  rows,
 } from './boardCoordinate.js';
 import {
   wP,
@@ -86,7 +31,6 @@ import {
   bQ,
   bR,
   bK,
-  pieces,
 } from './piecesInfo.js';
 
 const setChessPieces = () => {
@@ -106,7 +50,7 @@ const setChessPieces = () => {
   let whiteRook_2 = document.createElement('img');
   whiteRook_2.src = `${wR.imgSrc}`;
   whiteRook_2.id = 'white-rook';
-  X55.appendChild(whiteRook_2);
+  X88.appendChild(whiteRook_2);
   // X44.appendChild(whiteRook_2);
 
   //   white Knight
@@ -117,7 +61,7 @@ const setChessPieces = () => {
   let whiteKnight_2 = document.createElement('img');
   whiteKnight_2.src = `${wK.imgSrc}`;
   whiteKnight_2.id = 'white-knight';
-  X62.appendChild(whiteKnight_2);
+  X87.appendChild(whiteKnight_2);
 
   //   white bishop
   let whiteBishop_1 = document.createElement('img');

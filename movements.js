@@ -1,27 +1,6 @@
-import {
-  row1,
-  row2,
-  row3,
-  row4,
-  row5,
-  row6,
-  row7,
-  row8,
-  rows,
-  col1,
-  col2,
-  col3,
-  col4,
-  col5,
-  col6,
-  col7,
-  col8,
-  cols,
-} from './boardCoordinate.js';
+import { rows } from './boardCoordinate.js';
 let row = 0;
 let col = 0;
-let rowNum = 0;
-let colNum = 0;
 let movementsArr = [];
 let movementsObj = {};
 
@@ -35,32 +14,6 @@ const getFirstSecondNumber = (element) => {
   let numberArr = [];
   numberArr = [firstNumber, SecondNumber];
   return numberArr;
-};
-
-// pawn Diagonally Movement
-const pawnDiagonalMove = (row, col) => {
-  if (col === 8) {
-    let upperRRow = row - 1;
-    let upperLCol = col - 1;
-    return { upperRRow, upperLCol };
-  } else if (col === 1) {
-    let upperRRow = row - 1;
-    let upperLCol = col + 1;
-    return { upperRRow, upperLCol };
-  } else if (1 < col && col < 8) {
-    let upperRRow = row - 1;
-    let upperLCol = col - 1;
-    return { upperRRow, upperLCol };
-  }
-
-  let target = rows[upperRRow - 1][upperLCol - 1];
-  if (target.childNodes[0] === undefined) {
-    return;
-  } else {
-    let opponentId = target.children[0].id;
-    let opponentColor = opponentId.split('-')[0];
-    return opponentColor;
-  }
 };
 
 // create MovementsArr
@@ -82,15 +35,10 @@ let piecesType = '';
 const piecesMovements = async (e) => {
   let location = e.target.parentElement.id;
   location = getFirstSecondNumber(location);
-
   row = location[0];
   col = location[1];
-
   movementsArr = [];
   movementsObj = {};
-
-  let goRow,
-    goCol = [];
   let cell = [];
   piecesType = e.target.id;
   console.log(piecesType);
@@ -100,74 +48,38 @@ const piecesMovements = async (e) => {
   } else {
     switch (piecesType) {
       case 'white-pawn':
-        let pawnColor = pawnDiagonalMove(row, col);
-        if (1 < col && col < 8) {
-          if (row === 1) {
-            break;
-          } else if (row === 2) {
-            cell = [row - 1, col];
-            createMovementsArr(cell);
-          } else {
-            cell = [row - 1, col];
-            createMovementsArr(cell);
-            cell = [row - 2, col];
-            createMovementsArr(cell);
+        let wPRow = row;
+        let wPCol = col;
+        // one row up
+        try {
+          cell = rows[wPRow - 2][wPCol - 1];
+          console.log(cell);
+        } catch (error) {}
+        // two rows up
+        try {
+          cell = rows[wPRow - 3][wPCol - 1];
+          console.log(cell);
+        } catch (error) {}
+
+        try {
+          cell = rows[wPRow - 2][wPCol - 2];
+          let checkLeftCell = cell.children[0].id;
+          let checkLeftBP = checkLeftCell.split('-')[0];
+          if (checkLeftBP === 'black') {
+            console.log('left-black');
+            console.log(cell);
           }
-        } else if (col === 1) {
-          if (row === 1) {
-            break;
-          } else if (row === 2) {
-            if (pawnColor !== 'undefined' && pawnColor === 'black') {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 1, col + 1];
-              createMovementsArr(cell);
-            } else {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-            }
-          } else {
-            if (pawnColor !== 'undefined' && pawnColor === 'black') {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 2, col];
-              createMovementsArr(cell);
-            } else {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 2, col];
-              createMovementsArr(cell);
-            }
+        } catch (error) {}
+
+        try {
+          cell = rows[wPRow - 2][wPCol];
+          let checkRightCell = cell.children[0].id;
+          let checkRightBP = checkRightCell.split('-')[0];
+          if (checkRightBP === 'black') {
+            console.log('right-black');
+            console.log(cell);
           }
-        } else if (col === 8) {
-          if (row === 1) {
-            break;
-          } else if (row === 2) {
-            if (pawnColor !== 'undefined' && pawnColor === 'black') {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 1, col - 1];
-              createMovementsArr(cell);
-            } else {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-            }
-          } else {
-            if (pawnColor !== 'undefined' && pawnColor === 'black') {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 2, col];
-              createMovementsArr(cell);
-            } else {
-              cell = [row - 1, col];
-              createMovementsArr(cell);
-              cell = [row - 2, col];
-              createMovementsArr(cell);
-            }
-          }
-        } else {
-        }
-        return movementsArr;
+        } catch (error) {}
 
         break;
       case 'black-rook':
@@ -213,58 +125,42 @@ const piecesMovements = async (e) => {
         try {
           cell = rows[row - 3][col - 2];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         // up && right
         try {
           cell = rows[row - 3][col];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         //   left && up
         try {
           cell = rows[row - 2][col - 3];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         // left && down
         try {
           cell = rows[row][col - 3];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         //   down && left
         try {
           cell = rows[row + 1][col - 2];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         // down && right
         try {
           cell = rows[row + 1][col];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         //   right && up
         try {
           cell = rows[row - 2][col + 1];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         // right && down
         try {
           cell = rows[row][col + 1];
           createMovementsArr(cell);
-        } catch (error) {
-          console.log('error');
-        }
+        } catch (error) {}
         break;
       case 'black-bishop':
       case 'white-bishop':
@@ -492,20 +388,38 @@ const piecesMovements = async (e) => {
 
         break;
       case 'black-pawn':
-        if (row === 8) {
-          console.log('you can not go ahead');
-        } else if (row === 7) {
-          goRow = [row + 1];
-          goCol = [col];
-        } else {
-          goRow = [row + 1, row + 2];
-          goCol = [col];
-        }
-        return [goRow, goCol];
-        break;
+        let bPRow = row;
+        let bPCol = col;
+        // one row up
+        try {
+          cell = rows[bPRow][bPCol - 1];
+          console.log(cell);
+        } catch (error) {}
+        // two rows up
+        try {
+          cell = rows[bPRow + 1][bPCol - 1];
+          console.log(cell);
+        } catch (error) {}
 
-        return [goRow, goCol];
-        break;
+        try {
+          cell = rows[bPRow][bPCol - 2];
+          let checkLeftCell = cell.children[0].id;
+          let checkLeftWP = checkLeftCell.split('-')[0];
+          if (checkLeftWP === 'white') {
+            console.log('left-white');
+            console.log(cell);
+          }
+        } catch (error) {}
+
+        try {
+          cell = rows[bPRow][bPCol];
+          let checkRightCell = cell.children[0].id;
+          let checkRightWP = checkRightCell.split('-')[0];
+          if (checkRightWP === 'white') {
+            console.log('right-white');
+            console.log(cell);
+          }
+        } catch (error) {}
 
       default:
         return;
