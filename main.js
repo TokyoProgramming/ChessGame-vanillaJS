@@ -23,35 +23,31 @@ let positionObjArr = [];
 let newArr = {};
 
 let activeCellsArr = [];
-
+let pieceInfoArr = [];
+let cellNum = '';
 const main = async (e) => {
   let targetCell = e.target;
-
-  // // In the cell there is piece
-  // if (targetCell.tagName === 'IMG') {
-  //   // make the available cells active
-  //   activeCellsArr = await cellActivate(e);
-  // } else if (activeCellsArr.length !== 0) {
-  //   if (
-  //     targetCell.classList[1] === 'active' ||
-  //     targetCell.className === 'circle'
-  //   ) {
-  //     console.log('able to choose this cell');
-  //   } else if (targetCell.classList[1] === undefined) {
-  //     console.log('not able to choose this cell');
-  //   }
-  // }
 
   if (activeCellsArr.length === 0) {
     if (targetCell.tagName === 'IMG') {
       activeCellsArr = await cellActivate(e);
+      pieceInfoArr = [targetCell.parentElement][0];
     }
   } else if (activeCellsArr.length !== 0) {
     if (
       targetCell.classList[1] === 'active' ||
       targetCell.className === 'circle'
     ) {
+      if (targetCell.classList[1] === 'active') {
+        cellNum = targetCell;
+      } else {
+        cellNum = targetCell.parentElement;
+      }
+
+      movePiece(pieceInfoArr, activeCellsArr, cellNum);
       console.log('able to choose this cell');
+      // init activeCellsArr
+      activeCellsArr = [];
     } else if (targetCell.classList[1] === undefined) {
       activeCellsArr.forEach((el) => {
         if (el.cell.children[0].tagName !== 'IMG') {
@@ -167,18 +163,21 @@ const main = async (e) => {
 
 // get selected && active cells
 // Move pieces
-const movePiece = (moveTo) => {
-  let check = document.querySelectorAll('.active');
-  let selected = document.querySelector('.selected');
-  let clone = selected.cloneNode(true);
-  clone.className = '';
-  moveTo.appendChild(clone);
-  for (let i = 0; i < check.length; i++) {
-    check[i].childNodes[0].remove('div');
-    check[i].classList.remove('active');
-  }
-  selected.remove('img');
-  selected.classList.remove('selected');
+const movePiece = (fromCell, activeCellsArr, toCell) => {
+  let pieceData = fromCell.children[0];
+  console.log(pieceData);
+  let toCellData = toCell;
+  console.log(toCellData);
+  toCellData.children[0].remove();
+  toCellData.classList.remove('active');
+  toCellData.appendChild(pieceData);
+
+  activeCellsArr.forEach((el) => {
+    if (el.cell.children[0].tagName !== 'IMG') {
+      el.cell.children[0].remove();
+    }
+    el.cell.classList.remove('active');
+  });
 };
 
 // add circles to available cells
@@ -196,8 +195,8 @@ const cellActivate = async (e) => {
   return dataArr;
 };
 
-// delete circles from available cells
-const cellDeactivate = async (e) => {};
+// active piece
+const pieceActivate = () => {};
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
 chessBoard.addEventListener('click', main);
