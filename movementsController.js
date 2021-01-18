@@ -8,13 +8,13 @@ const movementsCtr = async (e) => {
 
   console.log(piecesType);
 
+  console.log(movements.length);
+
   // King && Knight movements
   if (movements.length === 2) {
     let movementsArr = movements[0];
-
     // filtering the movementsArr
     arr = filteringArr(movementsArr, piecesType);
-
     // Rook, Bishop, Queen, Pawn Movements
   } else if (movements.length === 3) {
     let movementsLoopArr = movements[2];

@@ -98,8 +98,7 @@ const setChessPieces = () => {
   let whiteRook_2 = document.createElement('img');
   whiteRook_2.src = `${wR.imgSrc}`;
   whiteRook_2.id = 'white-rook';
-  X68.appendChild(whiteRook_2);
-  // X44.appendChild(whiteRook_2);
+  X88.appendChild(whiteRook_2);
 
   //   white Knight
   let whiteKnight_1 = document.createElement('img');
@@ -119,19 +118,19 @@ const setChessPieces = () => {
   let whiteBishop_2 = document.createElement('img');
   whiteBishop_2.src = `${wB.imgSrc}`;
   whiteBishop_2.id = 'white-bishop';
-  X66.appendChild(whiteBishop_2);
+  X86.appendChild(whiteBishop_2);
 
   //   white King
   let whiteKing = document.createElement('img');
   whiteKing.src = `${wKing.imgSrc}`;
   whiteKing.id = 'white-king';
-  X63.appendChild(whiteKing);
+  X84.appendChild(whiteKing);
 
   //   white Queen
   let whiteQueen = document.createElement('img');
   whiteQueen.src = `${wQ.imgSrc}`;
   whiteQueen.id = 'white-queen';
-  X55.appendChild(whiteQueen);
+  X85.appendChild(whiteQueen);
 
   //   black Pawn
   row2.map((el) => {

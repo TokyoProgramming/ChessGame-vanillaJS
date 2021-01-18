@@ -49,34 +49,42 @@ const piecesMovements = async (e) => {
       case 'white-pawn':
         let wPRow = row;
         let wPCol = col;
+        let wPArr = [];
         // one row up
         try {
           cell = rows[wPRow - 2][wPCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         } catch (error) {}
         // two rows up
         try {
           cell = rows[wPRow - 3][wPCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         } catch (error) {}
-
+        let wPData1 = movementsArr;
+        wPArr.push(wPData1);
+        movementsArr = [];
         try {
           cell = rows[wPRow - 2][wPCol - 2];
           let checkLeftCell = cell.children[0].id;
           let checkLeftBP = checkLeftCell.split('-')[0];
           if (checkLeftBP === 'black') {
-            console.log('left-black');
+            createMovementsArr(cell);
           }
         } catch (error) {}
-
+        let wPData2 = movementsArr;
+        wPArr.push(wPData2);
+        movementsArr = [];
         try {
           cell = rows[wPRow - 2][wPCol];
           let checkRightCell = cell.children[0].id;
           let checkRightBP = checkRightCell.split('-')[0];
           if (checkRightBP === 'black') {
-            console.log('right-black');
+            createMovementsArr(cell);
           }
         } catch (error) {}
+        let wPData3 = movementsArr;
+        wPArr.push(wPData3);
+        return [movementsArr, piecesColor, wPArr];
 
         break;
       case 'black-rook':
@@ -129,6 +137,7 @@ const piecesMovements = async (e) => {
         }
         let rookData4 = movementsArr;
         rookArr.push(rookData4);
+        console.log(rookArr);
         return [movementsArr, piecesColor, rookArr];
 
         break;
@@ -455,36 +464,45 @@ const piecesMovements = async (e) => {
       case 'black-pawn':
         let bPRow = row;
         let bPCol = col;
+        let bPArr = [];
         // one row up
         try {
           cell = rows[bPRow][bPCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         } catch (error) {}
         // two rows up
         try {
           cell = rows[bPRow + 1][bPCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         } catch (error) {}
+
+        let bPData1 = movementsArr;
+        bPArr.push(bPData1);
+        movementsArr = [];
 
         try {
           cell = rows[bPRow][bPCol - 2];
           let checkLeftCell = cell.children[0].id;
           let checkLeftWP = checkLeftCell.split('-')[0];
           if (checkLeftWP === 'white') {
-            console.log('left-white');
-            console.log(cell);
+            createMovementsArr(cell);
           }
         } catch (error) {}
-
+        let bPData2 = movementsArr;
+        bPArr.push(bPData2);
+        movementsArr = [];
         try {
           cell = rows[bPRow][bPCol];
           let checkRightCell = cell.children[0].id;
           let checkRightWP = checkRightCell.split('-')[0];
           if (checkRightWP === 'white') {
-            console.log('right-white');
-            console.log(cell);
+            createMovementsArr(cell);
           }
         } catch (error) {}
+        let bPData3 = movementsArr;
+        bPArr.push(bPData3);
+        console.log(bPArr);
+        return [movementsArr, piecesColor, bPArr];
 
       default:
         return;
