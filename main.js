@@ -32,6 +32,7 @@ const main = async (e) => {
     if (targetCell.tagName === 'IMG') {
       activeCellsArr = await cellActivate(e);
       pieceInfoArr = [targetCell.parentElement][0];
+      addColor(targetCell.parentElement);
     }
   } else if (activeCellsArr.length !== 0) {
     if (
@@ -45,7 +46,7 @@ const main = async (e) => {
       }
 
       movePiece(pieceInfoArr, activeCellsArr, cellNum);
-      console.log('able to choose this cell');
+      removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
     } else if (targetCell.classList[1] === undefined) {
@@ -55,6 +56,7 @@ const main = async (e) => {
         }
         el.cell.classList.remove('active');
       });
+      removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
     }
@@ -165,19 +167,46 @@ const main = async (e) => {
 // Move pieces
 const movePiece = (fromCell, activeCellsArr, toCell) => {
   let pieceData = fromCell.children[0];
-  console.log(pieceData);
   let toCellData = toCell;
-  console.log(toCellData);
+  // remove circle && classList === 'active'
   toCellData.children[0].remove();
   toCellData.classList.remove('active');
+  // move the piece
   toCellData.appendChild(pieceData);
-
+  // remove circles && classList === 'active'
   activeCellsArr.forEach((el) => {
     if (el.cell.children[0].tagName !== 'IMG') {
       el.cell.children[0].remove();
     }
     el.cell.classList.remove('active');
   });
+};
+
+// add color to the selected piece's cell
+const addColor = (selectCell) => {
+  let getId = selectCell.id.slice(1);
+  let firstNum = String(getId).charAt(0);
+  let secondNum = String(getId).charAt(1);
+
+  if (firstNum % 2 == true) {
+    if (secondNum % 2 == true) {
+      selectCell.classList.add('clicked-1');
+    } else {
+      selectCell.classList.add('clicked-2');
+    }
+  } else {
+    if (secondNum % 2 == true) {
+      selectCell.classList.add('clicked-2');
+    } else {
+      selectCell.classList.add('clicked-1');
+    }
+  }
+};
+
+// remove color
+const removeColor = (cell) => {
+  // cell.classList.remove('clicked-1')
+  cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
 };
 
 // add circles to available cells

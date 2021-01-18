@@ -144,11 +144,11 @@ img {
 }
 
 .clicked-1 {
-  background-color: #baca3d;
+  background-color: #baca3d !important;
 }
 
 .clicked-2 {
-  background-color: #f6f680;
+  background-color: #f6f680 !important;
 }
 
 .active {
