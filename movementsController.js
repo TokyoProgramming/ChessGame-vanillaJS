@@ -6,10 +6,6 @@ const movementsCtr = async (e) => {
   let newArr = [];
   let arr = [];
 
-  console.log(piecesType);
-
-  console.log(movements.length);
-
   // King && Knight movements
   if (movements.length === 2) {
     let movementsArr = movements[0];
@@ -33,15 +29,6 @@ const movementsCtr = async (e) => {
     arr = filteringArr(newArr, piecesType);
   }
 
-  // show result
-  console.log('result');
-  if (arr.length !== 0) {
-    arr.forEach((el) => {
-      console.log(el.cell);
-    });
-  } else {
-    console.log('empty');
-  }
   return arr;
 };
 
