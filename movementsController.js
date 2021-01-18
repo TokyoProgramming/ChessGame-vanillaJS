@@ -2,7 +2,6 @@ import { piecesMovements } from './movements.js';
 
 const movementsCtr = async (e) => {
   let movements = await piecesMovements(e);
-  let filteredArr = [];
   let piecesType = movements[1];
   let newArr = [];
   let arr = [];
@@ -43,6 +42,7 @@ const movementsCtr = async (e) => {
   } else {
     console.log('empty');
   }
+  return arr;
 };
 
 // array filtering function

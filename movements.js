@@ -181,14 +181,19 @@ const piecesMovements = async (e) => {
         // up && left
         let bUpLeftRow = row;
         let bUpLeftCol = col;
+        let bishopArr = [];
 
         while (bUpLeftRow > 1 && bUpLeftCol > 1) {
           bUpLeftRow = bUpLeftRow - 1;
           bUpLeftCol = bUpLeftCol - 1;
           cell = rows[bUpLeftRow - 1][bUpLeftCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let bishopData1 = movementsArr;
+        bishopArr.push(bishopData1);
+
         // up && right
+        movementsArr = [];
         let bUpRightRow = row;
         let bUpRightCol = col;
 
@@ -196,104 +201,148 @@ const piecesMovements = async (e) => {
           bUpRightRow = bUpRightRow - 1;
           bUpRightCol = bUpRightCol + 1;
           cell = rows[bUpRightRow - 1][bUpRightCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let bishopData2 = movementsArr;
+        bishopArr.push(bishopData2);
 
         // down && left
+        movementsArr = [];
         let bDownLeftRow = row;
         let bDownLeftCol = col;
         while (bDownLeftRow < 8 && bDownLeftCol > 1) {
           bDownLeftRow = bDownLeftRow + 1;
           bDownLeftCol = bDownLeftCol - 1;
           cell = rows[bDownLeftRow - 1][bDownLeftCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let bishopData3 = movementsArr;
+        bishopArr.push(bishopData3);
 
         // down && right
+        movementsArr = [];
         let bDownRightRow = row;
         let bDownRightCol = col;
         while (bDownRightRow < 8 && bDownRightCol < 8) {
           bDownRightRow = bDownRightRow + 1;
           bDownRightCol = bDownRightCol + 1;
           cell = rows[bDownRightRow - 1][bDownRightCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let bishopData4 = movementsArr;
+        bishopArr.push(bishopData4);
+        return [movementsArr, piecesColor, bishopArr];
         break;
       case 'black-queen':
       case 'white-queen':
         // up && left
         let qUpLeftRow = row;
         let qUpLeftCol = col;
+        let queenArr = [];
 
         while (qUpLeftRow > 1 && qUpLeftCol > 1) {
           qUpLeftRow = qUpLeftRow - 1;
           qUpLeftCol = qUpLeftCol - 1;
           cell = rows[qUpLeftRow - 1][qUpLeftCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let queenData1 = movementsArr;
+        queenArr.push(queenData1);
+
         // up && right
         let qUpRightRow = row;
         let qUpRightCol = col;
-
+        movementsArr = [];
         while (qUpRightRow > 1 && qUpRightCol < 8) {
           qUpRightRow = qUpRightRow - 1;
           qUpRightCol = qUpRightCol + 1;
           cell = rows[qUpRightRow - 1][qUpRightCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let queenData2 = movementsArr;
+        queenArr.push(queenData2);
 
         // down && left
         let qDownLeftRow = row;
         let qDownLeftCol = col;
+        movementsArr = [];
+
         while (qDownLeftRow < 8 && qDownLeftCol > 1) {
           qDownLeftRow = qDownLeftRow + 1;
           qDownLeftCol = qDownLeftCol - 1;
           cell = rows[qDownLeftRow - 1][qDownLeftCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let queenData3 = movementsArr;
+        queenArr.push(queenData3);
 
         // down && right
         let qDownRightRow = row;
         let qDownRightCol = col;
+        movementsArr = [];
+
         while (qDownRightRow < 8 && qDownRightCol < 8) {
           qDownRightRow = qDownRightRow + 1;
           qDownRightCol = qDownRightCol + 1;
           cell = rows[qDownRightRow - 1][qDownRightCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
         }
+        let queenData4 = movementsArr;
+        queenArr.push(queenData4);
 
         console.log('left');
         let leftQueenCol = col;
         let leftQueenRow = row;
+        movementsArr = [];
+
         while (leftQueenCol > 1) {
           cell = rows[leftQueenRow - 1][leftQueenCol - 2];
-          console.log(cell);
+          createMovementsArr(cell);
           leftQueenCol--;
         }
+        let queenData5 = movementsArr;
+        queenArr.push(queenData5);
+
         console.log('right');
         let rightQueenCol = col;
         let rightQueenRow = row;
+        movementsArr = [];
+
         while (rightQueenCol < 8) {
           cell = rows[rightQueenRow - 1][rightQueenCol];
-          console.log(cell);
+          createMovementsArr(cell);
           rightQueenCol++;
         }
+        let queenData6 = movementsArr;
+        queenArr.push(queenData6);
+
         console.log('up');
         let upQueenCol = col;
         let upQueenRow = row;
+        movementsArr = [];
+
         while (upQueenRow > 1) {
           cell = rows[upQueenRow - 2][upQueenCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
           upQueenRow--;
         }
+        let queenData7 = movementsArr;
+        queenArr.push(queenData7);
+
         console.log('down');
         let downQueenCol = col;
         let downQueenRow = row;
+        movementsArr = [];
+
         while (downQueenRow < 8) {
           cell = rows[downQueenRow][downQueenCol - 1];
-          console.log(cell);
+          createMovementsArr(cell);
           downQueenRow++;
         }
+        let queenData8 = movementsArr;
+        queenArr.push(queenData8);
+        return [movementsArr, piecesColor, queenArr];
+
         break;
       case 'black-king':
       case 'white-king':
