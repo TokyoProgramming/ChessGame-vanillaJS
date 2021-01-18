@@ -19,7 +19,6 @@ const getFirstSecondNumber = (element) => {
 // create MovementsArr
 const createMovementsArr = (cell) => {
   if (cell !== undefined) {
-    // console.log(cell);
     movementsObj = {
       id: Math.round(Math.random() * 1000),
       cell,
@@ -67,7 +66,6 @@ const piecesMovements = async (e) => {
           let checkLeftBP = checkLeftCell.split('-')[0];
           if (checkLeftBP === 'black') {
             console.log('left-black');
-            console.log(cell);
           }
         } catch (error) {}
 
@@ -77,7 +75,6 @@ const piecesMovements = async (e) => {
           let checkRightBP = checkRightCell.split('-')[0];
           if (checkRightBP === 'black') {
             console.log('right-black');
-            console.log(cell);
           }
         } catch (error) {}
 
@@ -90,33 +87,49 @@ const piecesMovements = async (e) => {
         let leftRookRow = row;
         while (leftRookCol > 1) {
           cell = rows[leftRookRow - 1][leftRookCol - 2];
-          console.log(cell);
           leftRookCol--;
+          createMovementsArr(cell);
         }
+        let rookData1 = movementsArr;
+        let rookArr = [];
+        rookArr.push(rookData1);
+
         console.log('right');
+        movementsArr = [];
         let rightRookCol = col;
         let rightRookRow = row;
         while (rightRookCol < 8) {
           cell = rows[rightRookRow - 1][rightRookCol];
-          console.log(cell);
           rightRookCol++;
+          createMovementsArr(cell);
         }
+        let rookData2 = movementsArr;
+        rookArr.push(rookData2);
+
         console.log('up');
+        movementsArr = [];
         let upRookCol = col;
         let upRookRow = row;
         while (upRookRow > 1) {
           cell = rows[upRookRow - 2][upRookCol - 1];
-          console.log(cell);
           upRookRow--;
+          createMovementsArr(cell);
         }
+        let rookData3 = movementsArr;
+        rookArr.push(rookData3);
+
         console.log('down');
+        movementsArr = [];
         let downRookCol = col;
         let downRookRow = row;
         while (downRookRow < 8) {
           cell = rows[downRookRow][downRookCol - 1];
-          console.log(cell);
           downRookRow++;
+          createMovementsArr(cell);
         }
+        let rookData4 = movementsArr;
+        rookArr.push(rookData4);
+        return [movementsArr, piecesColor, rookArr];
 
         break;
       case 'black-knight':
@@ -347,6 +360,11 @@ const piecesMovements = async (e) => {
         //   console.log(rows[row - 1][col - 2]);
         // }
         try {
+          //   left
+          cell = rows[row - 1][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
           // up and left
           cell = rows[row - 2][col - 2];
           createMovementsArr(cell);
@@ -381,11 +399,7 @@ const piecesMovements = async (e) => {
           cell = rows[row][col - 2];
           createMovementsArr(cell);
         } catch (error) {}
-        try {
-          //   left
-          cell = rows[row - 1][col - 2];
-          createMovementsArr(cell);
-        } catch (error) {}
+
         return [movementsArr, piecesColor];
 
         break;
