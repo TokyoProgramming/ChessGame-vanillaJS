@@ -125,7 +125,7 @@ const setChessPieces = () => {
   let whiteKing = document.createElement('img');
   whiteKing.src = `${wKing.imgSrc}`;
   whiteKing.id = 'white-king';
-  X64.appendChild(whiteKing);
+  X63.appendChild(whiteKing);
 
   //   white Queen
   let whiteQueen = document.createElement('img');

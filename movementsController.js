@@ -5,6 +5,7 @@ const movementsCtr = async (e) => {
   let filteredArr = [];
   let piecesType = movements[1];
   let newArr = [];
+  let arr = [];
 
   console.log(piecesType);
 
@@ -13,16 +14,7 @@ const movementsCtr = async (e) => {
     let movementsArr = movements[0];
 
     // filtering the movementsArr
-    filteredArr = movementsArr.filter((el) => {
-      if (el.cell.children[0] !== undefined) {
-        let data = el.cell.children[0].id;
-        let piecesColor = data.split('-')[0];
-        piecesColor !== `${piecesType}`;
-      } else {
-        return el;
-      }
-    });
-    // console.log(filteredArr);
+    arr = filteringArr(movementsArr, piecesType);
 
     // Rook, Bishop, Queen, Pawn Movements
   } else if (movements.length === 3) {
@@ -38,26 +30,34 @@ const movementsCtr = async (e) => {
         }
       }
     }
-    // filtering the movementsArr
-    filteredArr = newArr.filter((el) => {
-      if (el.cell.children[0] !== undefined) {
-        let data = el.cell.children[0].id;
-        let piecesColor = data.split('-')[0];
-        piecesColor !== `${piecesType}`;
-      } else {
-        return el;
-      }
-    });
+    // filtering the newArr
+    arr = filteringArr(newArr, piecesType);
   }
 
   // show result
   console.log('result');
-  if (filteredArr.length !== 0) {
-    filteredArr.forEach((el) => {
+  if (arr.length !== 0) {
+    arr.forEach((el) => {
       console.log(el.cell);
     });
   } else {
+    console.log('empty');
   }
+};
+
+// array filtering function
+const filteringArr = (arr, piecesType) => {
+  let filteredArr = [];
+  filteredArr = arr.filter((el) => {
+    if (el.cell.children[0] !== undefined) {
+      let data = el.cell.children[0].id;
+      let piecesColor = data.split('-')[0];
+      return piecesColor !== `${piecesType}`;
+    } else {
+      return el;
+    }
+  });
+  return filteredArr;
 };
 
 export { movementsCtr };
