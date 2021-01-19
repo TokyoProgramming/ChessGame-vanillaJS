@@ -1,5 +1,6 @@
 import { setChessPieces } from './setPieces.js';
 import { movementsCtr } from './movementsController.js';
+import { gameCtr } from './gameController.js';
 
 const chessBoard = document.querySelector('.chess-board');
 
@@ -18,7 +19,7 @@ const main = async (e) => {
   } else {
     opponentPlayer = 'white';
   }
-  console.log(activeCellsArr.length);
+  gameCtr(getPlayer);
 
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
@@ -155,9 +156,6 @@ const switchPlayer = (currentPlayer) => {
     return res;
   }
 };
-
-// checkmate
-const checkmate = () => {};
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
 chessBoard.addEventListener('click', main);
