@@ -6,13 +6,22 @@ const chessBoard = document.querySelector('.chess-board');
 let activeCellsArr = [];
 let pieceInfoArr = [];
 let cellNum = '';
+let player = 'player1';
+
+let opponentPlayer = '';
 
 const main = async (e) => {
   let targetCell = e.target;
+  let getPlayer = playerController(player);
+  if (getPlayer === 'white') {
+    opponentPlayer = 'black';
+  } else {
+    opponentPlayer = 'white';
+  }
 
   // let pieceColor = targetCell.id.split('-')[0];
   if (activeCellsArr.length === 0) {
-    if (targetCell.id.split('-')[0] === 'white') {
+    if (targetCell.id.split('-')[0] === `${getPlayer}`) {
       activeCellsArr = await cellActivate(e);
       pieceInfoArr = [targetCell.parentElement][0];
       addColor(targetCell.parentElement);
@@ -25,7 +34,7 @@ const main = async (e) => {
     ) {
       if (targetCell.classList[1] === 'active') {
         cellNum = targetCell;
-      } else if (targetCell.id.split('-')[0] === 'black') {
+      } else if (targetCell.id.split('-')[0] === `${opponentPlayer}`) {
         cellNum = targetCell.parentElement;
       } else {
         cellNum = targetCell.parentElement;
@@ -34,6 +43,8 @@ const main = async (e) => {
       removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
+      // switchPlayer
+      player = switchPlayer(player);
     } else if (targetCell.classList[1] === undefined) {
       activeCellsArr.forEach((el) => {
         if (el.cell.children[0].tagName !== 'IMG') {
@@ -117,6 +128,29 @@ const cellActivate = async (e) => {
     }
   });
   return dataArr;
+};
+
+// player Control
+const playerController = (currentPlayer) => {
+  if (currentPlayer === 'player1') {
+    return 'black';
+  } else {
+    return 'white';
+  }
+};
+
+// switch player
+const switchPlayer = (currentPlayer) => {
+  console.log(currentPlayer);
+  if (currentPlayer === 'player1') {
+    let str = currentPlayer;
+    let res = str.replace('player1', 'player2');
+    return res;
+  } else if (currentPlayer === 'player2') {
+    let str = currentPlayer;
+    let res = str.replace('player2', 'player1');
+    return res;
+  }
 };
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
