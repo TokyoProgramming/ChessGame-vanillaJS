@@ -50,18 +50,27 @@ const piecesMovements = async (e) => {
         let wPRow = row;
         let wPCol = col;
         let wPArr = [];
+        let nextRow = true;
+
         // one row up
         try {
           cell = rows[wPRow - 2][wPCol - 1];
-          createMovementsArr(cell);
+          if (cell.children[0] === undefined) {
+            createMovementsArr(cell);
+          } else {
+            nextRow = false;
+          }
         } catch (error) {}
-        // two rows up
-        try {
-          cell = rows[wPRow - 3][wPCol - 1];
-          createMovementsArr(cell);
-        } catch (error) {}
-        let wPData1 = movementsArr;
-        wPArr.push(wPData1);
+
+        if (nextRow === true) {
+          // two rows up
+          try {
+            cell = rows[wPRow - 3][wPCol - 1];
+            createMovementsArr(cell);
+          } catch (error) {}
+          let wPData1 = movementsArr;
+          wPArr.push(wPData1);
+        }
         movementsArr = [];
         try {
           cell = rows[wPRow - 2][wPCol - 2];
@@ -501,7 +510,6 @@ const piecesMovements = async (e) => {
         } catch (error) {}
         let bPData3 = movementsArr;
         bPArr.push(bPData3);
-        console.log(bPArr);
         return [movementsArr, piecesColor, bPArr];
 
       default:

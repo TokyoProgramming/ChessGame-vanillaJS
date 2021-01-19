@@ -18,13 +18,15 @@ const main = async (e) => {
   } else {
     opponentPlayer = 'white';
   }
+  console.log(activeCellsArr.length);
 
-  // let pieceColor = targetCell.id.split('-')[0];
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
       activeCellsArr = await cellActivate(e);
-      pieceInfoArr = [targetCell.parentElement][0];
-      addColor(targetCell.parentElement);
+      if (activeCellsArr.length !== 0) {
+        pieceInfoArr = [targetCell.parentElement][0];
+        addColor(targetCell.parentElement);
+      }
     }
   } else if (activeCellsArr.length !== 0) {
     if (
@@ -46,12 +48,7 @@ const main = async (e) => {
       // switchPlayer
       player = switchPlayer(player);
     } else if (targetCell.classList[1] === undefined) {
-      activeCellsArr.forEach((el) => {
-        if (el.cell.children[0].tagName !== 'IMG') {
-          el.cell.children[0].remove();
-        }
-        el.cell.classList.remove('active');
-      });
+      removeCirclesClassList(activeCellsArr);
       removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
@@ -64,21 +61,29 @@ const main = async (e) => {
 const movePiece = (fromCell, activeCellsArr, toCell) => {
   let pieceData = fromCell.children[0];
   let toCellData = toCell;
-  console.log(toCellData);
 
   // remove circle && classList === 'active'
   toCellData.children[0].remove();
-
   toCellData.classList.remove('active');
 
   // move the piece
   toCellData.appendChild(pieceData);
 
-  // remove circles && classList === 'active'
+  // remove Circles && classList 'active' && 'scale-ctr'
+  removeCirclesClassList(activeCellsArr);
+};
+
+// remove circles && classList === 'active' && 'scale-ctr'
+const removeCirclesClassList = (activeCellsArr) => {
   activeCellsArr.forEach((el) => {
     if (el.cell.children[0].tagName !== 'IMG') {
       el.cell.children[0].remove();
+    } else if (el.cell.children[0].id.split('-')[0] === `${opponentPlayer}`) {
+      let scaleCtrImg = el.cell.children[0];
+      // console.log(scaleCtrImg);
+      scaleCtrImg.classList.remove('scale-ctr');
     }
+
     el.cell.classList.remove('active');
   });
 };
@@ -102,7 +107,6 @@ const addColor = (selectCell) => {
       selectCell.classList.add('clicked-1');
     }
   }
-  // chessBoard.classList.add('board-opacity');
 };
 
 // remove color
@@ -117,14 +121,14 @@ const cellActivate = async (e) => {
   let dataArr = await movementsCtr(e);
   dataArr.forEach((el) => {
     let data = el.cell;
-
     data.classList.add('active');
     if (data.children.length === 0) {
       const circleDiv = document.createElement('div');
       circleDiv.classList.add('circle');
       data.appendChild(circleDiv);
     } else {
-      console.log('opponent piece here ');
+      let imgData = data.children[0];
+      imgData.classList.add('scale-ctr');
     }
   });
   return dataArr;
@@ -133,15 +137,14 @@ const cellActivate = async (e) => {
 // player Control
 const playerController = (currentPlayer) => {
   if (currentPlayer === 'player1') {
-    return 'black';
-  } else {
     return 'white';
+  } else {
+    return 'black';
   }
 };
 
 // switch player
 const switchPlayer = (currentPlayer) => {
-  console.log(currentPlayer);
   if (currentPlayer === 'player1') {
     let str = currentPlayer;
     let res = str.replace('player1', 'player2');
@@ -152,6 +155,9 @@ const switchPlayer = (currentPlayer) => {
     return res;
   }
 };
+
+// checkmate
+const checkmate = () => {};
 
 document.addEventListener('DOMContentLoaded', setChessPieces);
 chessBoard.addEventListener('click', main);
