@@ -20,12 +20,10 @@ const movementsCtr = async (e, getPlayer) => {
 
       for (let j = 0; j < arr.length; j++) {
         let data = arr[j];
-        console.log(data);
-        // console.log(data.cell.children);
+        // cell is empty
         if (data.cell.children[0] !== undefined) {
-          // console.log(data);
           if (data.cell.lastChild.tagName === 'IMG') {
-            // console.log(data.cell.lastChild);
+            break;
             let pieceColor = data.cell.lastChild.id.split('-')[0];
             if (pieceColor === `${getPlayer}`) {
               break;
@@ -50,10 +48,12 @@ const filteringArr = (arr, piecesType) => {
   filteredArr = arr.filter((el) => {
     let data = el.cell;
 
+    // the cell is not empty
     if (data.children[0] !== undefined) {
       let idData = data.lastChild.id;
       let piecesColor = idData.split('-')[0];
       return piecesColor !== `${piecesType}`;
+      // cell is emtpy
     } else {
       return el;
     }
