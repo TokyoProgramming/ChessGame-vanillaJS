@@ -1,6 +1,6 @@
 import { piecesMovements } from './movements.js';
 
-const movementsCtr = async (e) => {
+const movementsCtr = async (e, getPlayer) => {
   let movements = await piecesMovements(e);
   let piecesType = movements[1];
   let newArr = [];
@@ -11,6 +11,7 @@ const movementsCtr = async (e) => {
     let movementsArr = movements[0];
     // filtering the movementsArr
     arr = filteringArr(movementsArr, piecesType);
+
     // Rook, Bishop, Queen, Pawn Movements
   } else if (movements.length === 3) {
     let movementsLoopArr = movements[2];
@@ -19,14 +20,25 @@ const movementsCtr = async (e) => {
 
       for (let j = 0; j < arr.length; j++) {
         let data = arr[j];
-        newArr.push(data);
-        if (arr[j].cell.children[0] !== undefined) {
-          break;
+        console.log(data);
+        // console.log(data.cell.children);
+        if (data.cell.children[0] !== undefined) {
+          // console.log(data);
+          if (data.cell.lastChild.tagName === 'IMG') {
+            // console.log(data.cell.lastChild);
+            let pieceColor = data.cell.lastChild.id.split('-')[0];
+            if (pieceColor === `${getPlayer}`) {
+              break;
+            }
+          }
         }
+        newArr.push(data);
       }
     }
     // filtering the newArr
-    arr = filteringArr(newArr, piecesType);
+    // arr = filteringArr(newArr, piecesType);
+    arr = newArr;
+    console.log(arr);
   }
 
   return arr;
@@ -36,9 +48,11 @@ const movementsCtr = async (e) => {
 const filteringArr = (arr, piecesType) => {
   let filteredArr = [];
   filteredArr = arr.filter((el) => {
-    if (el.cell.children[0] !== undefined) {
-      let data = el.cell.children[0].id;
-      let piecesColor = data.split('-')[0];
+    let data = el.cell;
+
+    if (data.children[0] !== undefined) {
+      let idData = data.lastChild.id;
+      let piecesColor = idData.split('-')[0];
       return piecesColor !== `${piecesType}`;
     } else {
       return el;

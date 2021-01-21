@@ -34,6 +34,7 @@ let piecesType = '';
 const piecesMovements = async (e) => {
   let location = e.target.parentElement.id;
   location = getFirstSecondNumber(location);
+  let nextRow = true;
   row = location[0];
   col = location[1];
   movementsArr = [];
@@ -50,34 +51,60 @@ const piecesMovements = async (e) => {
         let wPRow = row;
         let wPCol = col;
         let wPArr = [];
-        let nextRow = true;
 
-        // one row up
-        try {
-          cell = rows[wPRow - 2][wPCol - 1];
-          if (cell.children[0] === undefined) {
-            createMovementsArr(cell);
-          } else {
-            nextRow = false;
-          }
-        } catch (error) {}
-
-        if (nextRow === true) {
-          // two rows up
+        if (location[0] === 7) {
+          // one row up
           try {
-            cell = rows[wPRow - 3][wPCol - 1];
-            createMovementsArr(cell);
+            cell = rows[wPRow - 2][wPCol - 1];
+
+            if (
+              cell.children[0] === undefined ||
+              cell.children[0].tagName === 'SPAN'
+            ) {
+              createMovementsArr(cell);
+            } else {
+              console.log(cell.children[0].tagName);
+              nextRow = false;
+            }
           } catch (error) {}
-          let wPData1 = movementsArr;
-          wPArr.push(wPData1);
+          if (nextRow === true) {
+            // two rows up
+
+            try {
+              cell = rows[wPRow - 3][wPCol - 1];
+              createMovementsArr(cell);
+            } catch (error) {}
+            let wPData1 = movementsArr;
+            wPArr.push(wPData1);
+          }
+        } else {
+          // one row up
+          try {
+            cell = rows[wPRow - 2][wPCol - 1];
+            if (
+              cell.children[0] === undefined ||
+              cell.children[0].tagName === 'SPAN'
+            ) {
+              createMovementsArr(cell);
+              let wPData = movementsArr;
+              wPArr.push(wPData);
+            } else {
+              console.log('object');
+              nextRow = false;
+            }
+          } catch (error) {}
         }
+
         movementsArr = [];
         try {
           cell = rows[wPRow - 2][wPCol - 2];
-          let checkLeftCell = cell.children[0].id;
+          let checkLeftCell = cell.lastChild.id;
           let checkLeftBP = checkLeftCell.split('-')[0];
+          console.log(checkLeftBP);
+
           if (checkLeftBP === 'black') {
             createMovementsArr(cell);
+            console.log('work');
           }
         } catch (error) {}
         let wPData2 = movementsArr;
@@ -85,7 +112,7 @@ const piecesMovements = async (e) => {
         movementsArr = [];
         try {
           cell = rows[wPRow - 2][wPCol];
-          let checkRightCell = cell.children[0].id;
+          let checkRightCell = cell.lastChild.id;
           let checkRightBP = checkRightCell.split('-')[0];
           if (checkRightBP === 'black') {
             createMovementsArr(cell);
@@ -94,12 +121,11 @@ const piecesMovements = async (e) => {
         let wPData3 = movementsArr;
         wPArr.push(wPData3);
         return [movementsArr, piecesColor, wPArr];
-
         break;
       case 'black-rook':
       case 'white-rook':
         console.log('white-rook');
-        console.log('left');
+
         let leftRookCol = col;
         let leftRookRow = row;
         while (leftRookCol > 1) {
@@ -111,7 +137,6 @@ const piecesMovements = async (e) => {
         let rookArr = [];
         rookArr.push(rookData1);
 
-        console.log('right');
         movementsArr = [];
         let rightRookCol = col;
         let rightRookRow = row;
@@ -123,7 +148,6 @@ const piecesMovements = async (e) => {
         let rookData2 = movementsArr;
         rookArr.push(rookData2);
 
-        console.log('up');
         movementsArr = [];
         let upRookCol = col;
         let upRookRow = row;
@@ -135,7 +159,6 @@ const piecesMovements = async (e) => {
         let rookData3 = movementsArr;
         rookArr.push(rookData3);
 
-        console.log('down');
         movementsArr = [];
         let downRookCol = col;
         let downRookRow = row;
@@ -146,7 +169,7 @@ const piecesMovements = async (e) => {
         }
         let rookData4 = movementsArr;
         rookArr.push(rookData4);
-        console.log(rookArr);
+
         return [movementsArr, piecesColor, rookArr];
 
         break;
@@ -474,19 +497,48 @@ const piecesMovements = async (e) => {
         let bPRow = row;
         let bPCol = col;
         let bPArr = [];
-        // one row up
-        try {
-          cell = rows[bPRow][bPCol - 1];
-          createMovementsArr(cell);
-        } catch (error) {}
-        // two rows up
-        try {
-          cell = rows[bPRow + 1][bPCol - 1];
-          createMovementsArr(cell);
-        } catch (error) {}
 
-        let bPData1 = movementsArr;
-        bPArr.push(bPData1);
+        if (location[0] === 2) {
+          // one row up
+          try {
+            cell = rows[bPRow][bPCol - 1];
+
+            if (
+              cell.children[0] === undefined ||
+              cell.children[0].tagName === 'SPAN'
+            ) {
+              createMovementsArr(cell);
+            } else {
+              nextRow = false;
+            }
+          } catch (error) {}
+          if (nextRow === true) {
+            // two rows up
+            try {
+              cell = rows[bPRow + 1][bPCol - 1];
+              createMovementsArr(cell);
+            } catch (error) {}
+            let bPData1 = movementsArr;
+            bPArr.push(bPData1);
+          }
+        } else {
+          // one row up
+          try {
+            cell = rows[bPRow][bPCol - 1];
+            if (
+              cell.children[0] === undefined ||
+              cell.children[0].tagName === 'SPAN'
+            ) {
+              createMovementsArr(cell);
+              let bPData = movementsArr;
+              bPArr.push(bPData);
+            } else {
+              console.log('object');
+              nextRow = false;
+            }
+          } catch (error) {}
+        }
+
         movementsArr = [];
 
         try {

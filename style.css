@@ -18,104 +18,89 @@ body {
   width: 100%;
   background-color: black;
 }
-/* add */
-.container h1 {
-  color: #fdf749;
-  font-size: 50px;
-  position: fixed;
-  top: 0;
-  padding: 10px;
-  width: auto;
-}
-.user {
-  display: flex;
-  align-items: center;
-  width: var(--primary-boardSize);
-}
 
-.countdown {
-  display: flex;
-  background-color: #fbd54f;
-  width: 50%;
-  height: 90%;
-  color: #333;
-  margin: 0 10px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-}
-ul {
-  padding: 0;
-  list-style-type: none;
-}
-li {
-  display: inline-block;
-  font-size: 1.5em;
-  text-transform: uppercase;
-}
-
-li span {
-  display: block;
-  font-size: 3.5rem;
-}
-
-.user-info-1 {
-  background-color: #303aff;
-  width: var(--primary-boardSize);
-  padding: 10px;
-  color: #fff;
+.user-1 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  background-color: #fff;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: var(--primary-boardSize);
+  background-color: darkred;
+  position: relative;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-h3 {
-  margin-left: auto;
-  margin-right: auto;
+.user-2 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fff;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: var(--primary-boardSize);
+  background-color: darkblue;
+  position: relative;
+  border-radius: 10px;
+  padding: 10px;
+}
+.avatar-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.user-info-1 h2,
-.user-info-2 h2 {
+.user-name {
+  margin-left: 5px;
+  font-size: 3.5vw;
+}
+
+.user-name span {
+  width: 4vw;
   text-decoration: underline;
 }
 
-.user-info-2 {
-  background-color: #b50001;
-  width: var(--primary-boardSize);
-  padding: 10px;
-  color: #fff;
+.countdown-1 {
   display: flex;
+  margin-right: 10px;
+  width: 100%;
+  margin-left: auto;
+  color: white;
   justify-content: flex-end;
   align-items: center;
 }
 
-.triangle {
-  width: 30px;
-  height: 30px;
+.countdown-1 span {
+  font-size: 2.5vw;
+}
+
+.countdown-2 {
+  margin-left: auto;
   margin-right: 10px;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.countdown-2 span {
+  font-size: 2.5vw;
 }
 
 .avatar-photo {
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin: 10px;
+  object-fit: cover;
 }
 
-.avatar-1 {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-}
 .avatar-2 {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  width: 100%;
 }
-
-/* end */
+.user-name {
+  color: #fff;
+}
 
 .game {
   display: flex;
@@ -124,7 +109,7 @@ h3 {
   align-items: center;
   height: 100%;
   width: 100%;
-  /* width: var(--primary-boardSize); */
+  width: var(--primary-boardSize);
 
   background-color: var(--primary-background-color);
 }
@@ -174,6 +159,8 @@ h3 {
   height: var(--primary-cellSize);
   width: var(--primary-cellSize);
   background-color: #779556;
+  position: relative;
+  color: #ebecd0;
 }
 .row-1 .col-2,
 .row-1 .col-4,
@@ -194,6 +181,7 @@ h3 {
   background-color: #ebecd0;
   height: var(--primary-cellSize);
   width: var(--primary-cellSize);
+  position: relative;
 }
 /* even rows */
 .row-2 .col-1,
@@ -216,6 +204,7 @@ h3 {
   background-color: #ebecd0;
   height: var(--primary-cellSize);
   width: var(--primary-cellSize);
+  color: #779556;
 }
 .row-2 .col-2,
 .row-2 .col-4,
@@ -237,6 +226,43 @@ h3 {
   background-color: #779556;
   height: var(--primary-cellSize);
   width: var(--primary-cellSize);
+  color: #ebecd0;
+}
+
+.row-1 .col-1 span,
+.row-2 .col-1 span,
+.row-3 .col-1 span,
+.row-4 .col-1 span,
+.row-5 .col-1 span,
+.row-6 .col-1 span,
+.row-7 .col-1 span {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.row-8 .col-2 span,
+.row-8 .col-3 span,
+.row-8 .col-4 span,
+.row-8 .col-5 span,
+.row-8 .col-6 span,
+.row-8 .col-7 span,
+.row-8 .col-8 span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-weight: bold;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.bottom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 img {
@@ -298,7 +324,7 @@ img {
 
 @media only screen and (max-width: 800px) and (min-width: 601px) {
   :root {
-    --primary-boardSize: 400px;
+    --primary-boardSize: 600px;
     --primary-cellSize: calc(var(--primary-boardSize) / 8);
     --primary-imgSize: calc(var(--primary-boardSize) / 8);
   }
@@ -306,7 +332,7 @@ img {
 
 @media only screen and (max-width: 600px) and (min-width: 541px) {
   :root {
-    --primary-boardSize: 340px;
+    --primary-boardSize: 540px;
     --primary-cellSize: calc(var(--primary-boardSize) / 8);
     --primary-imgSize: calc(var(--primary-boardSize) / 8);
   }
@@ -314,24 +340,24 @@ img {
 
 @media only screen and (max-width: 540px) and (min-width: 480px) {
   :root {
-    --primary-boardSize: 280px;
+    --primary-boardSize: 480px;
     --primary-cellSize: calc(var(--primary-boardSize) / 8);
     --primary-imgSize: calc(var(--primary-boardSize) / 8);
   }
 }
 
-@media only screen and (max-width: 480px) and (min-width: 301px) {
+@media only screen and (max-width: 480px) {
   :root {
-    --primary-boardSize: 100px;
+    --primary-boardSize: 320px;
     --primary-cellSize: calc(var(--primary-boardSize) / 8);
     --primary-imgSize: calc(var(--primary-boardSize) / 8);
   }
 }
 
-@media only screen and (max-width: 300px) and (min-width: 240px) {
+/* @media only screen and (max-width: 320px) {
   :root {
-    --primary-boardSize: 40px;
+    --primary-boardSize: 320px;
     --primary-cellSize: calc(var(--primary-boardSize) / 8);
     --primary-imgSize: calc(var(--primary-boardSize) / 8);
   }
-}
+} */

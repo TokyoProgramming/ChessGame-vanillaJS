@@ -8,7 +8,6 @@ let activeCellsArr = [];
 let pieceInfoArr = [];
 let cellNum = '';
 let player = 'player1';
-
 let opponentPlayer = '';
 
 const main = async (e) => {
@@ -20,10 +19,9 @@ const main = async (e) => {
     opponentPlayer = 'white';
   }
   gameCtr(getPlayer);
-
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
-      activeCellsArr = await cellActivate(e);
+      activeCellsArr = await cellActivate(e, getPlayer);
       if (activeCellsArr.length !== 0) {
         pieceInfoArr = [targetCell.parentElement][0];
         addColor(targetCell.parentElement);
@@ -60,11 +58,11 @@ const main = async (e) => {
 // get selected && active cells
 // Move pieces
 const movePiece = (fromCell, activeCellsArr, toCell) => {
-  let pieceData = fromCell.children[0];
+  let pieceData = fromCell.lastChild;
   let toCellData = toCell;
 
   // remove circle && classList === 'active'
-  toCellData.children[0].remove();
+  toCellData.lastChild.remove();
   toCellData.classList.remove('active');
 
   // move the piece
@@ -74,18 +72,76 @@ const movePiece = (fromCell, activeCellsArr, toCell) => {
   removeCirclesClassList(activeCellsArr);
 };
 
+// add circles to available cells
+const cellActivate = async (e, getPlayer) => {
+  let dataArr = await movementsCtr(e, getPlayer);
+  dataArr.forEach((el) => {
+    let data = el.cell;
+    // console.log(data);
+    data.classList.add('active');
+
+    // cell is empty
+    if (data.children.length === 0) {
+      const circleDiv = document.createElement('div');
+      circleDiv.classList.add('circle');
+      data.appendChild(circleDiv);
+
+      // cell has piece
+    } else if (data.lastChild.tagName === 'IMG') {
+      let imgData = data.lastChild;
+      imgData.classList.add('scale-ctr');
+
+      // cell has number
+    } else if (data.children[0].tagName === 'SPAN') {
+      if (data.children.length > 1) {
+        if (data.children[1].tagName !== 'IMG') {
+          const circleDiv = document.createElement('div');
+          circleDiv.classList.add('circle');
+          data.appendChild(circleDiv);
+        }
+      } else {
+        const circleDiv = document.createElement('div');
+        circleDiv.classList.add('circle');
+        data.appendChild(circleDiv);
+      }
+    }
+  });
+  return dataArr;
+};
+
 // remove circles && classList === 'active' && 'scale-ctr'
 const removeCirclesClassList = (activeCellsArr) => {
   activeCellsArr.forEach((el) => {
-    if (el.cell.children[0].tagName !== 'IMG') {
-      el.cell.children[0].remove();
-    } else if (el.cell.children[0].id.split('-')[0] === `${opponentPlayer}`) {
-      let scaleCtrImg = el.cell.children[0];
-      // console.log(scaleCtrImg);
-      scaleCtrImg.classList.remove('scale-ctr');
-    }
+    let data = el.cell;
 
-    el.cell.classList.remove('active');
+    // cell is empty
+    if (
+      data.children[0].tagName !== 'IMG' &&
+      data.children[0].tagName !== 'SPAN'
+    ) {
+      // remove circles
+      data.children[0].remove();
+
+      // cell has opponent piece
+    } else if (data.children[0].id.split('-')[0] === `${opponentPlayer}`) {
+      let scaleCtrImg = data.children[0];
+      scaleCtrImg.classList.remove('scale-ctr');
+
+      // cell has number
+    } else if (data.children[0].tagName === 'SPAN') {
+      if (data.children[1].tagName === 'DIV') {
+        let divData = data.children[1];
+        divData.remove();
+      } else if (data.children[1].tagName === 'SPAN') {
+        let divData = data.children[2];
+        divData.remove();
+      }
+      //  else if (data.children[2].tagName === 'DIV') {
+      //   let divData = data.children[2];
+      //   divData.remove();
+      // }
+    }
+    data.classList.remove('active');
   });
 };
 
@@ -115,24 +171,6 @@ const removeColor = (cell) => {
   // cell.classList.remove('clicked-1')
   cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
   // chessBoard.classList.remove('board-opacity');
-};
-
-// add circles to available cells
-const cellActivate = async (e) => {
-  let dataArr = await movementsCtr(e);
-  dataArr.forEach((el) => {
-    let data = el.cell;
-    data.classList.add('active');
-    if (data.children.length === 0) {
-      const circleDiv = document.createElement('div');
-      circleDiv.classList.add('circle');
-      data.appendChild(circleDiv);
-    } else {
-      let imgData = data.children[0];
-      imgData.classList.add('scale-ctr');
-    }
-  });
-  return dataArr;
 };
 
 // player Control
