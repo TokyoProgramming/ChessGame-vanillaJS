@@ -56,7 +56,6 @@ const piecesMovements = async (e) => {
           // one row up
           try {
             cell = rows[wPRow - 2][wPCol - 1];
-            console.log(cell.children[0]);
             if (
               cell.children[0] === undefined ||
               cell.children[0].tagName === 'SPAN'

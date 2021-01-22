@@ -20,23 +20,30 @@ const movementsCtr = async (e, getPlayer) => {
 
       for (let j = 0; j < arr.length; j++) {
         let data = arr[j];
+        console.log(data);
         // cell is empty
         if (data.cell.children[0] !== undefined) {
           if (data.cell.lastChild.tagName === 'IMG') {
-            break;
-            let pieceColor = data.cell.lastChild.id.split('-')[0];
-            if (pieceColor === `${getPlayer}`) {
+            if (data.cell.lastChild.id.split('-')[0] === `${getPlayer}`) {
+              console.log('1');
+              console.log(data.cell.lastChild.id);
+              break;
+            } else {
+              console.log('2');
+              console.log(data.cell.lastChild.id);
+
+              newArr.push(data);
               break;
             }
           }
+        } else {
+          console.log('3');
+          newArr.push(data);
         }
-        newArr.push(data);
       }
     }
-    // filtering the newArr
-    // arr = filteringArr(newArr, piecesType);
+
     arr = newArr;
-    console.log(arr);
   }
 
   return arr;
@@ -53,7 +60,7 @@ const filteringArr = (arr, piecesType) => {
       let idData = data.lastChild.id;
       let piecesColor = idData.split('-')[0];
       return piecesColor !== `${piecesType}`;
-      // cell is emtpy
+      // cell is empty
     } else {
       return el;
     }
