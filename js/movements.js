@@ -6,9 +6,9 @@ let movementsObj = {};
 
 // get first number and second number
 const getFirstSecondNumber = (element) => {
-  element = element.slice(1);
-  let one = String(element).charAt(0);
-  let two = String(element).charAt(1);
+  let newElement = element.slice(1);
+  let one = String(newElement).charAt(0);
+  let two = String(newElement).charAt(1);
   let firstNumber = Number(one);
   let SecondNumber = Number(two);
   let numberArr = [];
@@ -16,7 +16,6 @@ const getFirstSecondNumber = (element) => {
   return numberArr;
 };
 
-// create MovementsArr
 const createMovementsArr = (cell) => {
   if (cell !== undefined) {
     movementsObj = {
@@ -52,21 +51,26 @@ const piecesMovements = async (e) => {
         let wPCol = col;
         let wPArr = [];
 
+        // move pawn from first row
         if (location[0] === 7) {
           // one row up
           try {
             cell = rows[wPRow - 2][wPCol - 1];
+            // if cell is empty or number
             if (
               cell.children[0] === undefined ||
               cell.children[0].tagName === 'SPAN'
             ) {
               createMovementsArr(cell);
+              // if there is piece
             } else {
               nextRow = false;
             }
           } catch (error) {}
 
+          // check two rows up
           let checkCell = rows[wPRow - 3][wPCol - 1];
+          // if it's not empty && piece in it
           if (checkCell.children.length >= 1) {
             if (checkCell.lastChild.tagName === 'IMG') {
               nextRow = false;
@@ -75,7 +79,6 @@ const piecesMovements = async (e) => {
 
           if (nextRow === true) {
             // two rows up
-
             try {
               cell = rows[wPRow - 3][wPCol - 1];
               createMovementsArr(cell);
@@ -83,39 +86,45 @@ const piecesMovements = async (e) => {
           }
           let wPData1 = movementsArr;
           wPArr.push(wPData1);
+
+          // not in the first row
         } else {
+          movementsArr = [];
+
           // one row up
           try {
             cell = rows[wPRow - 2][wPCol - 1];
-            if (
-              cell.children[0] === undefined ||
-              cell.children[0].tagName === 'SPAN'
-            ) {
+
+            // empty cell
+            if (cell.children[0] === undefined) {
               createMovementsArr(cell);
               let wPData = movementsArr;
               wPArr.push(wPData);
+              // piece in the cell
+            } else if (cell.lastChild.tagName === 'IMG') {
+              // number in the cell
             } else {
-              console.log('object');
-              nextRow = false;
+              createMovementsArr(cell);
+              let wPData = movementsArr;
+              wPArr.push(wPData);
             }
           } catch (error) {}
         }
-
         movementsArr = [];
+        // check one row up && one col left
         try {
           cell = rows[wPRow - 2][wPCol - 2];
           let checkLeftCell = cell.lastChild.id;
           let checkLeftBP = checkLeftCell.split('-')[0];
-          console.log(checkLeftBP);
 
           if (checkLeftBP === 'black') {
             createMovementsArr(cell);
-            console.log('work');
           }
         } catch (error) {}
         let wPData2 = movementsArr;
         wPArr.push(wPData2);
         movementsArr = [];
+        // check one row up && one col right
         try {
           cell = rows[wPRow - 2][wPCol];
           let checkRightCell = cell.lastChild.id;
@@ -128,10 +137,94 @@ const piecesMovements = async (e) => {
         wPArr.push(wPData3);
         return [movementsArr, piecesColor, wPArr];
         break;
+
+      case 'black-pawn':
+        let bPRow = row;
+        let bPCol = col;
+        let bPArr = [];
+        // first row
+        if (location[0] === 2) {
+          // one row down
+          try {
+            cell = rows[bPRow][bPCol - 1];
+
+            if (
+              cell.children[0] === undefined ||
+              cell.children[0].tagName === 'SPAN'
+            ) {
+              createMovementsArr(cell);
+            } else {
+              nextRow = false;
+            }
+          } catch (error) {}
+
+          let checkCell = rows[bPRow + 1][bPCol - 1];
+          if (checkCell.children.length >= 1) {
+            if (checkCell.lastChild.tagName === 'IMG') {
+              nextRow = false;
+            }
+          }
+          if (nextRow === true) {
+            // two rows down
+            try {
+              cell = rows[bPRow + 1][bPCol - 1];
+              createMovementsArr(cell);
+            } catch (error) {}
+          }
+          let bPData1 = movementsArr;
+          bPArr.push(bPData1);
+        } else {
+          movementsArr = [];
+
+          // one row down
+          try {
+            cell = rows[bPRow][bPCol - 1];
+
+            // empty cell
+            if (cell.children[0] === undefined) {
+              createMovementsArr(cell);
+              let bPData = movementsArr;
+              bPArr.push(bPData);
+              // piece in the cell
+            } else if (cell.lastChild.tagName === 'IMG') {
+              // number in the cell
+            } else {
+              createMovementsArr(cell);
+              let bPData = movementsArr;
+              bPArr.push(bPData);
+            }
+          } catch (error) {}
+        }
+
+        movementsArr = [];
+        // one row down && one col left
+        try {
+          cell = rows[bPRow][bPCol - 2];
+          let checkLeftCell = cell.lastChild.id;
+          let checkLeftWP = checkLeftCell.split('-')[0];
+          if (checkLeftWP === 'white') {
+            createMovementsArr(cell);
+          }
+        } catch (error) {}
+        let bPData2 = movementsArr;
+        bPArr.push(bPData2);
+        movementsArr = [];
+        // one row down && one col right
+        try {
+          cell = rows[bPRow][bPCol];
+          let checkRightCell = cell.lastChild.id;
+          let checkRightWP = checkRightCell.split('-')[0];
+          if (checkRightWP === 'white') {
+            createMovementsArr(cell);
+          }
+        } catch (error) {}
+        let bPData3 = movementsArr;
+        bPArr.push(bPData3);
+
+        return [movementsArr, piecesColor, bPArr];
+
       case 'black-rook':
       case 'white-rook':
-        console.log('white-rook');
-
         let leftRookCol = col;
         let leftRookRow = row;
         while (leftRookCol > 1) {
@@ -337,7 +430,6 @@ const piecesMovements = async (e) => {
         let queenData4 = movementsArr;
         queenArr.push(queenData4);
 
-        console.log('left');
         let leftQueenCol = col;
         let leftQueenRow = row;
         movementsArr = [];
@@ -350,7 +442,6 @@ const piecesMovements = async (e) => {
         let queenData5 = movementsArr;
         queenArr.push(queenData5);
 
-        console.log('right');
         let rightQueenCol = col;
         let rightQueenRow = row;
         movementsArr = [];
@@ -363,7 +454,6 @@ const piecesMovements = async (e) => {
         let queenData6 = movementsArr;
         queenArr.push(queenData6);
 
-        console.log('up');
         let upQueenCol = col;
         let upQueenRow = row;
         movementsArr = [];
@@ -376,7 +466,6 @@ const piecesMovements = async (e) => {
         let queenData7 = movementsArr;
         queenArr.push(queenData7);
 
-        console.log('down');
         let downQueenCol = col;
         let downQueenRow = row;
         movementsArr = [];
@@ -499,83 +588,6 @@ const piecesMovements = async (e) => {
         return [movementsArr, piecesColor];
 
         break;
-      case 'black-pawn':
-        let bPRow = row;
-        let bPCol = col;
-        let bPArr = [];
-
-        if (location[0] === 2) {
-          // one row up
-          try {
-            cell = rows[bPRow][bPCol - 1];
-
-            if (
-              cell.children[0] === undefined ||
-              cell.children[0].tagName === 'SPAN'
-            ) {
-              createMovementsArr(cell);
-            } else {
-              nextRow = false;
-            }
-          } catch (error) {}
-
-          let checkCell = rows[bPRow + 1][bPCol - 1];
-          if (checkCell.children.length >= 1) {
-            if (checkCell.lastChild.tagName === 'IMG') {
-              nextRow = false;
-            }
-          }
-          if (nextRow === true) {
-            // two rows up
-            try {
-              cell = rows[bPRow + 1][bPCol - 1];
-              createMovementsArr(cell);
-            } catch (error) {}
-          }
-          let bPData1 = movementsArr;
-          bPArr.push(bPData1);
-        } else {
-          // one row up
-          try {
-            cell = rows[bPRow][bPCol - 1];
-            if (
-              cell.children[0] === undefined ||
-              cell.children[0].tagName === 'SPAN'
-            ) {
-              createMovementsArr(cell);
-              let bPData = movementsArr;
-              bPArr.push(bPData);
-            } else {
-              console.log('object');
-              nextRow = false;
-            }
-          } catch (error) {}
-        }
-
-        movementsArr = [];
-
-        try {
-          cell = rows[bPRow][bPCol - 2];
-          let checkLeftCell = cell.children[0].id;
-          let checkLeftWP = checkLeftCell.split('-')[0];
-          if (checkLeftWP === 'white') {
-            createMovementsArr(cell);
-          }
-        } catch (error) {}
-        let bPData2 = movementsArr;
-        bPArr.push(bPData2);
-        movementsArr = [];
-        try {
-          cell = rows[bPRow][bPCol];
-          let checkRightCell = cell.children[0].id;
-          let checkRightWP = checkRightCell.split('-')[0];
-          if (checkRightWP === 'white') {
-            createMovementsArr(cell);
-          }
-        } catch (error) {}
-        let bPData3 = movementsArr;
-        bPArr.push(bPData3);
-        return [movementsArr, piecesColor, bPArr];
 
       default:
         return;
@@ -583,4 +595,4 @@ const piecesMovements = async (e) => {
   }
 };
 
-export { piecesMovements };
+export { piecesMovements, getFirstSecondNumber };

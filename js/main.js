@@ -1,6 +1,7 @@
 import { setChessPieces } from './setPieces.js';
 import { movementsCtr } from './movementsController.js';
 import { gameCtr } from './gameController.js';
+import { getFirstSecondNumber } from './movements.js';
 
 const chessBoard = document.querySelector('.chess-board');
 
@@ -114,6 +115,11 @@ const removeCirclesClassList = (activeCellsArr) => {
   activeCellsArr.forEach((el) => {
     let data = el.cell;
 
+    let rowNum = data.id[1];
+    let colNum = data.id[2];
+    console.log(typeof rowNum);
+    console.log(typeof colNum);
+
     // cell is empty
     if (
       data.children[0].tagName !== 'IMG' &&
@@ -123,8 +129,10 @@ const removeCirclesClassList = (activeCellsArr) => {
       data.children[0].remove();
 
       // cell has opponent piece
-    } else if (data.children[0].id.split('-')[0] === `${opponentPlayer}`) {
-      let scaleCtrImg = data.children[0];
+    } else if (data.lastChild.id.split('-')[0] === `${opponentPlayer}`) {
+      // get opponent piece
+      let scaleCtrImg = data.lastChild;
+      // delete opponent piece
       scaleCtrImg.classList.remove('scale-ctr');
 
       // cell has number
@@ -132,14 +140,13 @@ const removeCirclesClassList = (activeCellsArr) => {
       if (data.children[1].tagName === 'DIV') {
         let divData = data.children[1];
         divData.remove();
-      } else if (data.children[1].tagName === 'SPAN') {
-        let divData = data.children[2];
-        divData.remove();
+        // X81 - 2 span tags
+      } else if (rowNum === '8' && colNum === '1') {
+        if (data.children[2].tagName === 'DIV') {
+          let circleDiv = data.children[2];
+          circleDiv.remove();
+        }
       }
-      //  else if (data.children[2].tagName === 'DIV') {
-      //   let divData = data.children[2];
-      //   divData.remove();
-      // }
     }
     data.classList.remove('active');
   });
