@@ -28,74 +28,81 @@ const getPiecesPositions = async () => {
     });
   });
 
-  //   console.log(blackPiecesPositions);
-  //   console.log(whitePiecesPositions);
   return [blackPiecesPositions, whitePiecesPositions];
 };
 
-// get pieces canMoveCellNext
-const getCanMoveCellNext = async () => {
+const getWhiteCanMoveNext = async () => {
   const data = await getPiecesPositions();
-  const blackData = data[0];
   const whiteData = data[1];
-  let resBlackArr = [];
   let resWhiteArr = [];
-
-  //   const res = await movementsCtr();
-
-  // const movements = await movementsCtr();
-  await blackData.forEach(async (el) => {
-    const resBlack = await movementsCtr(el.name, 'black');
-    resBlackArr.push(resBlack);
-  });
-
   await whiteData.forEach(async (el) => {
-    const resWhite = await movementsCtr(el.name, 'white');
+    const resWhite = await movementsCtr(el.name, 'white', true);
     resWhiteArr.push(resWhite);
   });
 
-  return [resBlackArr, resWhiteArr];
+  return resWhiteArr;
+};
+
+const getBlackCanMoveNext = async () => {
+  const data = await getPiecesPositions();
+  const blackData = data[0];
+  let resBlackArr = [];
+  // const movements = await movementsCtr();
+  await blackData.forEach(async (el) => {
+    const resBlack = await movementsCtr(el.name, 'black', true);
+    resBlackArr.push(resBlack);
+  });
+  return resBlackArr;
 };
 
 // check king's Status
-const checkKingStatus = async () => {
-  const kingStatus = await getCanMoveCellNext();
-  const blackPieces = kingStatus[0];
-  const whitePieces = kingStatus[1];
+const checkKingStatus = async (getPlayer) => {
+  const blackPieces = await getBlackCanMoveNext();
+  const whitePieces = await getWhiteCanMoveNext();
 
-  blackPieces.forEach((bP) => {
-    bP.forEach((el) => {
-      try {
-        if (el.cell.lastChild.tagName === 'IMG') {
-          let pieceColor = el.cell.lastChild.id.split('-')[0];
-          let pieceName = el.cell.lastChild.id.split('-')[1];
-          if (pieceColor === 'white' && pieceName === 'king') {
-            console.log('check white king');
-          }
-        }
-      } catch (error) {}
-    });
-  });
-
-  whitePieces.forEach((wP) => {
-    wP.forEach((el) => {
-      try {
-        if (el.cell.lastChild.tagName === 'IMG') {
-          let pieceColor = el.cell.lastChild.id.split('-')[0];
-          let pieceName = el.cell.lastChild.id.split('-')[1];
-          if (pieceColor === 'black' && pieceName === 'king') {
-            console.log('check black king');
-          }
-        }
-      } catch (error) {}
-    });
-  });
+  try {
+    if (getPlayer === 'white') {
+      whitePieces.forEach((wP) => {
+        wP.forEach((el) => {
+          try {
+            if (el.cell.lastChild.tagName === 'IMG') {
+              let pieceColor = el.cell.lastChild.id.split('-')[0];
+              let pieceName = el.cell.lastChild.id.split('-')[1];
+              if (pieceColor === 'black' && pieceName === 'king') {
+                console.log('check black king');
+              }
+            }
+          } catch (error) {}
+        });
+      });
+    } else if (getPlayer === 'black') {
+      blackPieces.forEach((bP) => {
+        bP.forEach((el) => {
+          try {
+            if (el.cell.lastChild.tagName === 'IMG') {
+              let pieceColor = el.cell.lastChild.id.split('-')[0];
+              let pieceName = el.cell.lastChild.id.split('-')[1];
+              if (pieceColor === 'white' && pieceName === 'king') {
+                console.log('check white king');
+              }
+            }
+          } catch (error) {}
+        });
+      });
+    }
+  } catch (error) {}
+  return [blackPieces, whitePieces];
 };
 
-// check king can move cell
+// king can move cell ??
 
-// check allies can protect king
+// allies can protect king ??
 
-// check allies or king can get checking piece
+// allies or king can get checking piece ??
 
-export { getPiecesPositions, getCanMoveCellNext, checkKingStatus };
+export {
+  getPiecesPositions,
+  checkKingStatus,
+  getWhiteCanMoveNext,
+  getBlackCanMoveNext,
+};

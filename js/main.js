@@ -15,7 +15,8 @@ import {
 
 import {
   getPiecesPositions,
-  getCanMoveCellNext,
+  getWhiteCanMoveNext,
+  getBlackCanMoveNext,
   checkKingStatus,
 } from './controllers/checkController.js';
 
@@ -35,8 +36,6 @@ const main = async (e) => {
   } else {
     opponentPlayer = 'white';
   }
-
-  await checkKingStatus();
 
   gameCtr(getPlayer);
 
@@ -62,7 +61,7 @@ const main = async (e) => {
         toCell = targetCell.parentElement;
       }
       movePiece(pieceInfoArr, activeCellsArr, toCell, opponentPlayer);
-      await checkKingStatus();
+      await checkKingStatus(getPlayer);
 
       removeColor(pieceInfoArr);
       // init activeCellsArr

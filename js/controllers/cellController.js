@@ -1,4 +1,5 @@
 import { movementsCtr } from './movementsController.js';
+import { getBlackCanMoveNext } from './checkController.js';
 
 // get selected && active cells
 // Move pieces
@@ -17,13 +18,90 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
   await removeCirclesClassList(activeCellsArr, opponentPlayer);
 };
 
+// king movement filtering
+const kingMovementFiltering = async (getPlayer, dataArr) => {
+  let blackMoveArr = [];
+  let whiteKingArr = [];
+  if (getPlayer === 'white') {
+    const blackData = await getBlackCanMoveNext();
+    blackData.forEach((bD) => {
+      let bDArr = bD[0];
+      bDArr.forEach((el) => {
+        blackMoveArr.push(el.cell);
+      });
+    });
+
+    console.log(blackMoveArr);
+
+    let kingArr = dataArr;
+    kingArr.forEach((el) => {
+      whiteKingArr.push(el.cell);
+    });
+
+    whiteKingArr = whiteKingArr.filter((item) => {
+      return !blackMoveArr.includes(item);
+    });
+
+    let whiteKingObj = {};
+    let whiteKingData = [];
+    whiteKingArr.forEach((el) => {
+      whiteKingObj = {
+        id: Math.round(Math.random() * 1000),
+        cell: el,
+      };
+      whiteKingData.push(whiteKingObj);
+    });
+    return whiteKingData;
+  } else if (getPlayer === 'black') {
+    const whiteData = await getWhiteCanMoveNext();
+    whiteData.forEach((wD) => {
+      let wDArr = wD[0];
+      wDArr.forEach((el) => {
+        whiteMoveArr.push(el.cell);
+      });
+    });
+
+    console.log(whiteMoveArr);
+
+    let kingArr = dataArr;
+    kingArr.forEach((el) => {
+      whiteKingArr.push(el.cell);
+    });
+
+    whiteKingArr = whiteKingArr.filter((item) => {
+      return !whiteMoveArr.includes(item);
+    });
+
+    let whiteKingObj = {};
+    let whiteKingData = [];
+    whiteKingArr.forEach((el) => {
+      whiteKingObj = {
+        id: Math.round(Math.random() * 1000),
+        cell: el,
+      };
+      whiteKingData.push(whiteKingObj);
+    });
+    return whiteKingData;
+  }
+};
+
 // add circles to available cells
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
+  let piecesType = dataArr[1];
+  console.log(getPlayer);
+  dataArr = dataArr[0];
+  try {
+    let pieceType = piecesType.split('-');
+    if (pieceType[1] === 'king') {
+      dataArr = await kingMovementFiltering(getPlayer, dataArr);
+    }
+  } catch (error) {
+    console.log('error');
+  }
 
   dataArr.forEach((el) => {
     let data = el.cell;
-    // console.log(data);
     data.classList.add('active');
 
     // cell is empty

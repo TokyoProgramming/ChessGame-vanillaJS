@@ -1,55 +1,68 @@
 import { piecesMovements } from '../movements.js';
 
-const movementsCtr = async (e, getPlayer) => {
-  let movements = await piecesMovements(e);
-  let piecesType = movements[1];
+const movementsCtr = async (e, getPlayer, props) => {
+  const movements = await piecesMovements(e, props);
+  let piecesColor = movements[1];
+  let piecesType = movements[movements.length - 1];
   let newArr = [];
   let arr = [];
 
-  // King && Knight movements
-  if (movements.length === 2) {
-    let movementsArr = movements[0];
-    // filtering the movementsArr
-    arr = filteringArr(movementsArr, piecesType);
+  switch (piecesType) {
+    case 'white-king':
+    case 'white-knight':
+    case 'black-king':
+    case 'black-knight':
+      let movementsArr = movements[0];
+      // filtering the movementsArr
+      arr = filteringArr(movementsArr, piecesColor);
+      return [arr, piecesType];
+      break;
+    case 'white-rook':
+    case 'white-bishop':
+    case 'white-queen':
+    case 'white-pawn':
+    case 'black-rook':
+    case 'black-bishop':
+    case 'black-queen':
+    case 'black-pawn':
+      let movementsLoopArr = movements[2];
+      for (let i = 0; i < movementsLoopArr.length; i++) {
+        let arr = movementsLoopArr[i];
 
-    // Rook, Bishop, Queen, Pawn Movements
-  } else if (movements.length === 3) {
-    let movementsLoopArr = movements[2];
-    for (let i = 0; i < movementsLoopArr.length; i++) {
-      let arr = movementsLoopArr[i];
+        for (let j = 0; j < arr.length; j++) {
+          let data = arr[j];
 
-      for (let j = 0; j < arr.length; j++) {
-        let data = arr[j];
-
-        // cell is not empty
-        if (data.cell.children[0] !== undefined) {
-          // in the cell there is a white or black piece
-          if (data.cell.lastChild.tagName === 'IMG') {
-            // if the piece is player's pice => break;
-            if (data.cell.lastChild.id.split('-')[0] === `${getPlayer}`) {
-              break;
-              // if it's opponent piece => add the cell & break;
-            } else if (
-              data.cell.lastChild.id.split('-')[0] !== `${getPlayer}`
-            ) {
+          // cell is not empty
+          if (data.cell.children[0] !== undefined) {
+            // in the cell there is a white or black piece
+            if (data.cell.lastChild.tagName === 'IMG') {
+              // if the piece is player's pice => break;
+              if (data.cell.lastChild.id.split('-')[0] === `${getPlayer}`) {
+                break;
+                // if it's opponent piece => add the cell & break;
+              } else if (
+                data.cell.lastChild.id.split('-')[0] !== `${getPlayer}`
+              ) {
+                newArr.push(data);
+                break;
+              }
+              // if there is a number or numbers in the cell
+            } else {
               newArr.push(data);
-              break;
             }
-            // if there is a number or numbers in the cell
+            // cell is empty
           } else {
             newArr.push(data);
           }
-          // cell is empty
-        } else {
-          newArr.push(data);
         }
       }
-    }
 
-    arr = newArr;
+      arr = newArr;
+      return [arr, piecesType];
+      break;
+    default:
+      break;
   }
-
-  return arr;
 };
 
 // array filtering function

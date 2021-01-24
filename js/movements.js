@@ -32,7 +32,7 @@ let piecesType = '';
 let location = '';
 
 // Pieces movements
-const piecesMovements = async (e) => {
+const piecesMovements = async (e, diagonal = false) => {
   try {
     location = e.target.parentElement.id;
   } catch (error) {
@@ -125,12 +125,18 @@ const piecesMovements = async (e) => {
         }
         movementsArr = [];
         // check one row up && one col left
-        try {
-          cell = rows[wPRow - 2][wPCol - 2];
-          let checkLeftCell = cell.lastChild.id;
-          let checkLeftBP = checkLeftCell.split('-')[0];
 
-          if (checkLeftBP === 'black') {
+        try {
+          if (diagonal === false) {
+            cell = rows[wPRow - 2][wPCol - 2];
+            let checkLeftCell = cell.lastChild.id;
+            let checkLeftBP = checkLeftCell.split('-')[0];
+
+            if (checkLeftBP === 'black') {
+              createMovementsArr(cell);
+            }
+          } else if (diagonal === true) {
+            cell = rows[wPRow - 2][wPCol - 2];
             createMovementsArr(cell);
           }
         } catch (error) {}
@@ -139,16 +145,21 @@ const piecesMovements = async (e) => {
         movementsArr = [];
         // check one row up && one col right
         try {
-          cell = rows[wPRow - 2][wPCol];
-          let checkRightCell = cell.lastChild.id;
-          let checkRightBP = checkRightCell.split('-')[0];
-          if (checkRightBP === 'black') {
+          if (diagonal === false) {
+            cell = rows[wPRow - 2][wPCol];
+            let checkRightCell = cell.lastChild.id;
+
+            if (checkRightBP === 'black') {
+              createMovementsArr(cell);
+            }
+          } else if (diagonal === true) {
+            cell = rows[wPRow - 2][wPCol];
             createMovementsArr(cell);
           }
         } catch (error) {}
         let wPData3 = movementsArr;
         wPArr.push(wPData3);
-        return [movementsArr, piecesColor, wPArr];
+        return [movementsArr, piecesColor, wPArr, piecesType];
         break;
 
       case 'black-pawn':
@@ -211,11 +222,17 @@ const piecesMovements = async (e) => {
 
         movementsArr = [];
         // one row down && one col left
+
         try {
-          cell = rows[bPRow][bPCol - 2];
-          let checkLeftCell = cell.lastChild.id;
-          let checkLeftWP = checkLeftCell.split('-')[0];
-          if (checkLeftWP === 'white') {
+          if (diagonal === false) {
+            cell = rows[bPRow][bPCol - 2];
+            let checkLeftCell = cell.lastChild.id;
+            let checkLeftWP = checkLeftCell.split('-')[0];
+            if (checkLeftWP === 'white') {
+              createMovementsArr(cell);
+            }
+          } else if (diagonal === true) {
+            cell = rows[bPRow][bPCol - 2];
             createMovementsArr(cell);
           }
         } catch (error) {}
@@ -224,17 +241,22 @@ const piecesMovements = async (e) => {
         movementsArr = [];
         // one row down && one col right
         try {
-          cell = rows[bPRow][bPCol];
-          let checkRightCell = cell.lastChild.id;
-          let checkRightWP = checkRightCell.split('-')[0];
-          if (checkRightWP === 'white') {
+          if (diagonal === false) {
+            cell = rows[bPRow][bPCol];
+            let checkRightCell = cell.lastChild.id;
+            let checkRightWP = checkRightCell.split('-')[0];
+            if (checkRightWP === 'white') {
+              createMovementsArr(cell);
+            }
+          } else if (diagonal === true) {
+            cell = rows[bPRow][bPCol];
             createMovementsArr(cell);
           }
         } catch (error) {}
         let bPData3 = movementsArr;
         bPArr.push(bPData3);
 
-        return [movementsArr, piecesColor, bPArr];
+        return [movementsArr, piecesColor, bPArr, piecesType];
 
       case 'black-rook':
       case 'white-rook':
@@ -282,7 +304,7 @@ const piecesMovements = async (e) => {
         let rookData4 = movementsArr;
         rookArr.push(rookData4);
 
-        return [movementsArr, piecesColor, rookArr];
+        return [movementsArr, piecesColor, rookArr, piecesType];
 
         break;
       case 'black-knight':
@@ -327,7 +349,7 @@ const piecesMovements = async (e) => {
           cell = rows[row][col + 1];
           createMovementsArr(cell);
         } catch (error) {}
-        return [movementsArr, piecesColor];
+        return [movementsArr, piecesColor, piecesType];
         break;
       case 'black-bishop':
       case 'white-bishop':
@@ -384,7 +406,7 @@ const piecesMovements = async (e) => {
         }
         let bishopData4 = movementsArr;
         bishopArr.push(bishopData4);
-        return [movementsArr, piecesColor, bishopArr];
+        return [movementsArr, piecesColor, bishopArr, piecesType];
         break;
       case 'black-queen':
       case 'white-queen':
@@ -490,7 +512,7 @@ const piecesMovements = async (e) => {
         }
         let queenData8 = movementsArr;
         queenArr.push(queenData8);
-        return [movementsArr, piecesColor, queenArr];
+        return [movementsArr, piecesColor, queenArr, piecesType];
 
         break;
       case 'black-king':
@@ -598,12 +620,12 @@ const piecesMovements = async (e) => {
           createMovementsArr(cell);
         } catch (error) {}
 
-        return [movementsArr, piecesColor];
+        return [movementsArr, piecesColor, piecesType];
 
         break;
 
       default:
-        return;
+        return piecesType;
     }
   }
 };
