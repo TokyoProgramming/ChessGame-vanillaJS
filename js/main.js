@@ -1,15 +1,31 @@
 import { setChessPieces } from './setPieces.js';
-import { movementsCtr } from './movementsController.js';
-import { gameCtr } from './gameController.js';
-import { getFirstSecondNumber } from './movements.js';
+import {
+  movePiece,
+  cellActivate,
+  removeCirclesClassList,
+  addColor,
+  removeColor,
+} from './controllers/cellController.js';
+
+import {
+  gameCtr,
+  playerController,
+  switchPlayer,
+} from './controllers/gameController.js';
+
+import {
+  getPiecesPositions,
+  getCanMoveCellNext,
+  checkKingStatus,
+} from './controllers/checkController.js';
 
 const chessBoard = document.querySelector('.chess-board');
 
 let activeCellsArr = [];
 let pieceInfoArr = [];
-let cellNum = '';
 let player = 'player1';
 let opponentPlayer = '';
+let toCell = '';
 
 const main = async (e) => {
   let targetCell = e.target;
@@ -19,7 +35,11 @@ const main = async (e) => {
   } else {
     opponentPlayer = 'white';
   }
+
+  await checkKingStatus();
+
   gameCtr(getPlayer);
+
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
       activeCellsArr = await cellActivate(e, getPlayer);
@@ -35,170 +55,26 @@ const main = async (e) => {
       targetCell.parentElement.classList[1] === 'active'
     ) {
       if (targetCell.classList[1] === 'active') {
-        cellNum = targetCell;
+        toCell = targetCell;
       } else if (targetCell.id.split('-')[0] === `${opponentPlayer}`) {
-        cellNum = targetCell.parentElement;
+        toCell = targetCell.parentElement;
       } else {
-        cellNum = targetCell.parentElement;
+        toCell = targetCell.parentElement;
       }
-      movePiece(pieceInfoArr, activeCellsArr, cellNum);
+      movePiece(pieceInfoArr, activeCellsArr, toCell, opponentPlayer);
+      await checkKingStatus();
+
       removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
       // switchPlayer
       player = switchPlayer(player);
     } else if (targetCell.classList[1] === undefined) {
-      removeCirclesClassList(activeCellsArr);
+      removeCirclesClassList(activeCellsArr, opponentPlayer);
       removeColor(pieceInfoArr);
       // init activeCellsArr
       activeCellsArr = [];
     }
-  }
-};
-
-// get selected && active cells
-// Move pieces
-const movePiece = (fromCell, activeCellsArr, toCell) => {
-  let pieceData = fromCell.lastChild;
-  let toCellData = toCell;
-
-  // remove circle && classList === 'active'
-  toCellData.lastChild.remove();
-  toCellData.classList.remove('active');
-
-  // move the piece
-  toCellData.appendChild(pieceData);
-
-  // remove Circles && classList 'active' && 'scale-ctr'
-  removeCirclesClassList(activeCellsArr);
-};
-
-// add circles to available cells
-const cellActivate = async (e, getPlayer) => {
-  let dataArr = await movementsCtr(e, getPlayer);
-  dataArr.forEach((el) => {
-    let data = el.cell;
-    // console.log(data);
-    data.classList.add('active');
-
-    // cell is empty
-    if (data.children.length === 0) {
-      const circleDiv = document.createElement('div');
-      circleDiv.classList.add('circle');
-      data.appendChild(circleDiv);
-
-      // cell has piece
-    } else if (data.lastChild.tagName === 'IMG') {
-      let imgData = data.lastChild;
-      imgData.classList.add('scale-ctr');
-
-      // cell has number
-    } else if (data.children[0].tagName === 'SPAN') {
-      if (data.children.length > 1) {
-        if (data.children[1].tagName !== 'IMG') {
-          const circleDiv = document.createElement('div');
-          circleDiv.classList.add('circle');
-          data.appendChild(circleDiv);
-        }
-      } else {
-        const circleDiv = document.createElement('div');
-        circleDiv.classList.add('circle');
-        data.appendChild(circleDiv);
-      }
-    }
-  });
-  return dataArr;
-};
-
-// remove circles && classList === 'active' && 'scale-ctr'
-const removeCirclesClassList = (activeCellsArr) => {
-  activeCellsArr.forEach((el) => {
-    let data = el.cell;
-
-    let rowNum = data.id[1];
-    let colNum = data.id[2];
-    console.log(typeof rowNum);
-    console.log(typeof colNum);
-
-    // cell is empty
-    if (
-      data.children[0].tagName !== 'IMG' &&
-      data.children[0].tagName !== 'SPAN'
-    ) {
-      // remove circles
-      data.children[0].remove();
-
-      // cell has opponent piece
-    } else if (data.lastChild.id.split('-')[0] === `${opponentPlayer}`) {
-      // get opponent piece
-      let scaleCtrImg = data.lastChild;
-      // delete opponent piece
-      scaleCtrImg.classList.remove('scale-ctr');
-
-      // cell has number
-    } else if (data.children[0].tagName === 'SPAN') {
-      if (data.children[1].tagName === 'DIV') {
-        let divData = data.children[1];
-        divData.remove();
-        // X81 - 2 span tags
-      } else if (rowNum === '8' && colNum === '1') {
-        if (data.children[2].tagName === 'DIV') {
-          let circleDiv = data.children[2];
-          circleDiv.remove();
-        }
-      }
-    }
-    data.classList.remove('active');
-  });
-};
-
-// add color to the selected piece's cell
-const addColor = (selectCell) => {
-  let getId = selectCell.id.slice(1);
-  let firstNum = String(getId).charAt(0);
-  let secondNum = String(getId).charAt(1);
-
-  if (firstNum % 2 == true) {
-    if (secondNum % 2 == true) {
-      selectCell.classList.add('clicked-1');
-    } else {
-      selectCell.classList.add('clicked-2');
-    }
-  } else {
-    if (secondNum % 2 == true) {
-      selectCell.classList.add('clicked-2');
-    } else {
-      selectCell.classList.add('clicked-1');
-    }
-  }
-};
-
-// remove color
-const removeColor = (cell) => {
-  // cell.classList.remove('clicked-1')
-  cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
-  // chessBoard.classList.remove('board-opacity');
-};
-
-// player Control
-const playerController = (currentPlayer) => {
-  if (currentPlayer === 'player1') {
-    return 'white';
-  } else {
-    return 'black';
-  }
-};
-
-// switch player
-const switchPlayer = (currentPlayer) => {
-  if (currentPlayer === 'player1') {
-    let str = currentPlayer;
-    let res = str.replace('player1', 'player2');
-    return res;
-  } else if (currentPlayer === 'player2') {
-    let str = currentPlayer;
-    let res = str.replace('player2', 'player1');
-    return res;
   }
 };
 

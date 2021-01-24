@@ -29,9 +29,16 @@ const createMovementsArr = (cell) => {
 };
 
 let piecesType = '';
+let location = '';
+
 // Pieces movements
 const piecesMovements = async (e) => {
-  let location = e.target.parentElement.id;
+  try {
+    location = e.target.parentElement.id;
+  } catch (error) {
+    location = e.parentElement.id;
+  }
+
   location = getFirstSecondNumber(location);
   let nextRow = true;
   row = location[0];
@@ -39,7 +46,13 @@ const piecesMovements = async (e) => {
   movementsArr = [];
   movementsObj = {};
   let cell = [];
-  piecesType = e.target.id;
+
+  try {
+    piecesType = e.target.id;
+  } catch (error) {
+    piecesType = e.id;
+  }
+
   let piecesColor = piecesType.split('-')[0];
 
   if (piecesType.length < 4) {
