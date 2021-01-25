@@ -35,6 +35,7 @@ const getWhiteCanMoveNext = async () => {
   const data = await getPiecesPositions();
   const whiteData = data[1];
   let resWhiteArr = [];
+
   await whiteData.forEach(async (el) => {
     const resWhite = await movementsCtr(el.name, 'white', true);
     resWhiteArr.push(resWhite);

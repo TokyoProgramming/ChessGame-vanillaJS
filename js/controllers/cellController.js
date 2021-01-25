@@ -1,5 +1,9 @@
 import { movementsCtr } from './movementsController.js';
-import { getBlackCanMoveNext, getWhiteCanMoveNext } from './checkController.js';
+import {
+  getBlackCanMoveNext,
+  getWhiteCanMoveNext,
+  getPiecesPositions,
+} from './checkController.js';
 
 // get selected && active cells
 // Move pieces
@@ -37,6 +41,7 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
     kingArr = dataArr;
     kingArr.forEach((el) => {
       whiteKingArr.push(el.cell);
+      console.log(el.cell);
     });
 
     whiteKingArr = whiteKingArr.filter((item) => {
@@ -85,6 +90,14 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
   }
 };
 
+// black king filtering
+const blackKingFilter = async (getPlayer, dataArr) => {
+  console.log(getPlayer);
+  console.log(dataArr);
+  const position = await getPiecesPositions();
+  console.log(position[0]);
+};
+
 // add circles to available cells
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
@@ -94,9 +107,11 @@ const cellActivate = async (e, getPlayer) => {
   try {
     let pieceType = piecesType.split('-');
     console.log(pieceType[1]);
+    console.log(e.target.parentElement);
 
     if (pieceType[1] === 'king') {
       dataArr = await kingMovementFiltering(getPlayer, dataArr);
+      // dataArr = await blackKingFilter(getPlayer, dataArr);
     }
   } catch (error) {
     console.log('error');

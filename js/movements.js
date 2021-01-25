@@ -68,19 +68,20 @@ const piecesMovements = async (e, diagonal = false) => {
         if (location[0] === 7) {
           // one row up
           try {
-            cell = rows[wPRow - 2][wPCol - 1];
-            // if cell is empty or number
-            if (
-              cell.children[0] === undefined ||
-              cell.children[0].tagName === 'SPAN'
-            ) {
-              createMovementsArr(cell);
-              // if there is piece
-            } else {
-              nextRow = false;
+            if (diagonal === false) {
+              cell = rows[wPRow - 2][wPCol - 1];
+              // if cell is empty or number
+              if (
+                cell.children[0] === undefined ||
+                cell.children[0].tagName === 'SPAN'
+              ) {
+                createMovementsArr(cell);
+                // if there is piece
+              } else {
+                nextRow = false;
+              }
             }
           } catch (error) {}
-
           // check two rows up
           let checkCell = rows[wPRow - 3][wPCol - 1];
           // if it's not empty && piece in it
@@ -88,6 +89,9 @@ const piecesMovements = async (e, diagonal = false) => {
             if (checkCell.lastChild.tagName === 'IMG') {
               nextRow = false;
             }
+          }
+          if (diagonal === true) {
+            nextRow = false;
           }
 
           if (nextRow === true) {
@@ -106,20 +110,21 @@ const piecesMovements = async (e, diagonal = false) => {
 
           // one row up
           try {
-            cell = rows[wPRow - 2][wPCol - 1];
-
-            // empty cell
-            if (cell.children[0] === undefined) {
-              createMovementsArr(cell);
-              let wPData = movementsArr;
-              wPArr.push(wPData);
-              // piece in the cell
-            } else if (cell.lastChild.tagName === 'IMG') {
-              // number in the cell
-            } else {
-              createMovementsArr(cell);
-              let wPData = movementsArr;
-              wPArr.push(wPData);
+            if (diagonal === false) {
+              cell = rows[wPRow - 2][wPCol - 1];
+              // empty cell
+              if (cell.children[0] === undefined) {
+                createMovementsArr(cell);
+                let wPData = movementsArr;
+                wPArr.push(wPData);
+                // piece in the cell
+              } else if (cell.lastChild.tagName === 'IMG') {
+                // number in the cell
+              } else {
+                createMovementsArr(cell);
+                let wPData = movementsArr;
+                wPArr.push(wPData);
+              }
             }
           } catch (error) {}
         }
@@ -148,6 +153,7 @@ const piecesMovements = async (e, diagonal = false) => {
           if (diagonal === false) {
             cell = rows[wPRow - 2][wPCol];
             let checkRightCell = cell.lastChild.id;
+            let checkRightBP = checkRightCell.split('-')[0];
 
             if (checkRightBP === 'black') {
               createMovementsArr(cell);
@@ -170,15 +176,17 @@ const piecesMovements = async (e, diagonal = false) => {
         if (location[0] === 2) {
           // one row down
           try {
-            cell = rows[bPRow][bPCol - 1];
+            if (diagonal === false) {
+              cell = rows[bPRow][bPCol - 1];
 
-            if (
-              cell.children[0] === undefined ||
-              cell.children[0].tagName === 'SPAN'
-            ) {
-              createMovementsArr(cell);
-            } else {
-              nextRow = false;
+              if (
+                cell.children[0] === undefined ||
+                cell.children[0].tagName === 'SPAN'
+              ) {
+                createMovementsArr(cell);
+              } else {
+                nextRow = false;
+              }
             }
           } catch (error) {}
 
@@ -188,6 +196,10 @@ const piecesMovements = async (e, diagonal = false) => {
               nextRow = false;
             }
           }
+          if (diagonal === true) {
+            nextRow = false;
+          }
+
           if (nextRow === true) {
             // two rows down
             try {
@@ -202,20 +214,22 @@ const piecesMovements = async (e, diagonal = false) => {
 
           // one row down
           try {
-            cell = rows[bPRow][bPCol - 1];
+            if (diagonal === false) {
+              cell = rows[bPRow][bPCol - 1];
 
-            // empty cell
-            if (cell.children[0] === undefined) {
-              createMovementsArr(cell);
-              let bPData = movementsArr;
-              bPArr.push(bPData);
-              // piece in the cell
-            } else if (cell.lastChild.tagName === 'IMG') {
-              // number in the cell
-            } else {
-              createMovementsArr(cell);
-              let bPData = movementsArr;
-              bPArr.push(bPData);
+              // empty cell
+              if (cell.children[0] === undefined) {
+                createMovementsArr(cell);
+                let bPData = movementsArr;
+                bPArr.push(bPData);
+                // piece in the cell
+              } else if (cell.lastChild.tagName === 'IMG') {
+                // number in the cell
+              } else {
+                createMovementsArr(cell);
+                let bPData = movementsArr;
+                bPArr.push(bPData);
+              }
             }
           } catch (error) {}
         }
