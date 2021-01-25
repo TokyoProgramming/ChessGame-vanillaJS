@@ -1,5 +1,5 @@
 import { movementsCtr } from './movementsController.js';
-import { getBlackCanMoveNext } from './checkController.js';
+import { getBlackCanMoveNext, getWhiteCanMoveNext } from './checkController.js';
 
 // get selected && active cells
 // Move pieces
@@ -22,6 +22,9 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
 const kingMovementFiltering = async (getPlayer, dataArr) => {
   let blackMoveArr = [];
   let whiteKingArr = [];
+  let whiteMoveArr = [];
+  let blackKingArr = [];
+  let kingArr = [];
   if (getPlayer === 'white') {
     const blackData = await getBlackCanMoveNext();
     blackData.forEach((bD) => {
@@ -31,9 +34,7 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
       });
     });
 
-    console.log(blackMoveArr);
-
-    let kingArr = dataArr;
+    kingArr = dataArr;
     kingArr.forEach((el) => {
       whiteKingArr.push(el.cell);
     });
@@ -61,27 +62,26 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
       });
     });
 
-    console.log(whiteMoveArr);
-
-    let kingArr = dataArr;
+    kingArr = dataArr;
     kingArr.forEach((el) => {
-      whiteKingArr.push(el.cell);
+      blackKingArr.push(el.cell);
     });
 
-    whiteKingArr = whiteKingArr.filter((item) => {
+    blackKingArr = blackKingArr.filter((item) => {
       return !whiteMoveArr.includes(item);
     });
 
-    let whiteKingObj = {};
-    let whiteKingData = [];
-    whiteKingArr.forEach((el) => {
-      whiteKingObj = {
+    let blackKingObj = {};
+    let blackKingData = [];
+    blackKingArr.forEach((el) => {
+      blackKingObj = {
         id: Math.round(Math.random() * 1000),
         cell: el,
       };
-      whiteKingData.push(whiteKingObj);
+      blackKingData.push(blackKingObj);
     });
-    return whiteKingData;
+
+    return blackKingData;
   }
 };
 
@@ -89,10 +89,12 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
   let piecesType = dataArr[1];
-  console.log(getPlayer);
   dataArr = dataArr[0];
+
   try {
     let pieceType = piecesType.split('-');
+    console.log(pieceType[1]);
+
     if (pieceType[1] === 'king') {
       dataArr = await kingMovementFiltering(getPlayer, dataArr);
     }
