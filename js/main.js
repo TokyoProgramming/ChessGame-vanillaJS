@@ -20,6 +20,8 @@ import {
   checkKingStatus,
 } from './controllers/checkController.js';
 
+import { logCtr } from './controllers/logController.js';
+
 const chessBoard = document.querySelector('.chess-board');
 
 let activeCellsArr = [];
@@ -61,6 +63,7 @@ const main = async (e) => {
         toCell = targetCell.parentElement;
       }
       movePiece(pieceInfoArr, activeCellsArr, toCell, opponentPlayer);
+      logCtr(toCell, getPlayer);
       await checkKingStatus(getPlayer);
 
       removeColor(pieceInfoArr);

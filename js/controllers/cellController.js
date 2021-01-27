@@ -1,9 +1,5 @@
 import { movementsCtr } from './movementsController.js';
-import {
-  getBlackCanMoveNext,
-  getWhiteCanMoveNext,
-  getPiecesPositions,
-} from './checkController.js';
+import { kingMovementFiltering } from './checkController.js';
 
 // get selected && active cells
 // Move pieces
@@ -22,82 +18,6 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
   await removeCirclesClassList(activeCellsArr, opponentPlayer);
 };
 
-// king movement filtering
-const kingMovementFiltering = async (getPlayer, dataArr) => {
-  let blackMoveArr = [];
-  let whiteKingArr = [];
-  let whiteMoveArr = [];
-  let blackKingArr = [];
-  let kingArr = [];
-  if (getPlayer === 'white') {
-    const blackData = await getBlackCanMoveNext();
-    blackData.forEach((bD) => {
-      let bDArr = bD[0];
-      bDArr.forEach((el) => {
-        blackMoveArr.push(el.cell);
-      });
-    });
-
-    kingArr = dataArr;
-    kingArr.forEach((el) => {
-      whiteKingArr.push(el.cell);
-      console.log(el.cell);
-    });
-
-    whiteKingArr = whiteKingArr.filter((item) => {
-      return !blackMoveArr.includes(item);
-    });
-
-    let whiteKingObj = {};
-    let whiteKingData = [];
-    whiteKingArr.forEach((el) => {
-      whiteKingObj = {
-        id: Math.round(Math.random() * 1000),
-        cell: el,
-      };
-      whiteKingData.push(whiteKingObj);
-    });
-    return whiteKingData;
-  } else if (getPlayer === 'black') {
-    const whiteData = await getWhiteCanMoveNext();
-    whiteData.forEach((wD) => {
-      let wDArr = wD[0];
-      wDArr.forEach((el) => {
-        whiteMoveArr.push(el.cell);
-      });
-    });
-
-    kingArr = dataArr;
-    kingArr.forEach((el) => {
-      blackKingArr.push(el.cell);
-    });
-
-    blackKingArr = blackKingArr.filter((item) => {
-      return !whiteMoveArr.includes(item);
-    });
-
-    let blackKingObj = {};
-    let blackKingData = [];
-    blackKingArr.forEach((el) => {
-      blackKingObj = {
-        id: Math.round(Math.random() * 1000),
-        cell: el,
-      };
-      blackKingData.push(blackKingObj);
-    });
-
-    return blackKingData;
-  }
-};
-
-// black king filtering
-const blackKingFilter = async (getPlayer, dataArr) => {
-  console.log(getPlayer);
-  console.log(dataArr);
-  const position = await getPiecesPositions();
-  console.log(position[0]);
-};
-
 // add circles to available cells
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
@@ -106,12 +26,8 @@ const cellActivate = async (e, getPlayer) => {
 
   try {
     let pieceType = piecesType.split('-');
-    console.log(pieceType[1]);
-    console.log(e.target.parentElement);
-
     if (pieceType[1] === 'king') {
       dataArr = await kingMovementFiltering(getPlayer, dataArr);
-      // dataArr = await blackKingFilter(getPlayer, dataArr);
     }
   } catch (error) {
     console.log('error');
