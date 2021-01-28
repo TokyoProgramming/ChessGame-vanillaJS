@@ -63,8 +63,8 @@ const main = async (e) => {
         toCell = targetCell.parentElement;
       }
       movePiece(pieceInfoArr, activeCellsArr, toCell, opponentPlayer);
-      logCtr(toCell, getPlayer);
-      await checkKingStatus(getPlayer);
+      let log = await logCtr(toCell, getPlayer);
+      await checkKingStatus(getPlayer, log);
 
       removeColor(pieceInfoArr);
       // init activeCellsArr

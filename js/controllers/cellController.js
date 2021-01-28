@@ -21,6 +21,7 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
 // add circles to available cells
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
+
   let piecesType = dataArr[1];
   dataArr = dataArr[0];
 

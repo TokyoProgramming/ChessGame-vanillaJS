@@ -1,13 +1,13 @@
 let log = [];
 
-const logCtr = (toCell, getPlayer) => {
+const logCtr = async (toCell, getPlayer) => {
   let logObj = {
     player: getPlayer,
     cell: toCell,
     pieceType: toCell.lastChild.id,
   };
   log.push(logObj);
-  console.log(log);
+
   return log;
 };
 

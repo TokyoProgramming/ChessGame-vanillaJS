@@ -2,8 +2,11 @@ import { piecesMovements } from '../movements.js';
 
 const movementsCtr = async (e, getPlayer, props) => {
   const movements = await piecesMovements(e, props);
+  // piece color
   let piecesColor = movements[1];
+  // piece Type
   let piecesType = movements[movements.length - 1];
+
   let newArr = [];
   let arr = [];
 
@@ -26,6 +29,10 @@ const movementsCtr = async (e, getPlayer, props) => {
     case 'black-queen':
     case 'black-pawn':
       let movementsLoopArr = movements[2];
+      // arr for checkmate
+      let checkmateArr = [];
+      let checkmateObj = {};
+
       for (let i = 0; i < movementsLoopArr.length; i++) {
         let arr = movementsLoopArr[i];
 
@@ -43,22 +50,38 @@ const movementsCtr = async (e, getPlayer, props) => {
               } else if (
                 data.cell.lastChild.id.split('-')[0] !== `${getPlayer}`
               ) {
+                checkmateObj = {
+                  i,
+                  data,
+                };
+                checkmateArr.push(checkmateObj);
                 newArr.push(data);
                 break;
               }
               // if there is a number or numbers in the cell
             } else {
+              checkmateObj = {
+                i,
+                data,
+              };
+              checkmateArr.push(checkmateObj);
               newArr.push(data);
             }
             // cell is empty
           } else {
+            checkmateObj = {
+              i,
+              data,
+            };
+            checkmateArr.push(checkmateObj);
             newArr.push(data);
           }
         }
       }
+      // console.log(checkmateArr);
 
       arr = newArr;
-      return [arr, piecesType];
+      return [arr, piecesType, checkmateArr];
       break;
     default:
       break;
