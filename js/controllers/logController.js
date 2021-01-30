@@ -1,6 +1,4 @@
-let log = [];
-
-const logCtr = async (toCell, getPlayer) => {
+const logCtr = async (toCell, getPlayer, log) => {
   let logObj = {
     player: getPlayer,
     cell: toCell,

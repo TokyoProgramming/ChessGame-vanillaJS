@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>chess-project-2</title>
+    <title>Chess App</title>
   </head>
   <body>
     <div class="container">
-      <div class="game">
+      <div class="game before-start" id="game">
         <div class="user-1">
           <div class="avatar-1">
             <img src="./img/avatar/avatar-1.jpg" class="avatar-photo" alt="" />
           </div>
           <div class="user-name">
-            <span>use2</span>
+            <span>user2</span>
           </div>
           <div class="countdown-1">
             <span>5:00</span>
@@ -119,11 +119,15 @@
           </div>
         </div>
       </div>
+      <div class="start-game" id="delete-btn">
+        <!-- <p class="loser-name"></p> -->
+        <button class="start-button" id="start-button">start game</button>
+      </div>
     </div>
-    <script type="module" src="./js/boardCoordinate.js"></script>
-    <script type="module" src="./js/piecesInfo.js"></script>
-    <script type="module" src="./js/setPieces.js"></script>
-    <script type="module" src="./js/movements.js"></script>
+    <script type="module" src="./js/settings/boardCoordinate.js"></script>
+    <script type="module" src="./js/settings/piecesInfo.js"></script>
+    <script type="module" src="./js/settings/setPieces.js"></script>
+    <script type="module" src="./js/settings/movements.js"></script>
     <script type="module" src="./js/controllers/cellController.js"></script>
     <script type="module" src="./js/controllers/checkController.js"></script>
     <script type="module" src="./js/controllers/gameController.js"></script>

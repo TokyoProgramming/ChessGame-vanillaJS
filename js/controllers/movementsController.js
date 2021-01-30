@@ -1,4 +1,4 @@
-import { piecesMovements } from '../movements.js';
+import { piecesMovements } from '../settings/movements.js';
 
 const movementsCtr = async (e, getPlayer, props) => {
   const movements = await piecesMovements(e, props);

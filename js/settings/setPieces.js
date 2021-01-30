@@ -130,7 +130,7 @@ const setChessPieces = () => {
   let whiteQueen = document.createElement('img');
   whiteQueen.src = `${wQ.imgSrc}`;
   whiteQueen.id = 'white-queen';
-  X65.appendChild(whiteQueen);
+  X85.appendChild(whiteQueen);
 
   //   black Pawn
   row2.map((el) => {
@@ -174,7 +174,7 @@ const setChessPieces = () => {
   let blackKing = document.createElement('img');
   blackKing.src = `${bKing.imgSrc}`;
   blackKing.id = 'black-king';
-  X34.appendChild(blackKing);
+  X14.appendChild(blackKing);
 
   //   black Queen
   let blackQueen = document.createElement('img');

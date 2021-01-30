@@ -69,6 +69,7 @@ const cellActivate = async (e, getPlayer) => {
 
 // remove circles && classList === 'active' && 'scale-ctr'
 const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
+  console.log(activeCellsArr);
   activeCellsArr.forEach((el) => {
     let data = el.cell;
 
@@ -131,7 +132,9 @@ const addColor = (selectCell) => {
 // remove color
 const removeColor = (cell) => {
   // cell.classList.remove('clicked-1')
-  cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
+  try {
+    cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
+  } catch (error) {}
   // chessBoard.classList.remove('board-opacity');
 };
 
