@@ -69,7 +69,6 @@ const cellActivate = async (e, getPlayer) => {
 
 // remove circles && classList === 'active' && 'scale-ctr'
 const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
-  console.log(activeCellsArr);
   activeCellsArr.forEach((el) => {
     let data = el.cell;
 

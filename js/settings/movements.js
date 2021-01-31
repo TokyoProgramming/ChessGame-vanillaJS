@@ -1,4 +1,7 @@
 import { rows } from './boardCoordinate.js';
+import { logRes } from '../main.js';
+
+
 let row = 0;
 let col = 0;
 let movementsArr = [];
@@ -24,7 +27,6 @@ const createMovementsArr = (cell) => {
     };
     movementsArr.push(movementsObj);
   }
-
   return movementsArr;
 };
 
@@ -635,7 +637,6 @@ const piecesMovements = async (e, diagonal = false) => {
         } catch (error) {}
 
         return [movementsArr, piecesColor, piecesType];
-
         break;
 
       default:

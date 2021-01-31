@@ -13,7 +13,7 @@ import {
   gameEnd,
 } from './controllers/gameController.js';
 import { checkKingStatus } from './controllers/checkController.js';
-import { logCtr } from './controllers/logController.js';
+import { logCtr, blackLog, whiteLog } from './controllers/logController.js';
 
 const chessBoard = document.querySelector('.chess-board');
 const game = document.getElementById('game');
@@ -64,9 +64,10 @@ const main = async (e) => {
 
       // manage log
       logRes = await logCtr(toCell, getPlayer, log);
-      gameStatus = await checkKingStatus(getPlayer, logRes);
 
-      console.log(logRes);
+      gameStatus = await checkKingStatus(getPlayer, log);
+      // const blackData = await blackLog(logRes);
+      // const whiteData = await whiteLog(logRes);
 
       let checkmateRes = await gameStatusCtr(gameStatus, deleteBtn);
 
@@ -113,3 +114,5 @@ const init = () => {
 // document.addEventListener('DOMContentLoaded', setChessPieces);
 startGame.addEventListener('click', gameStart);
 chessBoard.addEventListener('click', main);
+
+export { logRes };

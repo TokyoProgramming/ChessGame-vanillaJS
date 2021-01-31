@@ -1,4 +1,5 @@
 import { piecesMovements } from '../settings/movements.js';
+import { logRes } from '../main.js';
 
 const movementsCtr = async (e, getPlayer, props) => {
   const movements = await piecesMovements(e, props);
@@ -18,6 +19,7 @@ const movementsCtr = async (e, getPlayer, props) => {
       let movementsArr = movements[0];
       // filtering the movementsArr
       arr = filteringArr(movementsArr, piecesColor);
+
       return [arr, piecesType];
       break;
     case 'white-rook':

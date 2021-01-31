@@ -41,25 +41,29 @@ const getPiecesPositions = async (except) => {
   return [blackPiecesPositions, whitePiecesPositions];
 };
 
-const getWhiteCanMoveNext = async () => {
-  const data = await getPiecesPositions();
+const getWhiteCanMoveNext = async (value, except = null, color = 'white') => {
+  const data = await getPiecesPositions(except);
   const whiteData = data[1];
   let resWhiteArr = [];
 
   await whiteData.forEach(async (el) => {
-    const resWhite = await movementsCtr(el.name, 'white', true);
+    // here should be fixed
+    const resWhite = await movementsCtr(el.name, `${color}`, value);
     resWhiteArr.push(resWhite);
   });
+
   return resWhiteArr;
 };
 
-const getBlackCanMoveNext = async (value, except = null) => {
+const getBlackCanMoveNext = async (value, except = null, color = 'black') => {
   const data = await getPiecesPositions(except);
   const blackData = data[0];
   let resBlackArr = [];
+
   // const movements = await movementsCtr();
   await blackData.forEach(async (el) => {
-    const resBlack = await movementsCtr(el.name, 'black', value);
+    // here should be fixed
+    const resBlack = await movementsCtr(el.name, `${color}`, value);
     resBlackArr.push(resBlack);
   });
 
@@ -68,8 +72,11 @@ const getBlackCanMoveNext = async (value, except = null) => {
 
 // check king's Status
 const checkKingStatus = async (getPlayer, log) => {
-  const whitePieces = await getWhiteCanMoveNext();
+  // check white pieces movements
+  const whitePieces = await getWhiteCanMoveNext(true);
+  // check black pieces movements
   const blackPieces = await getBlackCanMoveNext(true);
+
   let blackCheckmate;
   let whiteCheckmate;
 
@@ -100,6 +107,7 @@ const checkKingStatus = async (getPlayer, log) => {
               let pieceName = el.cell.lastChild.id.split('-')[1];
               if (pieceColor === 'white' && pieceName === 'king') {
                 let checkingPiece = log[log.length - 1];
+                console.log(checkingPiece);
                 whiteCheckmate = checkmate(checkingPiece);
               }
             }
@@ -137,12 +145,16 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
 
   if (getPlayer === 'white') {
     const blackData = await getBlackCanMoveNext(true);
-    blackData.forEach((bD) => {
+    const blackDataArr = await getBlackCanMoveNext(true, null, 'white');
+    let bDataArr = blackData.concat(blackDataArr);
+    bDataArr.forEach((bD) => {
       let bDArr = bD[0];
       bDArr.forEach((el) => {
         blackMoveArr.push(el.cell);
       });
     });
+
+    console.log(blackMoveArr);
 
     kingArr = dataArr;
     kingArr.forEach((el) => {
@@ -164,8 +176,10 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
     });
     return whiteKingData;
   } else if (getPlayer === 'black') {
-    const whiteData = await getWhiteCanMoveNext();
-    whiteData.forEach((wD) => {
+    const whiteData = await getWhiteCanMoveNext(true);
+    const whiteDataArr = await getWhiteCanMoveNext(true, null, 'black');
+    let wDataArr = whiteData.concat(whiteDataArr);
+    wDataArr.forEach((wD) => {
       let wDArr = wD[0];
       wDArr.forEach((el) => {
         whiteMoveArr.push(el.cell);
@@ -254,7 +268,7 @@ const getPath = async (pathArr) => {
 // *1  allies can get checking piece ??
 const alliesCanGetCheckingPiece = async (player, cell) => {
   let blackData = await getBlackCanMoveNext(true);
-  let whiteData = await getWhiteCanMoveNext();
+  let whiteData = await getWhiteCanMoveNext(true);
   let getArr = [];
 
   // check player === white, checked player === black
@@ -291,17 +305,21 @@ const checkedKingMovement = async (player) => {
 
   if (player === 'white') {
     king = await movementsCtr(kingInfo, 'black', true);
+
     // call kingMovementFiltering
 
     kingFilter = await kingMovementFiltering('black', king[0]);
+
     kingMove = kingFilter.length;
   } else if (player === 'black') {
     king = await movementsCtr(kingInfo, 'white', true);
     // call kingMovementFiltering
-    console.log(king[0]);
+
     kingFilter = await kingMovementFiltering('white', king[0]);
     kingMove = kingFilter.length;
   }
+
+  console.log(kingMove);
 
   return kingMove;
 };
@@ -360,13 +378,10 @@ const checkmate = async (checkingPiece) => {
   const checkThree = await canAlliesSacrifice(player, cell);
 
   if (checkOne === 0 && checkTwo === 0 && checkThree === 0) {
-    // console.log('checkmate');
     result = 'checkmate';
   } else {
-    // console.log('check');
     result = 'check';
   }
-
   return result;
 };
 
