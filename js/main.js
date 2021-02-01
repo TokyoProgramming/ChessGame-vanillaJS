@@ -14,6 +14,7 @@ import {
 } from './controllers/gameController.js';
 import { checkKingStatus } from './controllers/checkController.js';
 import { logCtr, blackLog, whiteLog } from './controllers/logController.js';
+import { promotion } from './specialMove/pawnPromotion.js';
 
 const chessBoard = document.querySelector('.chess-board');
 const game = document.getElementById('game');
@@ -21,13 +22,14 @@ const deleteBtn = document.getElementById('delete-btn');
 const startGame = document.getElementById('start-button');
 
 let activeCellsArr = [];
-let pieceInfoArr = [];
+let fromCell = [];
 let player = 'player1';
 let opponentPlayer = '';
 let toCell = '';
 let gameStatus;
 let log = [];
 let logRes = [];
+let logResult = [];
 
 const main = async (e) => {
   let targetCell = e.target;
@@ -37,15 +39,17 @@ const main = async (e) => {
   } else {
     opponentPlayer = 'white';
   }
-
+  // choose piece
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
       activeCellsArr = await cellActivate(e, getPlayer);
+
       if (activeCellsArr.length !== 0) {
-        pieceInfoArr = [targetCell.parentElement][0];
+        fromCell = [targetCell.parentElement][0];
         addColor(targetCell.parentElement);
       }
     }
+    // select toCell
   } else if (activeCellsArr.length !== 0) {
     if (
       targetCell.classList[1] === 'active' ||
@@ -54,30 +58,31 @@ const main = async (e) => {
     ) {
       if (targetCell.classList[1] === 'active') {
         toCell = targetCell;
+        // opponent piece in the cell
       } else if (targetCell.id.split('-')[0] === `${opponentPlayer}`) {
         toCell = targetCell.parentElement;
+        // empty cell
       } else {
         toCell = targetCell.parentElement;
       }
       // move piece
-      movePiece(pieceInfoArr, activeCellsArr, toCell, opponentPlayer);
-
+      movePiece(fromCell, activeCellsArr, toCell, opponentPlayer);
       // manage log
-      logRes = await logCtr(toCell, getPlayer, log);
-
+      logRes = await logCtr(fromCell, toCell, getPlayer, log);
+      logResult = logRes[logRes.length - 1];
       gameStatus = await checkKingStatus(getPlayer, log);
       // const blackData = await blackLog(logRes);
       // const whiteData = await whiteLog(logRes);
 
+      promotion(logResult, e);
       let checkmateRes = await gameStatusCtr(gameStatus, deleteBtn);
-
       // if game checkmates
       try {
         if (checkmateRes.split(' ')[1] === 'lose') {
           setTimeout(() => {
             gameEnd(game, deleteBtn);
           }, 3000);
-          removeColor(pieceInfoArr);
+          removeColor(fromCell);
 
           // await initPieces(rows);
           init();
@@ -85,14 +90,16 @@ const main = async (e) => {
         }
       } catch (error) {}
 
-      removeColor(pieceInfoArr);
+      removeColor(fromCell);
       // init activeCellsArr
       activeCellsArr = [];
       // switchPlayer
       player = switchPlayer(player);
+
+      // there isn't the piece in the cell
     } else if (targetCell.classList[1] === undefined) {
       removeCirclesClassList(activeCellsArr, opponentPlayer);
-      removeColor(pieceInfoArr);
+      removeColor(fromCell);
       // init activeCellsArr
       activeCellsArr = [];
     }
@@ -102,17 +109,18 @@ const main = async (e) => {
 // initialize
 const init = () => {
   activeCellsArr = [];
-  pieceInfoArr = [];
+  fromCell = [];
   player = 'player1';
   opponentPlayer = '';
   toCell = '';
   gameStatus;
   log = [];
   logRes = [];
+  logResult = [];
 };
 
 // document.addEventListener('DOMContentLoaded', setChessPieces);
 startGame.addEventListener('click', gameStart);
 chessBoard.addEventListener('click', main);
 
-export { logRes };
+export { logRes, logResult };

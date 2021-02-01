@@ -1,30 +1,70 @@
 import { movementsCtr } from './movementsController.js';
 import { kingMovementFiltering } from './checkController.js';
+import { rows } from '../settings/boardCoordinate.js';
 
 // get selected && active cells
 // Move pieces
 const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
-  let pieceData = fromCell.lastChild;
-  let toCellData = toCell;
+  let fromCellData = fromCell.lastChild;
+  console.log(activeCellsArr);
 
-  // remove circle && classList === 'active'
-  toCellData.lastChild.remove();
-  toCellData.classList.remove('active');
-
+  // remove opponent piece
+  toCell.lastChild.remove();
   // move the piece
-  toCellData.appendChild(pieceData);
-
+  toCell.appendChild(fromCellData);
+  // remove circle && classList === 'active'
+  toCell.classList.remove('active');
   // remove Circles && classList 'active' && 'scale-ctr'
   await removeCirclesClassList(activeCellsArr, opponentPlayer);
+  // passant movements cell control
+  try {
+    if (toCell.classList.contains('passant-move')) {
+      let passantPieceRow = toCell.id[1];
+      let passantPieceCol = toCell.id[2];
+      let passantBCell = rows[passantPieceRow][passantPieceCol - 1];
+      let passantWCell = rows[passantPieceRow - 2][passantPieceCol - 1];
+
+      toCell.classList.remove('passant-move');
+      if (opponentPlayer === 'black') {
+        passantBCell.classList.remove('passant-piece');
+        passantBCell.lastChild.remove();
+      } else if (opponentPlayer === 'white') {
+        passantWCell.classList.remove('passant-piece');
+        passantWCell.lastChild.remove();
+      }
+    } else {
+      activeCellsArr.forEach((el) => {
+        console.log(el.cell.classList);
+        let data = el.cell;
+        let classListData = data.classList;
+        if (classListData.contains('passant-move')) {
+          classListData.remove('passant-move');
+          let row = data.id[1];
+          let col = data.id[2];
+
+          if (opponentPlayer === 'black') {
+            let passantMoveCell = rows[row][col - 1];
+            passantMoveCell.classList.remove('passant-piece');
+          } else if (opponentPlayer === 'white') {
+            let passantMoveCell = rows[row - 2][col - 1];
+            passantMoveCell.classList.remove('passant-piece');
+          }
+        }
+      });
+    }
+  } catch (error) {}
+  // remove classList passant-piece && passant-move
 };
 
 // add circles to available cells
 const cellActivate = async (e, getPlayer) => {
   let dataArr = await movementsCtr(e, getPlayer);
 
+  // get pieceType
   let piecesType = dataArr[1];
   dataArr = dataArr[0];
 
+  // if pieceType === 'king' => filter the movement
   try {
     let pieceType = piecesType.split('-');
     if (pieceType[1] === 'king') {
@@ -33,6 +73,10 @@ const cellActivate = async (e, getPlayer) => {
   } catch (error) {
     console.log('error');
   }
+
+  // if pieceType === 'pawnEnPassant'
+  // pawnEnPassant function
+  // enPassant(piecesType, e.target.parentElement.id);
 
   dataArr.forEach((el) => {
     let data = el.cell;
@@ -87,7 +131,6 @@ const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
     } else if (data.lastChild.id.split('-')[0] === `${opponentPlayer}`) {
       // get opponent piece
       let scaleCtrImg = data.lastChild;
-      // delete opponent piece
       scaleCtrImg.classList.remove('scale-ctr');
 
       // cell has number
@@ -134,6 +177,7 @@ const removeColor = (cell) => {
   try {
     cell.classList.remove('clicked-1') || cell.classList.remove('clicked-2');
   } catch (error) {}
+
   // chessBoard.classList.remove('board-opacity');
 };
 

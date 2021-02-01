@@ -125,7 +125,7 @@ body {
   flex-direction: column;
   width: var(--primary-boardSize);
   height: var(--primary-boardSize);
-
+  position: relative;
   background-color: #fff;
 }
 
@@ -416,4 +416,13 @@ img {
   font-size: 50px;
   padding: 10px;
   transition-duration: 0.4s;
+}
+
+/* promotion select */
+
+.promotion-select select {
+  /* display: none; */
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }

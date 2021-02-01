@@ -1,6 +1,6 @@
 import { rows } from './boardCoordinate.js';
 import { logRes } from '../main.js';
-
+import { enPassant } from '../specialMove/pawnEnPassant.js';
 
 let row = 0;
 let col = 0;
@@ -65,7 +65,6 @@ const piecesMovements = async (e, diagonal = false) => {
         let wPRow = row;
         let wPCol = col;
         let wPArr = [];
-
         // move pawn from first row
         if (location[0] === 7) {
           // one row up
@@ -95,7 +94,6 @@ const piecesMovements = async (e, diagonal = false) => {
           if (diagonal === true) {
             nextRow = false;
           }
-
           if (nextRow === true) {
             // two rows up
             try {
@@ -105,11 +103,23 @@ const piecesMovements = async (e, diagonal = false) => {
           }
           let wPData1 = movementsArr;
           wPArr.push(wPData1);
-
           // not in the first row
         } else {
-          movementsArr = [];
+          if (location[0] === 4) {
+            let enArr = await enPassant(piecesType, location);
+            // console.log(enArr);
+            try {
+              if (enArr.length !== 0) {
+                wPArr = enArr;
+              }
+            } catch (error) {}
+          }
 
+          if (location[0] === 4) {
+            console.log(wPArr);
+          }
+
+          movementsArr = [];
           // one row up
           try {
             if (diagonal === false) {
@@ -130,15 +140,17 @@ const piecesMovements = async (e, diagonal = false) => {
             }
           } catch (error) {}
         }
+        if (location[0] === 4) {
+          console.log(wPArr);
+        }
+
         movementsArr = [];
         // check one row up && one col left
-
         try {
           if (diagonal === false) {
             cell = rows[wPRow - 2][wPCol - 2];
             let checkLeftCell = cell.lastChild.id;
             let checkLeftBP = checkLeftCell.split('-')[0];
-
             if (checkLeftBP === 'black') {
               createMovementsArr(cell);
             }
@@ -156,7 +168,6 @@ const piecesMovements = async (e, diagonal = false) => {
             cell = rows[wPRow - 2][wPCol];
             let checkRightCell = cell.lastChild.id;
             let checkRightBP = checkRightCell.split('-')[0];
-
             if (checkRightBP === 'black') {
               createMovementsArr(cell);
             }
@@ -167,9 +178,9 @@ const piecesMovements = async (e, diagonal = false) => {
         } catch (error) {}
         let wPData3 = movementsArr;
         wPArr.push(wPData3);
+
         return [movementsArr, piecesColor, wPArr, piecesType];
         break;
-
       case 'black-pawn':
         let bPRow = row;
         let bPCol = col;
@@ -180,7 +191,6 @@ const piecesMovements = async (e, diagonal = false) => {
           try {
             if (diagonal === false) {
               cell = rows[bPRow][bPCol - 1];
-
               if (
                 cell.children[0] === undefined ||
                 cell.children[0].tagName === 'SPAN'
@@ -191,7 +201,6 @@ const piecesMovements = async (e, diagonal = false) => {
               }
             }
           } catch (error) {}
-
           let checkCell = rows[bPRow + 1][bPCol - 1];
           if (checkCell.children.length >= 1) {
             if (checkCell.lastChild.tagName === 'IMG') {
@@ -201,7 +210,6 @@ const piecesMovements = async (e, diagonal = false) => {
           if (diagonal === true) {
             nextRow = false;
           }
-
           if (nextRow === true) {
             // two rows down
             try {
@@ -212,13 +220,21 @@ const piecesMovements = async (e, diagonal = false) => {
           let bPData1 = movementsArr;
           bPArr.push(bPData1);
         } else {
-          movementsArr = [];
+          console.log(location[0]);
+          if (location[0] === 5) {
+            let enArr = await enPassant(piecesType, location);
+            try {
+              if (enArr.length !== 0) {
+                bPArr = enArr;
+              }
+            } catch (error) {}
+          }
 
+          movementsArr = [];
           // one row down
           try {
             if (diagonal === false) {
               cell = rows[bPRow][bPCol - 1];
-
               // empty cell
               if (cell.children[0] === undefined) {
                 createMovementsArr(cell);
@@ -645,4 +661,4 @@ const piecesMovements = async (e, diagonal = false) => {
   }
 };
 
-export { piecesMovements, getFirstSecondNumber };
+export { piecesMovements, getFirstSecondNumber, createMovementsArr };

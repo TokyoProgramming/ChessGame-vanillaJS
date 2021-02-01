@@ -1,5 +1,4 @@
 import { piecesMovements } from '../settings/movements.js';
-import { logRes } from '../main.js';
 
 const movementsCtr = async (e, getPlayer, props) => {
   const movements = await piecesMovements(e, props);
@@ -19,7 +18,6 @@ const movementsCtr = async (e, getPlayer, props) => {
       let movementsArr = movements[0];
       // filtering the movementsArr
       arr = filteringArr(movementsArr, piecesColor);
-
       return [arr, piecesType];
       break;
     case 'white-rook':
@@ -40,27 +38,36 @@ const movementsCtr = async (e, getPlayer, props) => {
 
         for (let j = 0; j < arr.length; j++) {
           let data = arr[j];
-
-          // cell is not empty
-          if (data.cell.children[0] !== undefined) {
-            // in the cell there is a white or black piece
-            if (data.cell.lastChild.tagName === 'IMG') {
-              // if the piece is player's pice => break;
-              if (data.cell.lastChild.id.split('-')[0] === `${getPlayer}`) {
-                break;
-                // if it's opponent piece => add the cell & break;
-              } else if (
-                data.cell.lastChild.id.split('-')[0] !== `${getPlayer}`
-              ) {
+          try {
+            // cell is not empty
+            if (data.cell.children[0] !== undefined) {
+              // in the cell there is a white or black piece
+              if (data.cell.lastChild.tagName === 'IMG') {
+                // if the piece is player's pice => break;
+                if (data.cell.lastChild.id.split('-')[0] === `${getPlayer}`) {
+                  break;
+                  // if it's opponent piece => add the cell & break;
+                } else if (
+                  data.cell.lastChild.id.split('-')[0] !== `${getPlayer}`
+                ) {
+                  checkmateObj = {
+                    i,
+                    data,
+                  };
+                  checkmateArr.push(checkmateObj);
+                  newArr.push(data);
+                  break;
+                }
+                // if there is a number or numbers in the cell
+              } else {
                 checkmateObj = {
                   i,
                   data,
                 };
                 checkmateArr.push(checkmateObj);
                 newArr.push(data);
-                break;
               }
-              // if there is a number or numbers in the cell
+              // cell is empty
             } else {
               checkmateObj = {
                 i,
@@ -69,17 +76,14 @@ const movementsCtr = async (e, getPlayer, props) => {
               checkmateArr.push(checkmateObj);
               newArr.push(data);
             }
-            // cell is empty
-          } else {
-            checkmateObj = {
-              i,
-              data,
-            };
-            checkmateArr.push(checkmateObj);
-            newArr.push(data);
+          } catch (error) {
+            console.log(error);
+            console.log(data.cell);
+            console.log(data);
           }
         }
       }
+
       // console.log(checkmateArr);
 
       arr = newArr;

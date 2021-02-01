@@ -1,7 +1,8 @@
-const logCtr = async (toCell, getPlayer, log) => {
+const logCtr = async (fromCell, toCell, getPlayer, log) => {
   let logObj = {
+    fromCell: fromCell,
     player: getPlayer,
-    cell: toCell,
+    toCell: toCell,
     pieceType: toCell.lastChild.id,
   };
   log.push(logObj);
