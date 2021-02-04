@@ -16,8 +16,11 @@ const movementsCtr = async (e, getPlayer, props) => {
     case 'black-king':
     case 'black-knight':
       let movementsArr = movements[0];
+      console.log(movementsArr);
       // filtering the movementsArr
       arr = filteringArr(movementsArr, piecesColor);
+      console.log(arr);
+
       return [arr, piecesType];
       break;
     case 'white-rook':
@@ -76,11 +79,7 @@ const movementsCtr = async (e, getPlayer, props) => {
               checkmateArr.push(checkmateObj);
               newArr.push(data);
             }
-          } catch (error) {
-            console.log(error);
-            console.log(data.cell);
-            console.log(data);
-          }
+          } catch (error) {}
         }
       }
 

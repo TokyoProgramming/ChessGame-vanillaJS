@@ -73,12 +73,13 @@ const getBlackCanMoveNext = async (value, except = null, color = 'black') => {
 // check king's Status
 const checkKingStatus = async (getPlayer, log) => {
   // check white pieces movements
-  const whitePieces = await getWhiteCanMoveNext(true);
+  const whitePieces = await getWhiteCanMoveNext(true, false);
   // check black pieces movements
-  const blackPieces = await getBlackCanMoveNext(true);
+  const blackPieces = await getBlackCanMoveNext(true, false);
 
   let blackCheckmate;
   let whiteCheckmate;
+  let checked = false;
 
   try {
     if (getPlayer === 'white') {
@@ -91,6 +92,8 @@ const checkKingStatus = async (getPlayer, log) => {
               let pieceName = el.cell.lastChild.id.split('-')[1];
               if (pieceColor === 'black' && pieceName === 'king') {
                 let checkingPiece = log[log.length - 1];
+                console.log('black checked');
+                el.cell.classList.add('checked');
                 blackCheckmate = checkmate(checkingPiece);
               }
             }
@@ -107,7 +110,9 @@ const checkKingStatus = async (getPlayer, log) => {
               let pieceName = el.cell.lastChild.id.split('-')[1];
               if (pieceColor === 'white' && pieceName === 'king') {
                 let checkingPiece = log[log.length - 1];
-                console.log(checkingPiece);
+                console.log('white checked');
+                // add checked classList
+                el.cell.classList.add('checked');
                 whiteCheckmate = checkmate(checkingPiece);
               }
             }
@@ -119,16 +124,19 @@ const checkKingStatus = async (getPlayer, log) => {
 
   const checkResBlack = await blackCheckmate;
   const checkResWhite = await whiteCheckmate;
+  let checkResult;
 
   try {
     if (checkResBlack === 'checkmate') {
-      return 'black lose';
+      checkResult = 'black lose';
     } else if (checkResWhite === 'checkmate') {
-      return 'white lose';
-    } else if (checkResBlack === 'check') {
-      return 'black checked';
-    } else if (checkResWhite === 'check') {
-      return 'white';
+      checkResult = 'white lose';
+    } else if (checkResBlack === 'checked') {
+      // checkResult = 1;
+    } else if (checkResWhite === 'checked') {
+      checkResult = 1;
+      // return checkResult;
+    } else {
     }
   } catch (error) {}
 
@@ -153,8 +161,6 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
         blackMoveArr.push(el.cell);
       });
     });
-
-    console.log(blackMoveArr);
 
     kingArr = dataArr;
     kingArr.forEach((el) => {
@@ -231,6 +237,7 @@ const getKingPosition = async (player) => {
       }
     });
   }
+
   return kingInfo;
 };
 
@@ -319,8 +326,6 @@ const checkedKingMovement = async (player) => {
     kingMove = kingFilter.length;
   }
 
-  console.log(kingMove);
-
   return kingMove;
 };
 
@@ -365,7 +370,7 @@ const canAlliesSacrifice = async (player, cell) => {
 // checkmate
 const checkmate = async (checkingPiece) => {
   let player = checkingPiece.player;
-  let cell = checkingPiece.cell;
+  let cell = checkingPiece.toCell;
   let result;
 
   // *1 call allies can get checking piece
@@ -380,7 +385,7 @@ const checkmate = async (checkingPiece) => {
   if (checkOne === 0 && checkTwo === 0 && checkThree === 0) {
     result = 'checkmate';
   } else {
-    result = 'check';
+    result = 'checked';
   }
   return result;
 };
@@ -391,4 +396,6 @@ export {
   getWhiteCanMoveNext,
   getBlackCanMoveNext,
   kingMovementFiltering,
+  checkmate,
+  getKingPosition,
 };

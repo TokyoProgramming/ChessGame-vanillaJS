@@ -12,7 +12,10 @@ import {
   gameStart,
   gameEnd,
 } from './controllers/gameController.js';
-import { checkKingStatus } from './controllers/checkController.js';
+import {
+  checkKingStatus,
+  getKingPosition,
+} from './controllers/checkController.js';
 import { logCtr, blackLog, whiteLog } from './controllers/logController.js';
 import { promotion } from './specialMove/pawnPromotion.js';
 
@@ -34,11 +37,14 @@ let logResult = [];
 const main = async (e) => {
   let targetCell = e.target;
   let getPlayer = playerController(player);
+  let myPlayer = getPlayer;
+
   if (getPlayer === 'white') {
     opponentPlayer = 'black';
   } else {
     opponentPlayer = 'white';
   }
+
   // choose piece
   if (activeCellsArr.length === 0) {
     if (targetCell.id.split('-')[0] === `${getPlayer}`) {
@@ -65,6 +71,7 @@ const main = async (e) => {
       } else {
         toCell = targetCell.parentElement;
       }
+
       // move piece
       movePiece(fromCell, activeCellsArr, toCell, opponentPlayer);
       // manage log
@@ -95,6 +102,8 @@ const main = async (e) => {
       activeCellsArr = [];
       // switchPlayer
       player = switchPlayer(player);
+      const kingInfo = await getKingPosition(opponentPlayer);
+      kingInfo.parentElement.classList.remove('checked');
 
       // there isn't the piece in the cell
     } else if (targetCell.classList[1] === undefined) {

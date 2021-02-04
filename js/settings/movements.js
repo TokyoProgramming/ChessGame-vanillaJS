@@ -1,6 +1,8 @@
 import { rows } from './boardCoordinate.js';
 import { logRes } from '../main.js';
+import { row1, row8 } from '../settings/boardCoordinate.js';
 import { enPassant } from '../specialMove/pawnEnPassant.js';
+import { castling } from '../specialMove/kingRookCastling.js';
 
 let row = 0;
 let col = 0;
@@ -32,17 +34,21 @@ const createMovementsArr = (cell) => {
 
 let piecesType = '';
 let location = '';
-
-// Pieces movements
+let cellLocation = '';
+let castlingRes;
+//  Pieces movements
 const piecesMovements = async (e, diagonal = false) => {
   try {
     location = e.target.parentElement.id;
+    cellLocation = e.target.parentElement;
   } catch (error) {
     location = e.parentElement.id;
+    cellLocation = e.parentElement;
   }
 
   location = getFirstSecondNumber(location);
   let nextRow = true;
+
   row = location[0];
   col = location[1];
   movementsArr = [];
@@ -220,7 +226,6 @@ const piecesMovements = async (e, diagonal = false) => {
           let bPData1 = movementsArr;
           bPArr.push(bPData1);
         } else {
-          console.log(location[0]);
           if (location[0] === 5) {
             let enArr = await enPassant(piecesType, location);
             try {
@@ -547,7 +552,7 @@ const piecesMovements = async (e, diagonal = false) => {
         return [movementsArr, piecesColor, queenArr, piecesType];
 
         break;
-      case 'black-king':
+
       case 'white-king':
         // if (row > 1 && row < 8 && col > 1 && col < 8) {
         //   // up and left
@@ -611,6 +616,7 @@ const piecesMovements = async (e, diagonal = false) => {
         //   console.log(rows[row][col - 2]);
         //   console.log(rows[row - 1][col - 2]);
         // }
+
         try {
           //   left
           cell = rows[row - 1][col - 2];
@@ -651,6 +657,74 @@ const piecesMovements = async (e, diagonal = false) => {
           cell = rows[row][col - 2];
           createMovementsArr(cell);
         } catch (error) {}
+
+        // let kingArr = movementsArr;
+        // let result = [];
+        // movementsArr = [];
+
+        // if (diagonal === false) {
+        //   // king is not checked
+        //   if (!cellLocation.classList.contains('checked')) {
+        //     // call castling function
+        //     await castling(piecesType.split('-')[0]);
+        //   }
+        // }
+
+        // movementsArr = movementsArr.concat(kingArr);
+        // console.log(movementsArr);
+
+        return [movementsArr, piecesColor, piecesType];
+        break;
+
+      case 'black-king':
+        try {
+          //   left
+          cell = rows[row - 1][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          // up and left
+          cell = rows[row - 2][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   up
+          cell = rows[row - 2][col - 1];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   up && right
+          cell = rows[row - 2][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   right row
+          cell = rows[row - 1][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down && right
+          cell = rows[row][col];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down
+          cell = rows[row][col - 1];
+          createMovementsArr(cell);
+        } catch (error) {}
+        try {
+          //   down && left
+          cell = rows[row][col - 2];
+          createMovementsArr(cell);
+        } catch (error) {}
+
+        if (diagonal === false) {
+          // king is not checked
+          if (!cellLocation.classList.contains('checked')) {
+            // call castling function
+            castling(piecesType.split('-')[0]);
+          }
+        }
 
         return [movementsArr, piecesColor, piecesType];
         break;

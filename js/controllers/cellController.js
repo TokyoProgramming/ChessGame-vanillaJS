@@ -6,7 +6,6 @@ import { rows } from '../settings/boardCoordinate.js';
 // Move pieces
 const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
   let fromCellData = fromCell.lastChild;
-  console.log(activeCellsArr);
 
   // remove opponent piece
   toCell.lastChild.remove();
@@ -34,7 +33,6 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
       }
     } else {
       activeCellsArr.forEach((el) => {
-        console.log(el.cell.classList);
         let data = el.cell;
         let classListData = data.classList;
         if (classListData.contains('passant-move')) {
@@ -52,6 +50,10 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
         }
       });
     }
+  } catch (error) {}
+  // remove checked
+  try {
+    fromCell.classList.remove('checked');
   } catch (error) {}
   // remove classList passant-piece && passant-move
 };
@@ -73,10 +75,6 @@ const cellActivate = async (e, getPlayer) => {
   } catch (error) {
     console.log('error');
   }
-
-  // if pieceType === 'pawnEnPassant'
-  // pawnEnPassant function
-  // enPassant(piecesType, e.target.parentElement.id);
 
   dataArr.forEach((el) => {
     let data = el.cell;
