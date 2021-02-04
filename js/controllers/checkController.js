@@ -182,8 +182,8 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
     });
     return whiteKingData;
   } else if (getPlayer === 'black') {
-    const whiteData = await getWhiteCanMoveNext(true);
-    const whiteDataArr = await getWhiteCanMoveNext(true, null, 'black');
+    const whiteData = await getWhiteCanMoveNext(true, false);
+    const whiteDataArr = await getWhiteCanMoveNext(true, null, 'black', false);
     let wDataArr = whiteData.concat(whiteDataArr);
     wDataArr.forEach((wD) => {
       let wDArr = wD[0];
@@ -275,7 +275,7 @@ const getPath = async (pathArr) => {
 // *1  allies can get checking piece ??
 const alliesCanGetCheckingPiece = async (player, cell) => {
   let blackData = await getBlackCanMoveNext(true);
-  let whiteData = await getWhiteCanMoveNext(true);
+  let whiteData = await getWhiteCanMoveNext(true, false);
   let getArr = [];
 
   // check player === white, checked player === black

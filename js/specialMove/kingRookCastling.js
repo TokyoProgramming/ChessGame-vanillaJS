@@ -3,12 +3,7 @@ import { row1, row8 } from '../settings/boardCoordinate.js';
 import {
   getWhiteCanMoveNext,
   getBlackCanMoveNext,
-  checkmate,
-  checkKingStatus,
 } from '../controllers/checkController.js';
-
-import { createMovementsArr } from '../settings/movements.js';
-import { movementsCtr } from '../controllers/movementsController.js';
 
 // // * 1 the king has not previously moved;
 // // * 2 rook has not previously moved
@@ -20,6 +15,7 @@ let kingLog = [];
 let rookLog = [];
 let kingSideRookLog = [];
 let queenSideRookLog = [];
+
 // get player's log => check 1 && 2
 const getPlayerLog = async (getPlayer) => {
   let playerLogArr = logRes.filter((el) => {
@@ -101,7 +97,6 @@ const checkKingMoveCells = async (getPlayer) => {
   let getUniqueCell = [];
   let uniqueCell = [];
 
-  let arr = [];
   try {
     // remove empty array
     kingMoveArr = kingMoveCells.filter((el) => {
@@ -121,9 +116,6 @@ const checkKingMoveCells = async (getPlayer) => {
     getUniqueCell = [...new Set(uniqueCell)];
     getUniqueCell;
   } catch (error) {}
-
-  let kingSideArr = [];
-  let queenSideArr = [];
 
   kingMoveArr = getUniqueCell;
 
@@ -276,11 +268,8 @@ const castling = async (getPlayer, dataArr) => {
 
       // king side catling
     } else if (kingMoveRes === 3 && kingAndRookRes === 3) {
-      console.log(' work 2');
-
       return kingSideCastling(getPlayer);
     } else if (kingMoveRes === 3 && kingAndRookRes === 1) {
-      console.log(' work 3');
       return kingSideCastling(getPlayer);
     }
 
@@ -309,7 +298,6 @@ const castling = async (getPlayer, dataArr) => {
 };
 
 const kingSideCastling = async (getPlayer) => {
-  console.log(getPlayer);
   if (getPlayer === 'white') {
     castlingRes = await whiteKingSideCastling();
   } else if (getPlayer === 'black') {
@@ -335,25 +323,25 @@ let castlingRook;
 const whiteKingSideCastling = async () => {
   castlingKing = row8[6];
   castlingRook = row8[5];
-  return createMovementsArr(castlingKing);
+  return castlingKing;
 };
 
 const whiteQueenSideCastling = async () => {
   castlingKing = row8[2];
   castlingRook = row8[3];
-  return createMovementsArr(castlingKing);
+  return castlingKing;
 };
 
 const blackKingSideCastling = async () => {
   castlingKing = row1[6];
   castlingRook = row1[5];
-  return createMovementsArr(castlingKing);
+  return castlingKing;
 };
 
 const blackQueenSideCastling = async () => {
   castlingKing = row1[2];
   castlingRook = row1[3];
-  return createMovementsArr(castlingKing);
+  return castlingKing;
 };
 
 export { castling, getPlayerLog };
