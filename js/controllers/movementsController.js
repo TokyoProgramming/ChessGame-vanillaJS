@@ -1,7 +1,8 @@
 import { piecesMovements } from '../settings/movements.js';
 
-const movementsCtr = async (e, getPlayer, props) => {
-  const movements = await piecesMovements(e, props);
+const movementsCtr = async (e, getPlayer, props, action) => {
+  const movements = await piecesMovements(e, props, getPlayer, action);
+
   // piece color
   let piecesColor = movements[1];
   // piece Type
@@ -15,10 +16,15 @@ const movementsCtr = async (e, getPlayer, props) => {
     case 'white-knight':
     case 'black-king':
     case 'black-knight':
-      let movementsArr = movements[0];
-      console.log(movementsArr);
-      // filtering the movementsArr
-      arr = filteringArr(movementsArr, piecesColor);
+      try {
+        let movementsArr = movements[0];
+
+        // filtering the movementsArr
+        arr = filteringArr(movementsArr, piecesColor);
+      } catch (error) {
+        console.log(error);
+      }
+
       return [arr, piecesType];
       break;
     case 'white-rook':
@@ -95,14 +101,17 @@ const movementsCtr = async (e, getPlayer, props) => {
 // array filtering function
 const filteringArr = (arr, piecesType) => {
   let filteredArr = [];
+
   filteredArr = arr.filter((el) => {
     let data = el.cell;
 
     // the cell is not empty
     if (data.children[0] !== undefined) {
       let idData = data.lastChild.id;
-      let piecesColor = idData.split('-')[0];
-      return piecesColor !== `${piecesType}`;
+      try {
+        let piecesColor = idData.split('-')[0];
+        return piecesColor !== `${piecesType}`;
+      } catch (error) {}
       // cell is empty
     } else {
       return el;

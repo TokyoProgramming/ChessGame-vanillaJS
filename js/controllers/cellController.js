@@ -51,11 +51,71 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
       });
     }
   } catch (error) {}
+
+  // castling movements cell control
+  try {
+    // white king side castling
+    if (toCell.classList.contains('white-kingSide')) {
+      let castlingRookRow = +toCell.id[1];
+      let castlingCol = toCell.id[2];
+      let castlingRookCol = +castlingCol - 1;
+      // remove X88 rook
+      let rookPiece = rows[7][7].lastChild;
+      rookPiece.remove();
+
+      let rookMoveCell = rows[castlingRookRow - 1][castlingRookCol - 1];
+      rookMoveCell.appendChild(rookPiece);
+      toCell.classList.remove('white-kingSide');
+      // white queen side castling
+    } else if (toCell.classList.contains('white-queenSide')) {
+      let castlingRookRow = +toCell.id[1];
+      let castlingCol = toCell.id[2];
+      let castlingRookCol = +castlingCol - 1;
+      // remove X88 rook
+      let rookPiece = rows[7][0].lastChild;
+      rookPiece.remove();
+
+      let rookMoveCell = rows[castlingRookRow - 1][castlingRookCol + 1];
+      rookMoveCell.appendChild(rookPiece);
+      toCell.classList.remove('white-queenSide');
+      // black king side castling
+    } else if (toCell.classList.contains('black-kingSide')) {
+      let castlingRookRow = +toCell.id[1];
+      let castlingCol = toCell.id[2];
+      let castlingRookCol = +castlingCol - 1;
+      // remove X88 rook
+      let rookPiece = rows[0][7].lastChild;
+      rookPiece.remove();
+      let rookMoveCell = rows[castlingRookRow - 1][castlingRookCol - 1];
+      rookMoveCell.appendChild(rookPiece);
+      toCell.classList.remove('white-kingSide');
+    } else if (toCell.classList.contains('black-queenSide')) {
+      let castlingRookRow = +toCell.id[1];
+      let castlingCol = toCell.id[2];
+      let castlingRookCol = +castlingCol - 1;
+      // remove X88 rook
+      let rookPiece = rows[0][0].lastChild;
+      rookPiece.remove();
+
+      let rookMoveCell = rows[castlingRookRow - 1][castlingRookCol + 1];
+      rookMoveCell.appendChild(rookPiece);
+      toCell.classList.remove('white-queenSide');
+    }
+  } catch (error) {}
+
   // remove checked
   try {
     fromCell.classList.remove('checked');
   } catch (error) {}
   // remove classList passant-piece && passant-move
+  try {
+    activeCellsArr.forEach((el) => {
+      el.cell.classList.remove('white-kingSide');
+      el.cell.classList.remove('black-kingSide');
+      el.cell.classList.remove('white-queenSide');
+      el.cell.classList.remove('black-queenSide');
+    });
+  } catch (error) {}
 };
 
 // add circles to available cells

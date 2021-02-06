@@ -137,10 +137,8 @@ const checkKingMoveCells = async (getPlayer) => {
         return 1;
       } else if (wKingSideFind !== undefined && wQueenSideFind === undefined) {
         // queen side castling
-        // console.log('queen side castling');
         return 2;
       } else if (wQueenSideFind !== undefined && wKingSideFind === undefined) {
-        // console.log('king side castling');
         return 3;
       } else {
         return false;
@@ -158,17 +156,14 @@ const checkKingMoveCells = async (getPlayer) => {
       const bKingSideFind = kingMoveArr.find(
         (el) => el === 'x16' || el === 'x17'
       );
-      console.log(bKingSideFind);
 
       if (bQueenSideFind === undefined && bKingSideFind === undefined) {
         // both side castling
         return 1;
       } else if (bKingSideFind !== undefined && bQueenSideFind === undefined) {
         // queen side castling
-        console.log('queen side castling');
         return 2;
       } else if (bQueenSideFind !== undefined && bKingSideFind === undefined) {
-        console.log('king side castling');
         return 3;
       } else {
         return false;
@@ -284,16 +279,14 @@ const castling = async (getPlayer, dataArr) => {
     // king side castling
   } else if (castlingSideRes === 3) {
     if (kingMoveRes === 1 && kingAndRookRes === 1) {
-      console.log(' work 4');
-
+      console.log('work 4');
       return kingSideCastling(getPlayer);
     } else if (kingMoveRes === 3 && kingAndRookRes === 3) {
       console.log(' work 5');
-
       return kingSideCastling(getPlayer);
     }
   } else {
-    console.log('error');
+    return castlingRes;
   }
 };
 
@@ -307,8 +300,6 @@ const kingSideCastling = async (getPlayer) => {
 };
 
 const queenSideCastling = async (getPlayer) => {
-  console.log(getPlayer);
-
   if (getPlayer === 'white') {
     castlingRes = await whiteQueenSideCastling();
   } else if (getPlayer === 'black') {
@@ -317,29 +308,33 @@ const queenSideCastling = async (getPlayer) => {
   return castlingRes;
 };
 
-let castlingKing;
-let castlingRook;
+let castlingKing = '';
+let castlingRook = '';
 
 const whiteKingSideCastling = async () => {
   castlingKing = row8[6];
+  castlingKing.classList.add('white-kingSide');
   castlingRook = row8[5];
   return castlingKing;
 };
 
 const whiteQueenSideCastling = async () => {
   castlingKing = row8[2];
+  castlingKing.classList.add('white-queenSide');
   castlingRook = row8[3];
   return castlingKing;
 };
 
 const blackKingSideCastling = async () => {
   castlingKing = row1[6];
+  castlingKing.classList.add('black-kingSide');
   castlingRook = row1[5];
   return castlingKing;
 };
 
 const blackQueenSideCastling = async () => {
   castlingKing = row1[2];
+  castlingKing.classList.add('black-queenSide');
   castlingRook = row1[3];
   return castlingKing;
 };

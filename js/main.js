@@ -16,8 +16,9 @@ import {
   checkKingStatus,
   getKingPosition,
 } from './controllers/checkController.js';
-import { logCtr, blackLog, whiteLog } from './controllers/logController.js';
+import { logCtr } from './controllers/logController.js';
 import { promotion } from './specialMove/pawnPromotion.js';
+import { rows } from './settings/boardCoordinate.js';
 
 const chessBoard = document.querySelector('.chess-board');
 const game = document.getElementById('game');
@@ -37,7 +38,6 @@ let logResult = [];
 const main = async (e) => {
   let targetCell = e.target;
   let getPlayer = playerController(player);
-  let myPlayer = getPlayer;
 
   if (getPlayer === 'white') {
     opponentPlayer = 'black';
@@ -96,7 +96,9 @@ const main = async (e) => {
           return;
         }
       } catch (error) {}
-
+      // init classList
+      initClassList();
+      // removeColor
       removeColor(fromCell);
       // init activeCellsArr
       activeCellsArr = [];
@@ -104,7 +106,6 @@ const main = async (e) => {
       player = switchPlayer(player);
       const kingInfo = await getKingPosition(opponentPlayer);
       kingInfo.parentElement.classList.remove('checked');
-
       // there isn't the piece in the cell
     } else if (targetCell.classList[1] === undefined) {
       removeCirclesClassList(activeCellsArr, opponentPlayer);
@@ -126,6 +127,20 @@ const init = () => {
   log = [];
   logRes = [];
   logResult = [];
+};
+
+const initClassList = () => {
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      let classListCell = rows[i][j];
+      try {
+        classListCell.classList.remove('white-kingSide');
+        classListCell.classList.remove('black-kingSide');
+        classListCell.classList.remove('white-queenSide');
+        classListCell.classList.remove('black-queenSide');
+      } catch (error) {}
+    }
+  }
 };
 
 // document.addEventListener('DOMContentLoaded', setChessPieces);

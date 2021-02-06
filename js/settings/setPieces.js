@@ -124,7 +124,7 @@ const setChessPieces = () => {
   let whiteQueen = document.createElement('img');
   whiteQueen.src = `${wQ.imgSrc}`;
   whiteQueen.id = 'white-queen';
-  X22.appendChild(whiteQueen);
+  // X22.appendChild(whiteQueen);
 
   //   white King
   let whiteKing = document.createElement('img');
@@ -180,7 +180,7 @@ const setChessPieces = () => {
   let blackQueen = document.createElement('img');
   blackQueen.src = `${bQ.imgSrc}`;
   blackQueen.id = 'black-queen';
-  X72.appendChild(blackQueen);
+  X77.appendChild(blackQueen);
 };
 
 export { setChessPieces };

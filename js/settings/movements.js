@@ -33,7 +33,12 @@ let location = '';
 let cellLocation = '';
 
 //  Pieces movements
-const piecesMovements = async (e, diagonal = false, action = true) => {
+const piecesMovements = async (
+  e,
+  diagonal = false,
+  getPlayer,
+  action = true
+) => {
   try {
     location = e.target.parentElement.id;
     cellLocation = e.target.parentElement;
@@ -613,26 +618,40 @@ const piecesMovements = async (e, diagonal = false, action = true) => {
         //   console.log(rows[row][col - 2]);
         //   console.log(rows[row - 1][col - 2]);
         // }
-
-        let result;
-        let row1 = row;
-        let col1 = col;
+        let resultW;
+        let rowW = row;
+        let colW = col;
         if (action === true) {
           // king is not checked
           if (!cellLocation.classList.contains('checked')) {
             // call castling function
-            result = await castling(piecesType.split('-')[0]);
+            resultW = await castling(piecesType.split('-')[0]);
+            console.log(resultW.length);
+            console.log(resultW);
+
+            movementsArr = [];
+            try {
+              if (resultW.length !== undefined) {
+                const promiseW = await Promise.all(resultW);
+
+                promiseW.forEach((el) => {
+                  createMovementsArr(el);
+                });
+              } else {
+                createMovementsArr(resultW);
+              }
+            } catch (error) {
+              console.log(resultW.length);
+              console.log(resultW);
+              console.log(error);
+            }
           }
         }
-        movementsArr = [];
 
-        createMovementsArr(result);
+        console.log(movementsArr);
 
-        row = row1;
-        col = col1;
-        console.log(row);
-        console.log(col);
-
+        row = rowW;
+        col = colW;
         try {
           //   left
           cell = rows[row - 1][col - 2];
@@ -677,14 +696,43 @@ const piecesMovements = async (e, diagonal = false, action = true) => {
           cell = rows[row][col - 2];
           createMovementsArr(cell);
         } catch (error) {}
-        console.log(piecesType);
+
         piecesType = 'white-king';
-        console.log(piecesColor);
 
         return [movementsArr, piecesColor, piecesType];
         break;
 
       case 'black-king':
+        let resultB;
+        let rowB = row;
+        let colB = col;
+        if (action === true) {
+          // king is not checked
+          if (!cellLocation.classList.contains('checked')) {
+            // call castling function
+            resultB = await castling(piecesType.split('-')[0]);
+            console.log(resultB);
+            movementsArr = [];
+
+            try {
+              if (resultB.length !== undefined) {
+                const promiseB = await Promise.all(resultB);
+
+                promiseB.forEach((el) => {
+                  createMovementsArr(el);
+                });
+              } else {
+                createMovementsArr(resultB);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        }
+
+        row = rowB;
+        col = colB;
+
         try {
           //   left
           cell = rows[row - 1][col - 2];
@@ -726,13 +774,7 @@ const piecesMovements = async (e, diagonal = false, action = true) => {
           createMovementsArr(cell);
         } catch (error) {}
 
-        if (diagonal === false) {
-          // king is not checked
-          if (!cellLocation.classList.contains('checked')) {
-            // call castling function
-            await castling(piecesType.split('-')[0]);
-          }
-        }
+        piecesType = 'black-king';
 
         return [movementsArr, piecesColor, piecesType];
         break;

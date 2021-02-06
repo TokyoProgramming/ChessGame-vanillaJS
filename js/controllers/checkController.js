@@ -48,7 +48,7 @@ const getWhiteCanMoveNext = async (value, except = null, color = 'white') => {
 
   await whiteData.forEach(async (el) => {
     // here should be fixed
-    const resWhite = await movementsCtr(el.name, `${color}`, value);
+    const resWhite = await movementsCtr(el.name, `${color}`, value, false);
     resWhiteArr.push(resWhite);
   });
 
@@ -63,7 +63,7 @@ const getBlackCanMoveNext = async (value, except = null, color = 'black') => {
   // const movements = await movementsCtr();
   await blackData.forEach(async (el) => {
     // here should be fixed
-    const resBlack = await movementsCtr(el.name, `${color}`, value);
+    const resBlack = await movementsCtr(el.name, `${color}`, value, false);
     resBlackArr.push(resBlack);
   });
 
@@ -73,9 +73,9 @@ const getBlackCanMoveNext = async (value, except = null, color = 'black') => {
 // check king's Status
 const checkKingStatus = async (getPlayer, log) => {
   // check white pieces movements
-  const whitePieces = await getWhiteCanMoveNext(true, false);
+  const whitePieces = await getWhiteCanMoveNext(true);
   // check black pieces movements
-  const blackPieces = await getBlackCanMoveNext(true, false);
+  const blackPieces = await getBlackCanMoveNext(true);
 
   let blackCheckmate;
   let whiteCheckmate;
@@ -182,8 +182,8 @@ const kingMovementFiltering = async (getPlayer, dataArr) => {
     });
     return whiteKingData;
   } else if (getPlayer === 'black') {
-    const whiteData = await getWhiteCanMoveNext(true, false);
-    const whiteDataArr = await getWhiteCanMoveNext(true, null, 'black', false);
+    const whiteData = await getWhiteCanMoveNext(true);
+    const whiteDataArr = await getWhiteCanMoveNext(true, null, 'black');
     let wDataArr = whiteData.concat(whiteDataArr);
     wDataArr.forEach((wD) => {
       let wDArr = wD[0];
@@ -275,7 +275,7 @@ const getPath = async (pathArr) => {
 // *1  allies can get checking piece ??
 const alliesCanGetCheckingPiece = async (player, cell) => {
   let blackData = await getBlackCanMoveNext(true);
-  let whiteData = await getWhiteCanMoveNext(true, false);
+  let whiteData = await getWhiteCanMoveNext(true);
   let getArr = [];
 
   // check player === white, checked player === black
