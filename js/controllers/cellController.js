@@ -171,41 +171,47 @@ const cellActivate = async (e, getPlayer) => {
 
 // remove circles && classList === 'active' && 'scale-ctr'
 const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
-  activeCellsArr.forEach((el) => {
-    let data = el.cell;
+  console.log(activeCellsArr);
+  try {
+    activeCellsArr.forEach((el) => {
+      let data = el.cell;
 
-    let rowNum = data.id[1];
-    let colNum = data.id[2];
+      let rowNum = data.id[1];
+      let colNum = data.id[2];
 
-    // cell is empty
-    if (
-      data.children[0].tagName !== 'IMG' &&
-      data.children[0].tagName !== 'SPAN'
-    ) {
-      // remove circles
-      data.children[0].remove();
+      // cell is empty
+      if (
+        data.children[0].tagName !== 'IMG' &&
+        data.children[0].tagName !== 'SPAN'
+      ) {
+        // remove circles
+        data.children[0].remove();
 
-      // cell has opponent piece
-    } else if (data.lastChild.id.split('-')[0] === `${opponentPlayer}`) {
-      // get opponent piece
-      let scaleCtrImg = data.lastChild;
-      scaleCtrImg.classList.remove('scale-ctr');
+        // cell has opponent piece
+      } else if (data.lastChild.id.split('-')[0] === `${opponentPlayer}`) {
+        // get opponent piece
+        let scaleCtrImg = data.lastChild;
+        scaleCtrImg.classList.remove('scale-ctr');
 
-      // cell has number
-    } else if (data.children[0].tagName === 'SPAN') {
-      if (data.children[1].tagName === 'DIV') {
-        let divData = data.children[1];
-        divData.remove();
-        // X81 - 2 span tags
-      } else if (rowNum === '8' && colNum === '1') {
-        if (data.children[2].tagName === 'DIV') {
-          let circleDiv = data.children[2];
-          circleDiv.remove();
+        // cell has number
+      } else if (data.children[0].tagName === 'SPAN') {
+        if (data.children[1].tagName === 'DIV') {
+          let divData = data.children[1];
+          divData.remove();
+          // X81 - 2 span tags
+        } else if (rowNum === '8' && colNum === '1') {
+          if (data.children[2].tagName === 'DIV') {
+            let circleDiv = data.children[2];
+            circleDiv.remove();
+          }
         }
       }
-    }
-    data.classList.remove('active');
-  });
+      data.classList.remove('active');
+    });
+  } catch (e) {
+    console.log(e);
+    console.log(activeCellsArr);
+  }
 };
 
 // add color to the selected piece's cell

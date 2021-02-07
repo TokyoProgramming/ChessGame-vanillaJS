@@ -148,7 +148,7 @@ const setChessPieces = () => {
   let blackPawn = document.createElement('img');
   blackPawn.src = `${bP.imgSrc}`;
   blackPawn.id = 'black-pawn';
-  X76.appendChild(blackPawn);
+  X77.appendChild(blackPawn);
 
   //   black Rook
   let blackRook_1 = document.createElement('img');
@@ -190,7 +190,7 @@ const setChessPieces = () => {
   let blackQueen = document.createElement('img');
   blackQueen.src = `${bQ.imgSrc}`;
   blackQueen.id = 'black-queen';
-  X77.appendChild(blackQueen);
+  // X77.appendChild(blackQueen);
 };
 
 export { setChessPieces };

@@ -234,11 +234,11 @@ const kingAndRookCells = async (getPlayer) => {
     }
   }
 };
-
 let castlingRes = [];
 
 //  castling function
 const castling = async (getPlayer, dataArr) => {
+  castlingRes = [];
   // get player's log  king and rook haven't moved => check 1 && 2
   const castlingSideRes = await getPlayerLog(getPlayer);
 
@@ -289,29 +289,33 @@ const castling = async (getPlayer, dataArr) => {
     return castlingRes;
   }
 };
+let castlingResult = '';
 
 const kingSideCastling = async (getPlayer) => {
+  castlingResult = '';
   if (getPlayer === 'white') {
-    castlingRes = await whiteKingSideCastling();
+    castlingResult = await whiteKingSideCastling();
   } else if (getPlayer === 'black') {
-    castlingRes = await blackKingSideCastling();
+    castlingResult = await blackKingSideCastling();
   }
-  return castlingRes;
+  return castlingResult;
 };
 
 const queenSideCastling = async (getPlayer) => {
+  castlingResult = '';
   if (getPlayer === 'white') {
-    castlingRes = await whiteQueenSideCastling();
+    castlingResult = await whiteQueenSideCastling();
   } else if (getPlayer === 'black') {
-    castlingRes = await blackQueenSideCastling();
+    castlingResult = await blackQueenSideCastling();
   }
-  return castlingRes;
+  return castlingResult;
 };
 
 let castlingKing = '';
 let castlingRook = '';
-
 const whiteKingSideCastling = async () => {
+  castlingKing = '';
+  castlingRook = '';
   castlingKing = row8[6];
   castlingKing.classList.add('white-kingSide');
   castlingRook = row8[5];
@@ -319,6 +323,8 @@ const whiteKingSideCastling = async () => {
 };
 
 const whiteQueenSideCastling = async () => {
+  castlingKing = '';
+  castlingRook = '';
   castlingKing = row8[2];
   castlingKing.classList.add('white-queenSide');
   castlingRook = row8[3];
@@ -326,6 +332,8 @@ const whiteQueenSideCastling = async () => {
 };
 
 const blackKingSideCastling = async () => {
+  castlingKing = '';
+  castlingRook = '';
   castlingKing = row1[6];
   castlingKing.classList.add('black-kingSide');
   castlingRook = row1[5];
@@ -333,6 +341,8 @@ const blackKingSideCastling = async () => {
 };
 
 const blackQueenSideCastling = async () => {
+  castlingKing = '';
+  castlingRook = '';
   castlingKing = row1[2];
   castlingKing.classList.add('black-queenSide');
   castlingRook = row1[3];

@@ -619,8 +619,7 @@ const piecesMovements = async (
         //   console.log(rows[row - 1][col - 2]);
         // }
         let resultW;
-        let rowW = row;
-        let colW = col;
+
         if (action === true) {
           // king is not checked
           if (!cellLocation.classList.contains('checked')) {
@@ -648,8 +647,6 @@ const piecesMovements = async (
           }
         }
 
-        row = rowW;
-        col = colW;
         try {
           //   left
           cell = rows[row - 1][col - 2];
@@ -696,14 +693,17 @@ const piecesMovements = async (
         } catch (error) {}
 
         piecesType = 'white-king';
+        movementsArr.forEach((el) => {
+          console.log(el.cell);
+        });
 
         return [movementsArr, piecesColor, piecesType];
         break;
 
       case 'black-king':
         let resultB;
-        let rowB = row;
-        let colB = col;
+        movementsArr = [];
+
         if (action === true) {
           // king is not checked
           if (!cellLocation.classList.contains('checked')) {
@@ -727,9 +727,6 @@ const piecesMovements = async (
             }
           }
         }
-
-        row = rowB;
-        col = colB;
 
         try {
           //   left

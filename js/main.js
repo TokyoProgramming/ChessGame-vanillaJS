@@ -77,11 +77,11 @@ const main = async (e) => {
         // manage log
         logRes = await logCtr(fromCell, toCell, getPlayer, log);
         logResult = logRes[logRes.length - 1];
-        gameStatus = await checkKingStatus(getPlayer, log);
-        // const blackData = await blackLog(logRes);
-        // const whiteData = await whiteLog(logRes);
 
+        gameStatus = await checkKingStatus(getPlayer, log);
+        // promotion check
         const checkPromotion = promotion(player, e);
+        // checkmate
         let checkmateRes = await gameStatusCtr(gameStatus, deleteBtn);
         // if game checkmates
         try {
@@ -102,11 +102,11 @@ const main = async (e) => {
         removeColor(fromCell);
         // init activeCellsArr
         activeCellsArr = [];
+
         if (checkPromotion === false) {
           // switchPlayer
           player = switchPlayer(player);
         } else {
-          console.log(player);
           player = `${player}-promotion`;
         }
         const kingInfo = await getKingPosition(opponentPlayer);
@@ -120,8 +120,10 @@ const main = async (e) => {
       }
     }
   } else {
-    console.log(getPlayer);
     player = await selectPiece(e);
+    const currentPlayer = log[log.length - 1].player;
+    const logPromoRes = await logCtr(fromCell, toCell, currentPlayer, log);
+    await checkKingStatus(currentPlayer, logPromoRes);
   }
 };
 
@@ -137,7 +139,7 @@ const init = () => {
   logRes = [];
   logResult = [];
 };
-
+// initialize classList
 const initClassList = () => {
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
@@ -147,7 +149,9 @@ const initClassList = () => {
         classListCell.classList.remove('black-kingSide');
         classListCell.classList.remove('white-queenSide');
         classListCell.classList.remove('black-queenSide');
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

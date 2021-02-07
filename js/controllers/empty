@@ -1,7 +1,6 @@
 import { rows } from '../settings/boardCoordinate.js';
 import { movementsCtr } from './movementsController.js';
-let whitePiecesPositions = [];
-let blackPiecesPositions = [];
+
 // get pieces positions
 const getPiecesPositions = async (except) => {
   let exceptPiece = '';
@@ -11,8 +10,8 @@ const getPiecesPositions = async (except) => {
     }
   } catch (error) {}
 
-  whitePiecesPositions = [];
-  blackPiecesPositions = [];
+  let whitePiecesPositions = [];
+  let blackPiecesPositions = [];
 
   rows.forEach((row) => {
     row.forEach((el) => {
@@ -41,14 +40,11 @@ const getPiecesPositions = async (except) => {
 
   return [blackPiecesPositions, whitePiecesPositions];
 };
-let whiteMoveData = '';
-let resWhiteArr = [];
 
 const getWhiteCanMoveNext = async (value, except = null, color = 'white') => {
-  whiteMoveData = '';
-  whiteMoveData = await getPiecesPositions(except);
-  const whiteData = whiteMoveData[1];
-  resWhiteArr = [];
+  const data = await getPiecesPositions(except);
+  const whiteData = data[1];
+  let resWhiteArr = [];
 
   await whiteData.forEach(async (el) => {
     // here should be fixed
@@ -58,14 +54,11 @@ const getWhiteCanMoveNext = async (value, except = null, color = 'white') => {
 
   return resWhiteArr;
 };
-let blackMoveData = '';
-let resBlackArr = [];
 
 const getBlackCanMoveNext = async (value, except = null, color = 'black') => {
-  blackMoveData = '';
-  blackMoveData = await getPiecesPositions(except);
-  const blackData = blackMoveData[0];
-  resBlackArr = [];
+  const data = await getPiecesPositions(except);
+  const blackData = data[0];
+  let resBlackArr = [];
 
   // const movements = await movementsCtr();
   await blackData.forEach(async (el) => {
@@ -247,22 +240,26 @@ const getKingPosition = async (player) => {
 
   return kingInfo;
 };
-let arrNum;
-let deleteObj;
+
 // * get path
 const getPath = async (pathArr) => {
-  arrNum = '';
-  deleteObj = '';
+  let arrNum;
+  let deleteObj;
+  console.log(pathArr);
 
   // array Number
   pathArr.forEach((el) => {
     try {
-      if (el.data.cell.lastChild.id.split('-')[1] === 'king') {
-        arrNum = el.i;
-
-        deleteObj = el;
+      if (el.data.cell.lastChild !== null) {
+        if (el.data.cell.lastChild.id.split('-')[1] === 'king') {
+          arrNum = el.i;
+          deleteObj = el;
+        }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(el.data.cell);
+      console.log(el.data.cell.lastChild);
+    }
   });
 
   // delete Obj
