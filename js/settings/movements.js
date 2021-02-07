@@ -648,8 +648,6 @@ const piecesMovements = async (
           }
         }
 
-        console.log(movementsArr);
-
         row = rowW;
         col = colW;
         try {

@@ -90,6 +90,11 @@ const setChessPieces = () => {
   //   el.appendChild(whitePawn);
   // });
 
+  let whitePawn = document.createElement('img');
+  whitePawn.src = `${wP.imgSrc}`;
+  whitePawn.id = 'white-pawn';
+  X27.appendChild(whitePawn);
+
   //   white Rook
   let whiteRook_1 = document.createElement('img');
   whiteRook_1.src = `${wR.imgSrc}`;

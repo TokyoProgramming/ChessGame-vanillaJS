@@ -81,7 +81,8 @@ const main = async (e) => {
       // const blackData = await blackLog(logRes);
       // const whiteData = await whiteLog(logRes);
 
-      promotion(logResult, e);
+      const checkPromotion = await promotion(logResult, e);
+
       let checkmateRes = await gameStatusCtr(gameStatus, deleteBtn);
       // if game checkmates
       try {
@@ -102,8 +103,10 @@ const main = async (e) => {
       removeColor(fromCell);
       // init activeCellsArr
       activeCellsArr = [];
+      if (checkPromotion === false) {
+        player = switchPlayer(player);
+      }
       // switchPlayer
-      player = switchPlayer(player);
       const kingInfo = await getKingPosition(opponentPlayer);
       kingInfo.parentElement.classList.remove('checked');
       // there isn't the piece in the cell

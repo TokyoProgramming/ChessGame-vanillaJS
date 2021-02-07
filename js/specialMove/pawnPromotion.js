@@ -1,6 +1,8 @@
-const promotionSelect = document.querySelector('.promotion-select');
+import { logResult } from '../main.js';
 
-const promotion = (log, e) => {
+const promotionWhiteSelect = document.querySelector('.promotion-white-select');
+
+const promotionCondition = (log, e) => {
   let logPlayer = log.player;
   let logCell = log.toCell.id[1];
   let logPieceType = log.pieceType.split('-')[1];
@@ -11,29 +13,59 @@ const promotion = (log, e) => {
     (logPlayer === 'white' && logCell === '1' && logPieceType === 'pawn') ===
     true
   ) {
-    console.log('white pawn promotion');
-    let x = e.clientX;
-    let y = e.clientY;
+    promotionWhiteSelect.classList.add('selected');
 
-    let myDiv = document.createElement('div');
-
-    myDiv.id = 'sample';
-    myDiv.style.position = 'absolute';
-    myDiv.style.left = `${x}`;
-    myDiv.style.top = `${y}`;
-    myDiv.style.width = '300px';
-    myDiv.style.height = '300px';
-
-    myDiv.innerHTML = 'white pawn promotion';
-    promotionSelect.appendChild(myDiv);
+    return 1;
 
     // write black pawn promotion
   } else if (
     (logPlayer === 'black ' && logCell === '8' && logPieceType === 'pawn') ===
     true
   ) {
-    console.log('black pawn promotion');
+    return 2;
+  } else {
+    return false;
   }
 };
+
+const selectPiece = async (e) => {
+  let getPiece = '';
+
+  // get promotion piece
+  try {
+    getPiece = e.target;
+    let promotionCell = logResult.toCell;
+    promotionCell.lastChild.remove();
+    let getId = getPiece.id;
+
+    let editId = getId.split('-');
+    console.log(editId[0]);
+    console.log(editId[1]);
+    console.log(editId[2]);
+    promotionCell.appendChild(getPiece);
+    console.log(promotionCell.lastChild.id);
+    const idName = (document.getElementById(
+      `${getPiece.id}`
+    ).id = `${editId[1]}-${editId[2]}`);
+    console.log(idName);
+
+    promotionWhiteSelect.classList.remove('selected');
+  } catch (error) {}
+  // console.log(getPiece);
+  // console.log(typeof getPiece);
+  if (typeof getPiece !== 'string') {
+    return getPiece;
+  }
+};
+
+const promotion = async (log) => {
+  const getRes = promotionCondition(log);
+  if (getRes === 1) {
+    console.log('promotion');
+  }
+  return false;
+};
+
+promotionWhiteSelect.addEventListener('click', selectPiece);
 
 export { promotion };
