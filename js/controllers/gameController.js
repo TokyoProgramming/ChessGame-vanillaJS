@@ -8,8 +8,10 @@ const deleteBtn = document.getElementById('delete-btn');
 const playerController = (currentPlayer) => {
   if (currentPlayer === 'player1') {
     return 'white';
-  } else {
+  } else if (currentPlayer === 'player2') {
     return 'black';
+  } else {
+    return currentPlayer;
   }
 };
 

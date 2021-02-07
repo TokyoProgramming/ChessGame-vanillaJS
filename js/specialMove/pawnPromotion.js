@@ -1,11 +1,12 @@
 import { logResult } from '../main.js';
 
-const promotionWhiteSelect = document.querySelector('.promotion-white-select');
+const promotionWhiteSelect = document.getElementById('promotion-white-select');
+const promotionBlackSelect = document.getElementById('promotion-black-select');
 
-const promotionCondition = (log, e) => {
-  let logPlayer = log.player;
-  let logCell = log.toCell.id[1];
-  let logPieceType = log.pieceType.split('-')[1];
+const promotionCondition = () => {
+  let logPlayer = logResult.player;
+  let logCell = logResult.toCell.id[1];
+  let logPieceType = logResult.pieceType.split('-')[1];
 
   // console.log(e);
   // write white pawn promotion
@@ -14,15 +15,15 @@ const promotionCondition = (log, e) => {
     true
   ) {
     promotionWhiteSelect.classList.add('selected');
-
-    return 1;
+    return true;
 
     // write black pawn promotion
   } else if (
-    (logPlayer === 'black ' && logCell === '8' && logPieceType === 'pawn') ===
+    (logPlayer === 'black' && logCell === '8' && logPieceType === 'pawn') ===
     true
   ) {
-    return 2;
+    promotionBlackSelect.classList.add('selected');
+    return true;
   } else {
     return false;
   }
@@ -30,42 +31,41 @@ const promotionCondition = (log, e) => {
 
 const selectPiece = async (e) => {
   let getPiece = '';
+  let player = '';
 
-  // get promotion piece
-  try {
-    getPiece = e.target;
+  getPiece = e.target;
+  console.log(getPiece.id);
+  if (getPiece.id.split('-')[0] === 'promotion') {
     let promotionCell = logResult.toCell;
     promotionCell.lastChild.remove();
     let getId = getPiece.id;
-
     let editId = getId.split('-');
-    console.log(editId[0]);
-    console.log(editId[1]);
-    console.log(editId[2]);
     promotionCell.appendChild(getPiece);
-    console.log(promotionCell.lastChild.id);
     const idName = (document.getElementById(
       `${getPiece.id}`
     ).id = `${editId[1]}-${editId[2]}`);
-    console.log(idName);
+    try {
+      promotionWhiteSelect.classList.remove('selected');
+      promotionBlackSelect.classList.remove('selected');
+    } catch (error) {}
 
-    promotionWhiteSelect.classList.remove('selected');
-  } catch (error) {}
-  // console.log(getPiece);
-  // console.log(typeof getPiece);
-  if (typeof getPiece !== 'string') {
-    return getPiece;
+    if (`${editId[1]}` === 'white') {
+      player = 'player2';
+    } else if (`${editId[1]}` === 'black') {
+      player = 'player1';
+    }
+
+    return player;
   }
 };
 
-const promotion = async (log) => {
+const promotion = (log, e) => {
   const getRes = promotionCondition(log);
-  if (getRes === 1) {
-    console.log('promotion');
+  if (getRes === true) {
+    return true;
+  } else {
+    return false;
   }
-  return false;
 };
 
-promotionWhiteSelect.addEventListener('click', selectPiece);
-
-export { promotion };
+export { promotion, selectPiece };

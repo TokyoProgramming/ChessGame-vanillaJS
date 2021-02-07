@@ -432,4 +432,20 @@ img {
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 3;
+}
+
+.promotion-black-select {
+  display: none;
+}
+
+.promotion-black-select.selected {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 3;
 }
