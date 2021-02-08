@@ -34,7 +34,7 @@ const selectPiece = async (e) => {
   let player = '';
 
   getPiece = e.target;
-  console.log(getPiece.id);
+
   if (getPiece.id.split('-')[0] === 'promotion') {
     let promotionCell = logResult.toCell;
     promotionCell.lastChild.remove();

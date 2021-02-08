@@ -39,7 +39,6 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
           classListData.remove('passant-move');
           let row = data.id[1];
           let col = data.id[2];
-
           if (opponentPlayer === 'black') {
             let passantMoveCell = rows[row][col - 1];
             passantMoveCell.classList.remove('passant-piece');
@@ -62,7 +61,6 @@ const movePiece = async (fromCell, activeCellsArr, toCell, opponentPlayer) => {
       // remove X88 rook
       let rookPiece = rows[7][7].lastChild;
       rookPiece.remove();
-
       let rookMoveCell = rows[castlingRookRow - 1][castlingRookCol - 1];
       rookMoveCell.appendChild(rookPiece);
       toCell.classList.remove('white-kingSide');
@@ -171,7 +169,6 @@ const cellActivate = async (e, getPlayer) => {
 
 // remove circles && classList === 'active' && 'scale-ctr'
 const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
-  console.log(activeCellsArr);
   try {
     activeCellsArr.forEach((el) => {
       let data = el.cell;

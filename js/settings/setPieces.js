@@ -148,7 +148,7 @@ const setChessPieces = () => {
   let blackPawn = document.createElement('img');
   blackPawn.src = `${bP.imgSrc}`;
   blackPawn.id = 'black-pawn';
-  X77.appendChild(blackPawn);
+  // X77.appendChild(blackPawn);
 
   //   black Rook
   let blackRook_1 = document.createElement('img');

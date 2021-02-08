@@ -99,6 +99,7 @@ const checkKingStatus = async (getPlayer, log) => {
               let pieceName = el.cell.lastChild.id.split('-')[1];
               if (pieceColor === 'black' && pieceName === 'king') {
                 let checkingPiece = log[log.length - 1];
+                console.log(checkingPiece);
                 console.log('black checked');
                 el.cell.classList.add('checked');
                 blackCheckmate = checkmate(checkingPiece);
@@ -117,6 +118,7 @@ const checkKingStatus = async (getPlayer, log) => {
               let pieceName = el.cell.lastChild.id.split('-')[1];
               if (pieceColor === 'white' && pieceName === 'king') {
                 let checkingPiece = log[log.length - 1];
+
                 console.log('white checked');
                 // add checked classList
                 el.cell.classList.add('checked');
@@ -336,13 +338,26 @@ const checkedKingMovement = async (player) => {
 
   return kingMove;
 };
+let checkingPiece = '';
+let preventArr = [];
+let checkingPieceMove = [];
+let path = [];
 
 // *3 allies can sacrifice itself for king
-const canAlliesSacrifice = async (player, cell) => {
-  let checkingPiece = cell.lastChild;
-  let preventArr = [];
-  let checkingPieceMove = await movementsCtr(checkingPiece, 'white', true);
-  let path = await getPath(checkingPieceMove[2]);
+const canAlliesSacrifice = async (cell) => {
+  checkingPiece = '';
+  preventArr = [];
+  checkingPieceMove = [];
+  path = [];
+
+  checkingPiece = cell.lastChild;
+
+  console.log(checkingPiece);
+  checkingPieceMove = await movementsCtr(checkingPiece, 'white', true);
+  console.log(checkingPieceMove);
+  console.log(checkingPieceMove[2]);
+  path = await getPath(checkingPieceMove[2]);
+
   // let protectKingPiecesArr = [];
   path.forEach((el) => {
     let cell = el.data.cell;
@@ -388,7 +403,7 @@ const checkmate = async (checkingPiece) => {
   const checkTwo = await checkedKingMovement(player);
 
   // *3 allies can sacrifice itself for king ??
-  const checkThree = await canAlliesSacrifice(player, cell);
+  const checkThree = await canAlliesSacrifice(cell);
 
   if (checkOne === 0 && checkTwo === 0 && checkThree === 0) {
     result = 'checkmate';

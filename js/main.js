@@ -18,6 +18,7 @@ import {
 } from './controllers/checkController.js';
 import { logCtr } from './controllers/logController.js';
 import { promotion, selectPiece } from './specialMove/pawnPromotion.js';
+import { castling, getCastlingCell } from './specialMove/kingRookCastling.js';
 import { rows } from './settings/boardCoordinate.js';
 
 const chessBoard = document.querySelector('.chess-board');
@@ -30,10 +31,13 @@ let fromCell = [];
 let player = 'player1';
 let opponentPlayer = '';
 let toCell = '';
-let gameStatus;
+let gameStatus = '';
 let log = [];
 let logRes = [];
 let logResult = [];
+let castlingRes = [];
+let castlingResult = false;
+let castlingCell = '';
 
 const main = async (e) => {
   let targetCell = e.target;
@@ -74,10 +78,36 @@ const main = async (e) => {
 
         // move piece
         movePiece(fromCell, activeCellsArr, toCell, opponentPlayer);
+
+        // Get Castling Result
+        castlingRes = [];
+        castlingRes = await castling(getPlayer);
+        castlingResult = false;
+        try {
+          if (toCell.id === castlingRes.id) {
+            console.log('king moved to castling cell');
+            castlingResult = true;
+          } else {
+            castlingResult = false;
+          }
+        } catch (error) {}
+        castlingCell = '';
+        // castling = true
+        if ((castlingResult = true)) {
+          // get to cell
+
+          castlingCell = await getCastlingCell(toCell, getPlayer);
+
+          if (castlingCell !== undefined) {
+            toCell = '';
+            toCell = castlingCell;
+          }
+        }
+
         // manage log
         logRes = await logCtr(fromCell, toCell, getPlayer, log);
         logResult = logRes[logRes.length - 1];
-
+        gameStatus = '';
         gameStatus = await checkKingStatus(getPlayer, log);
         // promotion check
         const checkPromotion = promotion(player, e);
@@ -144,6 +174,7 @@ const initClassList = () => {
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
       let classListCell = rows[i][j];
+
       try {
         classListCell.classList.remove('white-kingSide');
         classListCell.classList.remove('black-kingSide');

@@ -237,7 +237,7 @@ const kingAndRookCells = async (getPlayer) => {
 let castlingRes = [];
 
 //  castling function
-const castling = async (getPlayer, dataArr) => {
+const castling = async (getPlayer) => {
   castlingRes = [];
   // get player's log  king and rook haven't moved => check 1 && 2
   const castlingSideRes = await getPlayerLog(getPlayer);
@@ -252,7 +252,6 @@ const castling = async (getPlayer, dataArr) => {
   if (castlingSideRes === 1) {
     if (kingMoveRes === 1 && kingAndRookRes === 1) {
       // both side castling
-      console.log(' work 1');
       return [kingSideCastling(getPlayer), queenSideCastling(getPlayer)];
 
       // queen side castling
@@ -279,10 +278,8 @@ const castling = async (getPlayer, dataArr) => {
     // king side castling
   } else if (castlingSideRes === 3) {
     if (kingMoveRes === 1 && kingAndRookRes === 1) {
-      console.log('work 4');
       return kingSideCastling(getPlayer);
     } else if (kingMoveRes === 3 && kingAndRookRes === 3) {
-      console.log(' work 5');
       return kingSideCastling(getPlayer);
     }
   } else {
@@ -349,4 +346,37 @@ const blackQueenSideCastling = async () => {
   return castlingKing;
 };
 
-export { castling, getPlayerLog };
+let castlingToCell = '';
+const getCastlingCell = async (toCell, getPlayer) => {
+  castlingToCell = '';
+  if (getPlayer === 'white') {
+    // queen side castling
+    if (row8[3].lastChild.id === 'white-rook' && toCell.id === 'x83') {
+      castlingToCell = row8[3];
+      return castlingToCell;
+    } else if (row8[5].lastChild.id === 'white-rook' && toCell.id === 'x87') {
+      castlingToCell = row8[5];
+      return castlingToCell;
+    }
+
+    // king side castling
+  } else if (getPlayer === 'black') {
+    // queen side castling
+    if (row1[3].lastChild !== null) {
+      if (row1[3].lastChild.id === 'black-rook' && toCell.id === 'x13') {
+        castlingToCell = row1[3];
+        return castlingToCell;
+      }
+    } else if (row1[5].lastChild !== null) {
+      if (row1[5].lastChild.id === 'black-rook' && toCell.id === 'x17') {
+        castlingToCell = row1[5];
+        return castlingToCell;
+      }
+    } else {
+      castlingToCell = toCell;
+      return castlingToCell;
+    }
+  }
+};
+
+export { castling, getPlayerLog, getCastlingCell };

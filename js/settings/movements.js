@@ -625,8 +625,6 @@ const piecesMovements = async (
           if (!cellLocation.classList.contains('checked')) {
             // call castling function
             resultW = await castling(piecesType.split('-')[0]);
-            console.log(resultW.length);
-            console.log(resultW);
 
             movementsArr = [];
             try {
@@ -693,9 +691,6 @@ const piecesMovements = async (
         } catch (error) {}
 
         piecesType = 'white-king';
-        movementsArr.forEach((el) => {
-          console.log(el.cell);
-        });
 
         return [movementsArr, piecesColor, piecesType];
         break;
