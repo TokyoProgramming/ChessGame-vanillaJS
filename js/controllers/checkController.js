@@ -138,8 +138,10 @@ const checkKingStatus = async (getPlayer, log) => {
   try {
     if (checkResBlack === 'checkmate') {
       checkResult = 'black lose';
+      return checkResult;
     } else if (checkResWhite === 'checkmate') {
       checkResult = 'white lose';
+      return checkResult;
     } else if (checkResBlack === 'checked') {
       // checkResult = 1;
     } else if (checkResWhite === 'checked') {
@@ -351,12 +353,14 @@ const canAlliesSacrifice = async (cell) => {
   path = [];
 
   checkingPiece = cell.lastChild;
-
   console.log(checkingPiece);
+
   checkingPieceMove = await movementsCtr(checkingPiece, 'white', true);
   console.log(checkingPieceMove);
-  console.log(checkingPieceMove[2]);
-  path = await getPath(checkingPieceMove[2]);
+  try {
+    path = await getPath(checkingPieceMove[2]);
+    path = await getPath(checkingPiece[0]);
+  } catch (error) {}
 
   // let protectKingPiecesArr = [];
   path.forEach((el) => {
@@ -404,12 +408,16 @@ const checkmate = async (checkingPiece) => {
 
   // *3 allies can sacrifice itself for king ??
   const checkThree = await canAlliesSacrifice(cell);
+  console.log(checkOne);
+  console.log(checkTwo);
+  console.log(checkThree);
 
   if (checkOne === 0 && checkTwo === 0 && checkThree === 0) {
     result = 'checkmate';
   } else {
     result = 'checked';
   }
+  console.log(result);
   return result;
 };
 

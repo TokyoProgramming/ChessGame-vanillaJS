@@ -637,11 +637,7 @@ const piecesMovements = async (
               } else {
                 createMovementsArr(resultW);
               }
-            } catch (error) {
-              console.log(resultW.length);
-              console.log(resultW);
-              console.log(error);
-            }
+            } catch (error) {}
           }
         }
 
@@ -717,9 +713,7 @@ const piecesMovements = async (
               } else {
                 createMovementsArr(resultB);
               }
-            } catch (error) {
-              console.log(error);
-            }
+            } catch (error) {}
           }
         }
 

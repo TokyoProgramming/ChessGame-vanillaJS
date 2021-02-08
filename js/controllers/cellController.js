@@ -206,8 +206,8 @@ const removeCirclesClassList = async (activeCellsArr, opponentPlayer) => {
       data.classList.remove('active');
     });
   } catch (e) {
-    console.log(e);
-    console.log(activeCellsArr);
+    // console.log(e);
+    // console.log(activeCellsArr);
   }
 };
 

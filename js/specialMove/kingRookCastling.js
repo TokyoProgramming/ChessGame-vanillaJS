@@ -241,12 +241,15 @@ const castling = async (getPlayer) => {
   castlingRes = [];
   // get player's log  king and rook haven't moved => check 1 && 2
   const castlingSideRes = await getPlayerLog(getPlayer);
+  console.log(castlingSideRes);
 
   // check king will go through cells => check 4
   const kingMoveRes = await checkKingMoveCells(getPlayer);
+  console.log(kingMoveRes);
 
   // check king and rook cells => check 5
   const kingAndRookRes = await kingAndRookCells(getPlayer);
+  console.log(kingAndRookRes);
 
   // king and the both side rooks haven't moved
   if (castlingSideRes === 1) {
@@ -259,11 +262,15 @@ const castling = async (getPlayer) => {
       return queenSideCastling(getPlayer);
     } else if (kingMoveRes === 2 && kingAndRookRes === 1) {
       return queenSideCastling(getPlayer);
+    } else if (kingMoveRes === 1 && kingAndRookRes === 2) {
+      return queenSideCastling(getPlayer);
 
       // king side catling
     } else if (kingMoveRes === 3 && kingAndRookRes === 3) {
       return kingSideCastling(getPlayer);
     } else if (kingMoveRes === 3 && kingAndRookRes === 1) {
+      return kingSideCastling(getPlayer);
+    } else if (kingMoveRes === 1 && kingAndRookRes === 3) {
       return kingSideCastling(getPlayer);
     }
 
@@ -273,18 +280,27 @@ const castling = async (getPlayer) => {
       return queenSideCastling(getPlayer);
     } else if (kingMoveRes === 2 && kingAndRookRes === 2) {
       return queenSideCastling(getPlayer);
+    } else if (kingMoveRes === 1 && kingAndRookRes === 2) {
+      return queenSideCastling(getPlayer);
+    } else if (kingMoveRes === 2 && kingAndRookRes === 1) {
+      return queenSideCastling(getPlayer);
     }
-
     // king side castling
   } else if (castlingSideRes === 3) {
     if (kingMoveRes === 1 && kingAndRookRes === 1) {
       return kingSideCastling(getPlayer);
     } else if (kingMoveRes === 3 && kingAndRookRes === 3) {
       return kingSideCastling(getPlayer);
+    } else if (kingMoveRes === 1 && kingAndRookRes === 3) {
+      return kingSideCastling(getPlayer);
+    } else if (kingMoveRes === 3 && kingAndRookRes === 1) {
+      return kingSideCastling(getPlayer);
     }
   } else {
     return castlingRes;
   }
+
+  console.log(castlingRes);
 };
 let castlingResult = '';
 

@@ -83,17 +83,12 @@ import {
 
 const setChessPieces = () => {
   // white Pawn
-  // row7.map((el) => {
-  //   let whitePawn = document.createElement('img');
-  //   whitePawn.src = `${wP.imgSrc}`;
-  //   whitePawn.id = 'white-pawn';
-  //   el.appendChild(whitePawn);
-  // });
-
-  let whitePawn = document.createElement('img');
-  whitePawn.src = `${wP.imgSrc}`;
-  whitePawn.id = 'white-pawn';
-  X27.appendChild(whitePawn);
+  row7.map((el) => {
+    let whitePawn = document.createElement('img');
+    whitePawn.src = `${wP.imgSrc}`;
+    whitePawn.id = 'white-pawn';
+    el.appendChild(whitePawn);
+  });
 
   //   white Rook
   let whiteRook_1 = document.createElement('img');
@@ -109,27 +104,27 @@ const setChessPieces = () => {
   let whiteKnight_1 = document.createElement('img');
   whiteKnight_1.src = `${wK.imgSrc}`;
   whiteKnight_1.id = 'white-knight';
-  X62.appendChild(whiteKnight_1);
+  X82.appendChild(whiteKnight_1);
   let whiteKnight_2 = document.createElement('img');
   whiteKnight_2.src = `${wK.imgSrc}`;
   whiteKnight_2.id = 'white-knight';
-  X67.appendChild(whiteKnight_2);
+  X87.appendChild(whiteKnight_2);
 
   //   white bishop
   let whiteBishop_1 = document.createElement('img');
   whiteBishop_1.src = `${wB.imgSrc}`;
   whiteBishop_1.id = 'white-bishop';
-  X63.appendChild(whiteBishop_1);
+  X83.appendChild(whiteBishop_1);
   let whiteBishop_2 = document.createElement('img');
   whiteBishop_2.src = `${wB.imgSrc}`;
   whiteBishop_2.id = 'white-bishop';
-  X66.appendChild(whiteBishop_2);
+  X86.appendChild(whiteBishop_2);
 
   //   white Queen
   let whiteQueen = document.createElement('img');
   whiteQueen.src = `${wQ.imgSrc}`;
   whiteQueen.id = 'white-queen';
-  // X22.appendChild(whiteQueen);
+  X84.appendChild(whiteQueen);
 
   //   white King
   let whiteKing = document.createElement('img');
@@ -138,17 +133,12 @@ const setChessPieces = () => {
   X85.appendChild(whiteKing);
 
   //   black Pawn
-  // row2.map((el) => {
-  //   let blackPawn = document.createElement('img');
-  //   blackPawn.src = `${bP.imgSrc}`;
-  //   blackPawn.id = 'black-pawn';
-  //   el.appendChild(blackPawn);
-  // });
-
-  let blackPawn = document.createElement('img');
-  blackPawn.src = `${bP.imgSrc}`;
-  blackPawn.id = 'black-pawn';
-  // X77.appendChild(blackPawn);
+  row2.map((el) => {
+    let blackPawn = document.createElement('img');
+    blackPawn.src = `${bP.imgSrc}`;
+    blackPawn.id = 'black-pawn';
+    el.appendChild(blackPawn);
+  });
 
   //   black Rook
   let blackRook_1 = document.createElement('img');
@@ -164,21 +154,21 @@ const setChessPieces = () => {
   let blackKnight_1 = document.createElement('img');
   blackKnight_1.src = `${bK.imgSrc}`;
   blackKnight_1.id = 'black-knight';
-  X32.appendChild(blackKnight_1);
+  X12.appendChild(blackKnight_1);
   let blackKnight_2 = document.createElement('img');
   blackKnight_2.src = `${bK.imgSrc}`;
   blackKnight_2.id = 'black-knight';
-  X37.appendChild(blackKnight_2);
+  X17.appendChild(blackKnight_2);
 
   //   black bishop
   let blackBishop_1 = document.createElement('img');
   blackBishop_1.src = `${bB.imgSrc}`;
   blackBishop_1.id = 'black-bishop';
-  X33.appendChild(blackBishop_1);
+  X13.appendChild(blackBishop_1);
   let blackBishop_2 = document.createElement('img');
   blackBishop_2.src = `${bB.imgSrc}`;
   blackBishop_2.id = 'black-bishop';
-  X36.appendChild(blackBishop_2);
+  X16.appendChild(blackBishop_2);
 
   //   black King
   let blackKing = document.createElement('img');
@@ -190,7 +180,7 @@ const setChessPieces = () => {
   let blackQueen = document.createElement('img');
   blackQueen.src = `${bQ.imgSrc}`;
   blackQueen.id = 'black-queen';
-  // X77.appendChild(blackQueen);
+  X14.appendChild(blackQueen);
 };
 
 export { setChessPieces };
