@@ -10,9 +10,9 @@
 
 ## 1.Basic Movements
 
-
+<p align="center">
 ![movements1-min2](https://user-images.githubusercontent.com/66249668/114341499-e686ef80-9b94-11eb-8e2c-4ca75f96d790.gif)
-
+</p>
 
 ## 2.CheckMate 
 ![checkmate-min2](https://user-images.githubusercontent.com/66249668/114341363-8e4fed80-9b94-11eb-8c91-349e6643db98.gif)
