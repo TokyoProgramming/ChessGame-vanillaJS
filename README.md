@@ -1,9 +1,10 @@
  
 <h1 align="center">Chess App</h1>
-
-<a align="center" alt="MIT License" href="https://kawakawaritsuki.mit-license.org/">
+<span align="center">
+<a  alt="MIT License" href="https://kawakawaritsuki.mit-license.org/">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg">
 </a>
+ </span>
 
 
 # description
