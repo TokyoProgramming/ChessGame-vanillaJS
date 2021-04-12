@@ -9,6 +9,10 @@
 
 # description
 
+This app is created by HTML5, CSS3 and vanilla javascript!!
+As you know, European Chess is well known board game all over the world. 
+
+
 
 
 ## 1.Basic Movements
