@@ -5,7 +5,7 @@
 </a>
 
 
-<h2 align="center">Chess APP description</h2>
+<h1 align="center">Chess APP description</h2>
 
 ## 1.Basic Movements
 
