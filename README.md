@@ -1,11 +1,11 @@
-# Chess App 
-
+ 
+<h1 align="center">Chess App</h1>
 <a align = "center" alt="MIT License" href="https://kawakawaritsuki.mit-license.org/">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg">
 </a>
 
 
-<h1 align="center">Chess APP description</h2>
+# description
 
 ## 1.Basic Movements
 
