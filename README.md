@@ -11,6 +11,7 @@
 ## 1.Basic Movements
 
 <p align="center">
+ <img src="https://user-images.githubusercontent.com/66249668/114341499-e686ef80-9b94-11eb-8e2c-4ca75f96d790.gif" alt="animated" />
 ![movements1-min2](https://user-images.githubusercontent.com/66249668/114341499-e686ef80-9b94-11eb-8e2c-4ca75f96d790.gif)
 </p>
 
