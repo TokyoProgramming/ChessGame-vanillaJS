@@ -22,13 +22,24 @@
 
 
 ## 3.KingRookCastling
-![kingRookCastling-min2](https://user-images.githubusercontent.com/66249668/114341582-159d6100-9b95-11eb-9046-de81c417e753.gif)
+
+<p align="center">
+ <img src="https://user-images.githubusercontent.com/66249668/114341582-159d6100-9b95-11eb-9046-de81c417e753.gif" alt="kingRookCastling" />
+</p>
 
 ## 4.PawnPassant
 
-![pawnpassant-min2](https://user-images.githubusercontent.com/66249668/114341672-47162c80-9b95-11eb-8458-14b28616e8f8.gif)
 
-## 5PawnPromotion
+<p align="center">
+ <img src="https://user-images.githubusercontent.com/66249668/114341672-47162c80-9b95-11eb-8458-14b28616e8f8.gif" alt="PawnPassant" />
+</p>
 
 
-![promotion-min](https://user-images.githubusercontent.com/66249668/114341272-55177d80-9b94-11eb-8dfe-998815d5712a.gif)
+## 5.PawnPromotion
+
+
+
+
+<p align="center">
+ <img src="https://user-images.githubusercontent.com/66249668/114341272-55177d80-9b94-11eb-8dfe-998815d5712a.gif" alt="PawnPromotion" />
+</p>
